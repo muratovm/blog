@@ -19,7 +19,7 @@ But despite the diversity of options, there seems to be a common meta emerging a
 
 There's almost no room for a custom experience on social media platforms anymore. Ever since algorithmic recommendations took off, the platforms presenting our content stripped and sanitized themselves to make it easier for the algorithms to do their job. I'm sure this was done partially for safety reasons, and to ensure a mostly uniform viewer experience, the same way you might find comfort in visiting a chain restaurant where everything feels familiar. But it does clamp down on the type of content that can be shared.
 
-In any case, the lack of control over the platform I'm using has always made me reluctant to contribute the necessary time and dedication to grow out my digital library. Making and hosting my own website has always been my preferred option. I've owned my name domain since 2018 c when I could have been developing it in conjunction with getting my CS degree.I've wrestled with how to approach it for years...indecision has left me with nothing to show for it.
+In any case, the lack of control over the platform I'm using has always made me reluctant to contribute the necessary time and dedication to grow out my digital library. Making and hosting my own website has always been my preferred option. I've owned my name domain since 2018 with plans to develop it in conjunction with getting my CS degree. I've wrestled with how to approach it for years...indecision has left me with nothing to show for it.
 
 If I could go back and change one thing, I would go back and shake enough sense into myself to start writing things down. But if I couldn't start then, I might as well start now.
  
@@ -65,7 +65,7 @@ The site consists of three quality of life features that would be non negotiable
 2) Obsidian Rich Text Editor
 3) AWS CI/CD Pipeline
 
-Currently I'm using the [Hugo Simple](https://github.com/maolonglong/hugo-simple/) theme and dumping all of my writing into sequential articles — meanwhile borrowing elements from other themes and my design choices ideas.
+Currently I'm using the [Hugo Simple](https://github.com/maolonglong/hugo-simple/) theme and dumping all of my writing into sequential articles — meanwhile borrowing elements from other themes and my own design choices.
 
 ### Themes
 
