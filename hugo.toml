@@ -1,0 +1,34 @@
+baseURL = 'https://michaelmuratov.com'
+languageCode = 'en-us'
+title = 'Blog'
+theme='hugo-simple'
+
+[markup]
+  defaultMarkdownHandler = 'goldmark' 
+  _merge = 'deep'
+  [markup.highlight]
+      # See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html
+      guessSyntax = "true"
+      codeFences = "true"
+      lineNos = true
+      lineNumbersInTable = false
+      noClasses = true
+
+      #style = "monokai"
+      style = "catppuccin-mocha"
+  [markup.goldmark]
+    [markup.goldmark.parser]
+      [markup.goldmark.parser.attribute]
+        block = true
+
+[params]
+    [assets]
+        disableHLJS = true
+
+# required
+[build]
+  _merge = 'deep'
+
+# for better seo
+[minify]
+  _merge = 'deep'

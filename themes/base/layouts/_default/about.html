@@ -1,0 +1,15 @@
+{{ define "title" -}}
+{{- end }}
+{{ define "date" -}}
+{{ .Date | time.Format ":date_medium" }}
+{{- end }}
+{{define "main"}}
+<h1>{{ .Title }}</h1>
+<style>
+body{
+    padding-top: 100px;
+}
+</style>
+{{ .Content}}
+<a href="/">Home</a>
+{{- end }}

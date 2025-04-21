@@ -1,0 +1,122 @@
+{{ define "title" -}}
+{{ .Title | title }}
+{{- end }}
+{{ define "main" -}}
+<style>
+	html{
+  		overflow-x: hidden;
+	}
+	body{
+		background-color: rgb(255, 255, 255);
+		overflow-x: hidden;
+		position: relative;
+	}
+	grid {
+		display: grid;
+		grid-template-columns: 4fr 1fr; /* Two equal columns */
+	}
+
+	p{
+		padding: 0px;
+		margin: 0px;
+	}
+
+	ul {
+    	list-style-type: none;
+		padding: 0px;
+  	}
+
+	.card {
+		padding: 20px;
+		height: fit-content;
+		background-color: rgb(255, 255, 255);
+		border-radius: 5px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+		min-width: 150px;
+	}
+
+	.card:hover{
+		color: blue;
+		transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+
+	}
+
+	li{
+		margin: 10px;
+	}
+
+	img{
+		margin: 0px;
+		padding: 0px;
+		height: 100px;
+	}
+
+	a{
+		text-decoration: none;
+		color: black;
+	}
+
+
+	@media (max-width: 768px) {
+		grid {
+			display: grid;
+			grid-template-columns: 2fr 1fr; /* Two equal columns */
+		}
+		h2{
+			font-size: 1em;
+		}
+		p{
+			font-size: 0.5em;
+			margin-bottom: 0px;
+		}
+
+		.card {
+			transform: none; /* Disable hover lift effect on mobile */
+        }
+
+		.card:hover {
+			color:black; /* Disable hover color change on mobile */
+			transform: none; /* Disable hover lift effect on mobile */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+		
+	}
+</style>
+
+
+<header><h1 id="tag_{{ .Title }}">{{ block "title" . }}{{ end }}</h1></header>
+
+<a id="home" href="/"><u>Home</u></a>
+<div style="height: 1em;">
+</div>
+
+<ul>
+{{- range.Pages }}
+<li class="card" onclick="window.location.href='{{ .RelPermalink }}'">
+	<grid>
+        <section class="section-left">
+            <h2><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+			{{ with .Params.tags }}{{ delimit . ", " }}{{ end }}
+        </section>
+        <section class="section-right">
+            <img src="{{ .Params.image }}">
+			{{- if .Param "datesinlist" }}
+				<time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006 Jan 02" }}</time>
+			{{ end -}}
+        </section>
+    </grid>
+	
+	
+	
+	{{- if .Param "authorsinlist" }}
+	{{ with .Params.authors }}
+		by 
+		{{ delimit . ", " " and " }}
+	{{end}}
+	{{ end -}}
+</li>
+{{- end }}
+</ul>
+{{- end }}

@@ -1,0 +1,32 @@
+{{ define "title" -}}
+{{- end }}
+{{ define "date" -}}
+{{ .Date | time.Format ":date_medium" }}
+{{- end }}
+{{define "main"}}
+<style>
+    html{
+  		overflow-x: hidden;
+	}
+	body{
+		background-color: rgb(255, 255, 255);
+		overflow-x: hidden;
+		position: relative;
+	}
+</style>
+<article>
+    <header>
+        <h1>{{ .Title }}</h1>
+        {{ block "date" . }}{{ end }}
+        {{ if .Param "taglist" }}{{ partial "taglist.html" . }}{{ end -}}
+    </header>
+    {{ .Content }}
+</article>
+{{ block "footer" . }}
+	<footer>
+		<!--<a href="{{ .Site.BaseURL }}">{{ .Site.BaseURL }}</a>-->
+        {{ if .Param "nextprev" }}{{ partial "nextprev.html" . -}}{{ end -}}
+		{{- if .Param "showrss" }}<br><br><a href="/index.xml"><img class="rss" src="/rss.svg" style="height:50px; width:50px; margin:auto;" alt="RSS Feed" title="Subscribe via RSS for updates."></a>{{ end }}
+    </footer>
+{{ end }}
+{{- end }}
