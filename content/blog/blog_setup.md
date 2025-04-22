@@ -11,10 +11,8 @@ layout: blog-post
 
 ![image](../../../img/banner/blog_structure.png)
 
-
-### Hugo Static Generator
-
 The structure of this site is simple.
+### Hugo Static Generator
 
 I use a static site generator called Hugo: [Hugo Quick Start](https://gohugo.io/getting-started/quick-start/)
 
@@ -105,8 +103,37 @@ layout: blog-post
 
 This format is very flexible and it lets me specify the file structure that the site will use to generate the page, directly in the Markdown file.
 
-All layout files are customization with the Hugo styling language to order page elements in custom configurations such as individual post layouts, lists of links to other posts, etc.
+All layout files are customizable with the Hugo styling language to order page elements in unique configurations such as individual post layouts, lists of links to other posts, etc.
 
 ### Analytics
 
-To track usage on this website 
+To track usage on this website I made use of Google Analytics, which the most powerful set of tools for web monitoring and is completely free. Every page I want to track needs to contain the following **Google Tag**:
+
+```
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Y9QJ4EB3PT"></script>
+
+<script>
+
+window.dataLayer = window.dataLayer || [];
+
+function gtag(){dataLayer.push(arguments);}
+
+gtag('js', new Date());
+  
+
+gtag('config', 'G-Y9QJ4EB3PT');
+
+</script>
+```
+
+This tag is included in the `baseof.html` template of every single page that Hugo generates:
+
+```
+{{ partial "google-analytics.html" . }}
+```
+
+Ensuring that every individual blog post and site page will feature a tag that links usage data to Google's server and my dashboard. 
+
+![image](../../img/screenshot/blog_setup-google_analytics.png)
