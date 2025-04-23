@@ -17,40 +17,59 @@
 <button id="theme-toggle">☀️</button>
 <script>
 
-    function set_toggle_properties(body, themeToggle) {
-        /*set text and background color of button*/
-        themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-        themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-        themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
-        themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
 
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
+        function set_toggle_properties(body, themeToggle) {
+            /*set text and background color of button*/
+            themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
+            themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+            themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+            themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+        }
 
-    // Toggle dark mode on button click
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            set_toggle_properties(body, themeToggle);
+            const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Apply saved or system theme
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark-mode') {
+            body.classList.add('dark-mode');
+        } else if (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            body.classList.add('dark-mode');
+        }
+
         set_toggle_properties(body, themeToggle);
-        const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
-        localStorage.setItem('theme', newTheme);
+        console.log('DOM fully loaded and parsed');
     });
-    
-    // Check local storage for theme preference
-    const currentTheme = localStorage.getItem('theme');
-    if (currentTheme){
-        if (currentTheme == "dark-mode") {
-            body.classList.toggle('dark-mode');
+
+    window.addEventListener('pageshow', () => {
+        const theme = localStorage.getItem('theme');
+        const body = document.body;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        function set_toggle_properties(body, themeToggle) {
+            /*set text and background color of button*/
+            themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
+            themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+            themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+            themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
         }
-    }
-    else{
-        console.log('Current theme not set');
-        //Check if dark mode is enabled in the system settings
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-            // dark mode
-            body.classList.toggle('dark-mode');
+
+        if (theme === 'dark-mode') {
+            body.classList.add('dark-mode');
+        } else {
+            body.classList.remove('dark-mode');
         }
-    }
-    
-    set_toggle_properties(body, themeToggle);
+
+        // Update button appearance
+        set_toggle_properties(body, themeToggle);
+        console.log('Page view event triggered');
+    });
+
 </script>
