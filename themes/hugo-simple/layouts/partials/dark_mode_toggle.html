@@ -16,79 +16,33 @@
 </style>
 <button id="theme-toggle">☀️</button>
 <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
+    function set_toggle_properties(body, themeToggle) {
+        /*set text and background color of button*/
+        themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
+        themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+        themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+        themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+    }
 
-        function set_toggle_properties(body, themeToggle) {
-            /*set text and background color of button*/
-            themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-            themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-            themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
-            themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            set_toggle_properties(body, themeToggle);
-            const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
-            localStorage.setItem('theme', newTheme);
-        });
-
-        // Apply saved or system theme
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme == 'dark-mode') {
-            body.classList.add('dark-mode');
-            localStorage.setItem('theme', "dark-mode");
-        }
-        else if (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            body.classList.add('dark-mode');
-            localStorage.setItem('theme', "dark-mode");
-        }
-        else{
-            localStorage.setItem('theme', "light-mode");
-        }
-
-        let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
-
+    // Toggle dark mode on button click
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
         set_toggle_properties(body, themeToggle);
-        console.log('DOM fully loaded and parsed');
-        console.log("Likes Dark Theme: " + window.matchMedia('(prefers-color-scheme: dark)').matches);
-        console.log("Current Theme: " + current_mode);
-        console.log("Stored Theme: " + currentTheme);
     });
-
-    window.addEventListener('pageshow', (event) => {
-
-        const currentTheme = localStorage.getItem('theme');
-        const body = document.body;
-        const themeToggle = document.getElementById('theme-toggle');
-
-        function set_toggle_properties(body, themeToggle) {
-            /*set text and background color of button*/
-            themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-            themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-            themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
-            themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-        }
-
-        if (currentTheme == 'dark-mode') {
-            body.classList.add('dark-mode');
-        } else {
-            body.classList.remove('dark-mode');
-        }
-
-        // Update button appearance
+    
+    // Check local storage for theme preference
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        body.classList.add(currentTheme);
         set_toggle_properties(body, themeToggle);
+    }
 
-
-        let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
-        console.log('Page view event triggered');
-        console.log("Likes Dark Theme: " + window.matchMedia('(prefers-color-scheme: dark)').matches);
-        console.log("Current Theme: " + current_mode);
-        console.log("Stored Theme: " + currentTheme);
-
+    // Save theme preference to local storage
+    themeToggle.addEventListener('click', () => {
+    const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : '';
+    localStorage.setItem('theme', newTheme);
     });
-
 </script>
