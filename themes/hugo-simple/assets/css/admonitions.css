@@ -55,19 +55,19 @@
 	 font-size: 0.9em;
 }
 
- @media (prefers-color-scheme: light) {
-	 .admonition-content {
-		 background-color: #1d1e20;
-		 color: #e6e6e6;
-	}
-	 .admonition-content code {
-		 background-color: #313244;
-		 color: #cdd6f4;
-	}
-	 .admonition-content blockquote {
-		 border-left-color: #45475a;
-		 color: #cdd6f4;
-	}
+/* Light mode styles */
+
+.admonition-content {
+	background-color: #1d1e20;
+	color: #e6e6e6;
+}
+.admonition-content code {
+	background-color: #313244;
+	color: #cdd6f4;
+}
+.admonition-content blockquote {
+	border-left-color: #45475a;
+	color: #cdd6f4;
 }
 
 /* Dark mode styles */
