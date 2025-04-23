@@ -16,8 +16,6 @@
 </style>
 <button id="theme-toggle">☀️</button>
 <script>
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
 
     function set_toggle_properties(body, themeToggle) {
         /*set text and background color of button*/
@@ -27,22 +25,29 @@
         themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
     }
 
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
     // Toggle dark mode on button click
     themeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-mode');
         set_toggle_properties(body, themeToggle);
+        const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+        localStorage.setItem('theme', newTheme);
     });
     
     // Check local storage for theme preference
     const currentTheme = localStorage.getItem('theme');
-    if (currentTheme) {
-        body.classList.add(currentTheme);
-        set_toggle_properties(body, themeToggle);
+    if (currentTheme == ""){
+        console.log('Current theme not set');
     }
-
-    // Save theme preference to local storage
-    themeToggle.addEventListener('click', () => {
-    const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : '';
-    localStorage.setItem('theme', newTheme);
-    });
+    if (currentTheme == "light-mode") {
+        body.classList.add(currentTheme);
+    }
+    //Check if dark mode is enabled in the system settings
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+        // dark mode
+        body.classList.toggle('dark-mode');
+    }
+    set_toggle_properties(body, themeToggle);
 </script>

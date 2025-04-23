@@ -10,7 +10,7 @@ layout: blog-post
 ---
 ### Purpose
 
-These days there's countless outlets for self-expression, whether through Facebook posts, Instagram stories_, X threads, Substack articles, or YouTube videos. The list of social media platforms is so long that it would get tiresome to name them all.
+These days there's countless outlets for self-expression, whether through Facebook posts, Instagram stories, X threads, Substack articles, or YouTube videos. The list of social media platforms is so long that it would get tiresome to name them all.
 
 But despite the diversity of options, there seems to be a common meta emerging across every single platform; catering to the most generic demographic of average daily visitors. It can be disheartening to create niche content for a select audience while surface-level channels gorge on millions of viewers. This would be alright on its own if not for the platforms themselves encouraging this type of behavior.
 
