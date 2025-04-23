@@ -19,56 +19,31 @@
 	 margin-right: 0.5rem;
 	 fill: currentColor;
 }
- .admonition-content {
-	 padding: 1rem;
-	 background-color: #fff;
-	 border-radius: 0 0 4px 4px;
-	 color: #000;
-	 transition: background-color 0.3s ease, color 0.3s ease;
-}
- .admonition-content p {
-	 margin: 0 0 0.5rem 0;
-}
- .admonition-content p:last-child {
-	 margin-bottom: 0;
-}
- .admonition-content ul, .admonition-content ol {
-	 margin: 0 0 0.5rem 0;
-	 padding-left: 1.2rem;
-}
- .admonition-content ul:last-child, .admonition-content ol:last-child {
-	 margin-bottom: 0;
-}
- .admonition-content blockquote {
-	 margin: 0 0 0.5rem 0;
-	 padding-left: 1rem;
-	 border-left: 3px solid #e0e0e0;
-}
- .admonition-content blockquote:last-child {
-	 margin-bottom: 0;
-}
- .admonition-content code {
-	 background-color: #f5f5f5;
-	 color: #24292e;
-	 padding: 0.2em 0.4em;
-	 border-radius: 3px;
-	 font-size: 0.9em;
-}
 
 /* Light mode styles */
 
 .admonition-content {
-	background-color: #1d1e20;
-	color: #e6e6e6;
-}
+	padding: 1rem;
+	background-color: #fff;
+	border-radius: 0 0 4px 4px;
+	color: #000;
+	transition: background-color 0.3s ease, color 0.3s ease;
+	}
+
 .admonition-content code {
-	background-color: #313244;
-	color: #cdd6f4;
-}
+	background-color: #f5f5f5;
+	color: #24292e;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 0.9em;
+	}
+
 .admonition-content blockquote {
-	border-left-color: #45475a;
-	color: #cdd6f4;
-}
+	margin: 0 0 0.5rem 0;
+	padding-left: 1rem;
+	border-left: 3px solid #e0e0e0;
+	}
+
 
 /* Dark mode styles */
 
@@ -89,6 +64,27 @@
 	 color: #cdd6f4;
 }
 
+
+/* Admonition content styles */
+
+.admonition-content p {
+	 margin: 0 0 0.5rem 0;
+	}
+
+.admonition-content p:last-child {
+	 margin-bottom: 0;
+	}
+.admonition-content ul, .admonition-content ol {
+	 margin: 0 0 0.5rem 0;
+	 padding-left: 1.2rem;
+	}
+.admonition-content ul:last-child, .admonition-content ol:last-child {
+	 margin-bottom: 0;
+	}
+
+.admonition-content blockquote:last-child {
+	 margin-bottom: 0;
+	}
 
 .admonition.abstract {
 	 background: transparent;
