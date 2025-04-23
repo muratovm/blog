@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en{{ end }}">
+  <meta charset="UTF-8" />
   <nav>
   {{ partial "dark_mode_toggle.html" . }}    
   </nav>
   <head>
     {{ partial "google-analytics.html" . }}
-    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{- partial "favicon.html" . -}}
     <title>
