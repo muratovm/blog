@@ -16,7 +16,7 @@ The structure of this site is simple.
 
 I use a static site generator called Hugo: [Hugo Quick Start](https://gohugo.io/getting-started/quick-start/)
 
-```
+```bash
 sudo apt install hugo
 
 hugo new site michaelmuratov.com
@@ -88,7 +88,7 @@ My credits section is sitting in my private git repo but I'll be working on maki
 
 Each post has associated metadata to inform Hugo on how to display the page and what category to group it under.
 
-```
+```markdown
 ---
 title: How this Blog Works
 date: 2025-04-22
@@ -109,7 +109,7 @@ All layout files are customizable with the Hugo styling language to order page e
 
 To track usage on this website I made use of Google Analytics, which the most powerful set of tools for web monitoring and is completely free. Every page I want to track needs to contain the following **Google Tag**:
 
-```
+```js
 <!-- Google tag (gtag.js) -->
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Y9QJ4EB3PT"></script>

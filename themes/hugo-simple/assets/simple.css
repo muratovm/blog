@@ -6,8 +6,6 @@
     "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --standard-border-radius: 5px;
-
-  /* Default (light) theme */
   --bg: #fff;
   --accent-bg: #f5f7ff;
   --text: #212121;
@@ -22,21 +20,23 @@
   --disabled: #efefef;
 }
 
-/* Light theme */
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme: dark;
-    --bg: #212121;
-    --accent-bg: #2b2b2b;
-    --text: #dcdcdc;
-    --text-light: #ababab;
-    --accent: #ffb300;
-    --accent-hover: #ffe099;
-    --accent-text: var(--bg);
-    --code: #f06292;
-    --preformatted: #ccc;
-    --disabled: #111;
-  }
+.dark-mode {
+  color-scheme: dark;
+  --bg: #212121;
+  --accent-bg: #2b2b2b;
+  --text: #dcdcdc;
+  --text-light: #ababab;
+  --accent: #ffb300;
+  --accent-hover: #ffe099;
+  --accent-text: var(--bg);
+  --code: #f06292;
+  --preformatted: #ccc;
+  --disabled: #111;
+}
+
+.dark-mode img{
+  /* Tint images slightly */
+  filter: saturate(200%) brightness(80%) contrast(150%);
 }
 
 /* Reset box-sizing */
@@ -555,6 +555,22 @@ video {
   max-width: 100%;
   height: auto;
   border-radius: var(--standard-border-radius);
+  margin: 0 auto;
+  display: block;
+  margin-block: 1rem;
+  box-shadow: 0 0 5px var(--border);
+}
+img:active:hover{
+  /* Expand image slightly on hover */
+  transition: 0.5s ease-in-out;
+  transform: scale(1.5);
+  box-shadow: 0 0 10px var(--border); 
+}
+/*on active release */
+img:hover{
+  transition: 0.5s ease-in-out;
+  transform: scale(1);
+  box-shadow: 0 0 5px var(--border); 
 }
 
 figure {

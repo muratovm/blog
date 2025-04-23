@@ -1,0 +1,48 @@
+<style>
+    body {
+      background-color: #f0f0f0;
+      color: #333;
+    }
+    body.dark-mode {
+      background-color: #333;
+      color: #f0f0f0;
+    }
+    #theme-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      color: #333;
+      border: none;
+      cursor: pointer;
+      border-radius: 25px;
+    }
+</style>
+<button id="theme-toggle">☀️</button>
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
+    /*set background color of button*/
+    themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+    themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+    });
+    // Check local storage for theme preference
+    const currentTheme = localStorage.getItem('theme');
+    if (currentTheme) {
+        body.classList.add(currentTheme);
+        themeToggle.textContent = currentTheme === 'dark-mode' ? '🌙' : '☀️';
+        /*set background color of button*/
+        themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+        themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+    }
+    // Save theme preference to local storage
+    themeToggle.addEventListener('click', () => {
+    const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : '';
+    localStorage.setItem('theme', newTheme);
+    });
+</script>
