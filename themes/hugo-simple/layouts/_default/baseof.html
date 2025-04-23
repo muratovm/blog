@@ -1,5 +1,8 @@
 <!doctype html>
 <html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en{{ end }}">
+  <nav>
+  {{ partial "dark_mode_toggle.html" . }}    
+  </nav>
   <head>
     {{ partial "google-analytics.html" . }}
     <meta charset="UTF-8" />
@@ -49,9 +52,6 @@
       {{ partial "footer.html" . }}
     </footer>
 
-  <nav>
-    {{ partial "dark_mode_toggle.html" . }}    
-  </nav>
   
     <!-- A partial to be overwritten by the user.
   Simply place a custom_body.html into

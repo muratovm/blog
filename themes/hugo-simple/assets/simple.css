@@ -21,6 +21,8 @@
 }
 
 .dark-mode {
+  background-color: #333;
+  color: #f0f0f0;
   color-scheme: dark;
   --bg: #212121;
   --accent-bg: #2b2b2b;
@@ -62,6 +64,7 @@ html {
 
 /* Make the body a nice central block */
 body {
+  background-color: #f0f0f0;
   color: var(--text);
   background-color: var(--bg);
   font-size: 1.15rem;

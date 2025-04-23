@@ -70,19 +70,27 @@
 	}
 }
 
- body.dark .admonition-content {
+/* Dark mode styles */
+
+.dark-mode .admonition-header {
+	filter: saturate(250%) brightness(200%) contrast(150%);
+}
+
+.dark-mode .admonition-content {
 	 background-color: #1d1e20;
 	 color: #e6e6e6;
 }
- body.dark .admonition-content code {
+.dark-mode .admonition-content code {
 	 background-color: #313244;
 	 color: #cdd6f4;
 }
- body.dark .admonition-content blockquote {
+.dark-mode .admonition-content blockquote {
 	 border-left-color: #45475a;
 	 color: #cdd6f4;
 }
- .admonition.abstract {
+
+
+.admonition.abstract {
 	 background: transparent;
 	 border-left: 4px solid #209fb5;
 }
