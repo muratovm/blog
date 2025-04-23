@@ -48,7 +48,13 @@
         console.log('DOM fully loaded and parsed');
     });
 
-    window.addEventListener('pageshow', () => {
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            // Page was restored from bfcache — skip tracking
+            console.log('Page restored from bfcache. Skipping pageview tracking.');
+            return;
+        }
+        
         const theme = localStorage.getItem('theme');
         const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
