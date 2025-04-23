@@ -38,10 +38,11 @@
 
         // Apply saved or system theme
         const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark-mode') {
+        if (currentTheme == 'dark-mode') {
             body.classList.add('dark-mode');
             localStorage.setItem('theme', "dark-mode");
-        } else if (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        }
+        else if (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             body.classList.add('dark-mode');
             localStorage.setItem('theme', "dark-mode");
         }
@@ -49,13 +50,18 @@
             localStorage.setItem('theme', "light-mode");
         }
 
+        let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
+
         set_toggle_properties(body, themeToggle);
         console.log('DOM fully loaded and parsed');
+        console.log("Likes Dark Theme: " + window.matchMedia('(prefers-color-scheme: dark)').matches);
+        console.log("Current Theme: " + current_mode);
+        console.log("Stored Theme: " + currentTheme);
     });
 
     window.addEventListener('pageshow', (event) => {
 
-        const theme = localStorage.getItem('theme');
+        const currentTheme = localStorage.getItem('theme');
         const body = document.body;
         const themeToggle = document.getElementById('theme-toggle');
 
@@ -67,7 +73,7 @@
             themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
         }
 
-        if (theme === 'dark-mode') {
+        if (currentTheme == 'dark-mode') {
             body.classList.add('dark-mode');
         } else {
             body.classList.remove('dark-mode');
@@ -75,7 +81,14 @@
 
         // Update button appearance
         set_toggle_properties(body, themeToggle);
+
+
+        let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
         console.log('Page view event triggered');
+        console.log("Likes Dark Theme: " + window.matchMedia('(prefers-color-scheme: dark)').matches);
+        console.log("Current Theme: " + current_mode);
+        console.log("Stored Theme: " + currentTheme);
+
     });
 
 </script>
