@@ -38,16 +38,19 @@
     
     // Check local storage for theme preference
     const currentTheme = localStorage.getItem('theme');
-    if (currentTheme == ""){
+    if (currentTheme){
+        if (currentTheme == "dark-mode") {
+            body.classList.toggle('dark-mode');
+        }
+    }
+    else{
         console.log('Current theme not set');
+        //Check if dark mode is enabled in the system settings
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+            // dark mode
+            body.classList.toggle('dark-mode');
+        }
     }
-    if (currentTheme == "light-mode") {
-        body.classList.add(currentTheme);
-    }
-    //Check if dark mode is enabled in the system settings
-    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
-        // dark mode
-        body.classList.toggle('dark-mode');
-    }
+    
     set_toggle_properties(body, themeToggle);
 </script>
