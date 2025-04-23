@@ -9,6 +9,9 @@
       border: none;
       cursor: pointer;
       border-radius: 25px;
+      border-width: 2px;
+      border-color: #333;
+      border-style: dashed;
     }
 </style>
 <button id="theme-toggle">☀️</button>
@@ -16,22 +19,27 @@
     const themeToggle = document.getElementById('theme-toggle');
     const body = document.body;
 
+    function set_toggle_properties(body, themeToggle) {
+        /*set text and background color of button*/
+        themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
+        themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+        themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+        themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+    }
+
+    // Toggle dark mode on button click
     themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-    /*set background color of button*/
-    themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-    themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+        body.classList.toggle('dark-mode');
+        set_toggle_properties(body, themeToggle);
     });
+    
     // Check local storage for theme preference
     const currentTheme = localStorage.getItem('theme');
     if (currentTheme) {
         body.classList.add(currentTheme);
-        themeToggle.textContent = currentTheme === 'dark-mode' ? '🌙' : '☀️';
-        /*set background color of button*/
-        themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-        themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
+        set_toggle_properties(body, themeToggle);
     }
+
     // Save theme preference to local storage
     themeToggle.addEventListener('click', () => {
     const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : '';
