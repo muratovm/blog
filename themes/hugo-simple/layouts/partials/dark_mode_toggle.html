@@ -40,8 +40,13 @@
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark-mode') {
             body.classList.add('dark-mode');
+            localStorage.setItem('theme', "dark-mode");
         } else if (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             body.classList.add('dark-mode');
+            localStorage.setItem('theme', "dark-mode");
+        }
+        else{
+            localStorage.setItem('theme', "light-mode");
         }
 
         set_toggle_properties(body, themeToggle);
