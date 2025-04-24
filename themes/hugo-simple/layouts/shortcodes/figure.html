@@ -5,9 +5,18 @@
 	caption: caption
 	mouse: what the image says when moused over ("title" in HTML)
 -->
-<img src="{{ .Get "src" }}" 
+<figure {{ with .Get "class" }}class="{{.}}"{{ end -}}>
+	{{- with .Get "link"}}<a href="{{.}}">{{ end -}}
+	<img src="{{ .Get "src" }}" 
 		 width="{{ .Get "width" }}"
 		 height="{{ .Get "height" }}"
 	     {{- with .Get "mouse" }} title="{{.}}"{{ end -}}
 	     {{- with .Get "alt" }} alt="{{.}}"{{ end -}}
 	>
+	{{- if .Get "link"}}</a>{{ end -}}
+	{{- with .Get "caption" -}}
+	<figcaption>
+	{{- . -}}
+	</figcaption>
+	{{- end -}}
+</figure>
