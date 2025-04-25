@@ -1,8 +1,7 @@
 ---
 title: Testing AWS Infra with PACU
 date: 2024-10-26
-tags:
-  - cloud
+tags: ["cloud"]
 draft: true
 image: /img/banner/aws_pacu.png
 layout: blog-post
@@ -82,7 +81,7 @@ Reconnaissance in AWS environments involves collecting data to understand the cl
 
 In this exercise, we'll start with an admin user which allows us to bypass permission barriers, ensuring we can run Pacu’s enumeration and reconnaissance modules without interruptions or access issues. This establishes a baseline by having the complete layout of AWS resources, roles, and permissions to compare to. With unrestricted access, we can identify potential misconfigurations, excessive permissions, and over-privileged access patterns—common security risks in cloud environments. 
 
-![image](aws_pacu_[user_group].png)
+![image](../../img/screenshot/aws_pacu-user_group.png)
 
 ### IAM Enumeration
 

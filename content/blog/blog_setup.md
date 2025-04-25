@@ -51,6 +51,10 @@ Version control is pretty important for a site like this. For one it keeps a con
 
 Because most of the files on this site are written in Markdown, they can be viewed and edited in nice rich text editors like Obsidian. The integration between Obsidian and Hugo doesn't exist directly but I've been able to port common elements such as code snippets and call outs.
 
+
+![[obsidian_editor.png]]
+
+
 ### AWS Integration
 
 Learning a cloud platform like AWS has been on my priority list this year. In addition the existence of dedicated services like **AWS Amplity** makes it fairly cost efficient to host the website myself and monitor spending on all my cloud services through a unified interface. AWS does fall short in terms of identifying usage metrics but I've augmented the website with Google Analytics tags that fills in for that gap.
