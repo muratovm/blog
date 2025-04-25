@@ -6,6 +6,7 @@
 	mouse: what the image says when moused over ("title" in HTML)
 -->
 <img src="{{ .Get "src" }}" 
+		 class="{{ .Get "class" }}"
 		 width="{{ .Get "width" }}"
 		 height="{{ .Get "height" }}"
 	     {{- with .Get "mouse" }} title="{{.}}"{{ end -}}

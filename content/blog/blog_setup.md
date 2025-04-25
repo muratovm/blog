@@ -51,9 +51,10 @@ Version control is pretty important for a site like this. For one it keeps a con
 
 Because most of the files on this site are written in Markdown, they can be viewed and edited in nice rich text editors like Obsidian. The integration between Obsidian and Hugo doesn't exist directly but I've been able to port common elements such as code snippets and call outs.
 
-
-![[obsidian_editor.png]]
-
+{{< img 
+    src="../../img/image/blog_setup-obsidian_editor.png"
+    class="png"
+>}}
 
 ### AWS Integration
 
@@ -63,11 +64,11 @@ My domain name is registered on Squarespace but I don't want to use them for hos
 
 Instead I set up a Hosted Zone for my domain on Amazon's Route 53. Amazon will use its name servers to map my domain to their external IPs:
 
-![image](../../img/screenshot/blog_setup-aws_namesrvers.png)
+![AWS Name Servers](../../img/screenshot/blog_setup-aws_namesrvers.png)
 
 All I have to do is enter the name servers I was assigned to my Squarespace Domain Nameservers list.  
 
-![image](../../img/screenshot/blog_setup-squarespace.png)
+![Square Space Name Servers](../../img/screenshot/blog_setup-squarespace.png)
 
 
 This setup allows me to own my domains on Squarespace and manage them from AWS.
