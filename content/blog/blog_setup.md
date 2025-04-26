@@ -47,6 +47,7 @@ The site consists of three quality of life features that would be non negotiable
 
 Version control is pretty important for a site like this. For one it keeps a consistent backup of my files on an external server, while giving me the freedom to modify my files offline. There are other benefits that git provides as a version control system such as reliable metrics for commit times and native CI/CD functionality for building the static site. The build at commit functionality allows me to  track only Markdown file changes, which are easy to read and edit. 
 
+![image](../../img/image/blog_setup-git.png)
 ### Text Editor
 
 Because most of the files on this site are written in Markdown, they can be viewed and edited in nice rich text editors like Obsidian. The integration between Obsidian and Hugo doesn't exist directly but I've been able to port common elements such as code snippets and call outs.
@@ -55,8 +56,9 @@ Because most of the files on this site are written in Markdown, they can be view
     src="../../img/image/blog_setup-obsidian_editor.png"
     class="png"
 >}}
-
 ### AWS Integration
+
+![CI/CD](../../img/image/blog_setup-ci_cd.png)
 
 Learning a cloud platform like AWS has been on my priority list this year. In addition the existence of dedicated services like **AWS Amplity** makes it fairly cost efficient to host the website myself and monitor spending on all my cloud services through a unified interface. AWS does fall short in terms of identifying usage metrics but I've augmented the website with Google Analytics tags that fills in for that gap.
 

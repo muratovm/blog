@@ -1,3 +1,18 @@
+# Allow all major search engines
 User-agent: *
+
+# Disallow private or duplicate content
+Disallow: /admin/
+Disallow: /drafts/
+Disallow: /private/
+Disallow: /404.html
+
+# Disallow query strings used for tracking or session IDs
+Disallow: /*?*sessionid=
+Disallow: /*?*ref=
+
+# Allow everything else
 Allow: /
-Sitemap: {{ "sitemap.xml" | absURL }}
+
+# Provide sitemap location
+Sitemap: https://https://michaelmuratov.com/sitemap.xml

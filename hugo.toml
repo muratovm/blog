@@ -1,7 +1,8 @@
 baseURL = 'https://michaelmuratov.com'
 languageCode = 'en-us'
-title = 'Blog'
+title = 'Michael Muratov'
 theme='hugo-simple'
+enableRobotsTXT = true
 
 [markup]
   defaultMarkdownHandler = 'goldmark' 
@@ -39,3 +40,6 @@ theme='hugo-simple'
 # for better seo
 [minify]
   _merge = 'deep'
+
+[sitemap]
+  changeFreq = 'monthly'
