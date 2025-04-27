@@ -13,7 +13,7 @@ layout: blog-post
 toc: true
 ---
 
-## Exploring and Synthesizing Population Data
+### Exploring and Synthesizing Population Data
 
 Generally it can be very useful to accurately model a single variable of a population. 
 

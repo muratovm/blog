@@ -9,9 +9,9 @@ enableRobotsTXT = true
   _merge = 'deep'
   
   [markup.tableOfContents]
-    endLevel = 5
+    endLevel = 6
     ordered = false
-    startLevel = 2
+    startLevel = 3
 
   [markup.highlight]
       # See a complete list of available styles at https://xyproto.github.io/splash/docs/all.html

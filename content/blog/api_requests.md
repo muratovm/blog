@@ -21,21 +21,18 @@ toc: true
 > \
 > In `Python` 🐍
 
-
-### Useful Libraries
+### Resources
 
 ```python
 import requests
 import pandas as pd
 import json
 ```
+Links:\
+https://requests.readthedocs.io/en/latest/api/ \
+https://requests.readthedocs.io/en/latest/api/
 
-
-Reference: https://requests.readthedocs.io/en/latest/api/
-
-
-
-#### Jupyter Notebook
+Interactive Notebooks:\
 ../../notebooks/
 
 
@@ -53,7 +50,7 @@ I use requests.get(endpoint) to send an HTTP GET request to that URL.
 
 The server responds, and the response is stored in the response variable. Since most APIs today communicate using JSON, I make the automatic conversion of the text data into a parsable format.
 
-### API Calls with Base64 Auth
+#### Base64 Auth
 ```python
 from requests.auth import HTTPBasicAuth
 import base64
@@ -66,7 +63,7 @@ auth_string = "userid:password"
 b64Val = base64.b64encode(auth_string)
 ```
 
-### API Calls over Proxy
+#### Over Proxy
 ```python
 
 proxies = { 
@@ -77,7 +74,7 @@ proxies = {
 r = requests.get(endpoint, proxies=proxies)
 ```
 
-### API Calls with SSL Verification
+#### With SSL Verification
 ```python
 
 #no SSL verification
@@ -94,14 +91,8 @@ requests.get(endpoint, verify=True, cert="cert.pem")
 
 ![SSL Cert](../../img/screenshot/api_requests-ssl_cert.png)
 
+### API Caching
 
+#### API Data Processing
 
-
-
-
-### API Call Caching
-
-
-### API Data Processing
-
-### API Data File Write
+#### API Data File Write
