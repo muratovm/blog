@@ -1,0 +1,16 @@
+{{- $.Scratch.Set "list" slice -}}
+
+{{- /* First, loop through regular content pages (articles, posts) */ -}}
+{{- range where .Site.RegularPages "Type" "not in" (slice "page" "json") -}}
+  {{- $.Scratch.Add "list" (dict
+    "uri" .Permalink
+    "title" .Title
+    "kind" .Kind
+    "date" (.Date.Format "2006-01-02")
+    "tags" (default (slice) .Params.tags)
+    "categories" (default (slice) .Params.categories)
+  ) -}}
+{{- end -}}
+
+{{- /* Now output everything as JSON */ -}}
+{{- $.Scratch.Get "list" | jsonify (dict "indent" "    ") -}}

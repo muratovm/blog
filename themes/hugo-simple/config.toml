@@ -1,3 +1,17 @@
 [module.hugoVersion]
 extended = false
 min = "0.112.4"
+
+[outputFormats.JSON]
+  mediaType = "application/json"
+  baseName = "index"
+  isPlainText = true
+
+[outputs]
+home = ["HTML", "JSON"]
+section = ["HTML", "JSON"]
+page = ["HTML"]
+
+[taxonomies]
+  category = "categories"
+  tag = "tags"

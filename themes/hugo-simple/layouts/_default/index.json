@@ -1,0 +1,14 @@
+{{- $.Scratch.Set "list" slice -}}
+
+{{- /* Loop through section pages (like /blog/, /projects/) */ -}}
+{{- range where .Site.Pages "Kind" "section" -}}
+  {{- $.Scratch.Add "list" (dict
+    "uri" .Permalink
+    "title" .Title
+    "kind" .Kind
+    "page_count" (len .Pages)
+  ) -}}
+{{- end -}}
+
+{{- /* Now output everything as JSON */ -}}
+{{- $.Scratch.Get "list" | jsonify (dict "indent" "    ") -}}

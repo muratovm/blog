@@ -34,8 +34,8 @@
     {{ if not .Data.Singular }}
       <small>
         <div>
-          {{ range .Site.Taxonomies.tags }}
-            <a href="{{ .Page.RelPermalink }}">#{{ .Page.LinkTitle }}</a>&nbsp;&nbsp;
+          {{ range .Site.Taxonomies.categories }}
+            <a href="{{ .Page.RelPermalink }}">#{{ lower .Page.LinkTitle }}</a>&nbsp;&nbsp;
           {{ end }}
         </div>
       </small>

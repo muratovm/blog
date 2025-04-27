@@ -2,8 +2,12 @@
 title: How this Blog Works
 date: 2025-04-22
 lastmod: 2025-04-20
+categories:
+  - web
+  - cloud
 tags:
-  - Web
+  - meta
+  - hugo
 draft: false
 image: /img/banner/blog_structure.png
 layout: blog-post

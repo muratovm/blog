@@ -1,6 +1,6 @@
 ---
 title: "About Me"
-description: ""
+description: "Quick overview of skills and interests"
 layout: "about"
 ---
 
