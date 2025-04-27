@@ -2,19 +2,18 @@
 title: Curve Fitting Univariate Data
 date: 2024-11-01
 categories:
-    - statistics
     - modeling
+    - statistics
 tags:
     - distribution
     - subsets
 draft: false
 image: /img/banner/population_fitting.png
 layout: blog-post
+toc: true
 ---
 
 ## Exploring and Synthesizing Population Data
-
-![image](../../../img/banner/population_fitting.png)
 
 Generally it can be very useful to accurately model a single variable of a population. 
 

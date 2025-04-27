@@ -2,8 +2,8 @@
 title: API Request Cookbook
 date: 2025-04-25
 categories:
-  - database
   - api
+  - database
 tags:
   - python
   - requests
@@ -11,9 +11,8 @@ tags:
 draft: false
 image: /img/banner/api_requests.png
 layout: blog-post
+toc: true
 ---
-
-![image](../../../img/banner/api_requests.png)
 
 >[!Context]
 > Over the years I've had to get overly familiar with API requests, and have reimplemented the same design pattern across multiple projects involving the retrieval, processing and display of API data.

@@ -46,12 +46,23 @@
     <header>
       {{ partial "header.html" . }}
     </header>
+    
     <nav>
     {{ partial "dark_mode_toggle.html" . }}    
     </nav>
+
+    {{ if .Params.toc }}
+      <details>
+        <summary>Table of Contents</summary>
+        {{ .TableOfContents }}
+      </details>
+    {{ end }}
+    
     <main>
       {{ block "main" . }}{{ end }}
     </main>
+
+
     <footer>
       {{ partial "footer.html" . }}
     </footer>

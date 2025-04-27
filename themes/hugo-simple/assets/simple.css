@@ -28,8 +28,8 @@
   --accent-bg: #2b2b2b;
   --text: #dcdcdc;
   --text-light: #ababab;
-  --accent: #ffb300;
-  --accent-hover: #ffe099;
+  --accent: white;
+  --accent-hover: #b2d4ff;
   --accent-text: var(--bg);
   --code: #f06292;
   --preformatted: #ccc;
@@ -39,6 +39,25 @@
 .dark-mode img{
   /* Tint images slightly */
   filter: saturate(125%) brightness(80%) contrast(125%);
+}
+
+.tag a{
+  color: rgb(128, 0, 0);
+}
+
+.tag a:visited{
+  color: rgb(128, 0, 0);
+}
+
+.dark-mode .tag a{
+  color: white;
+}
+
+.tag{
+  font-size: 13px;
+  border-radius: 0.5rem; 
+  width:fit-content;
+  height: fit-content;
 }
 
 /* Reset box-sizing */
@@ -70,12 +89,27 @@ body {
   font-size: 1.15rem;
   line-height: 1.5;
   display: grid;
-  grid-template-columns: 1fr min(45rem, 90%) 1fr;
+  grid-template-columns: 1fr min(50rem, 90%) 1fr;
   margin: 0;
 }
+
 body > * {
   grid-column: 2;
 }
+
+@media (min-width: 1200px) {
+  details {
+    grid-column: 3;
+    grid-row: 3;
+    /*follow the scrolling of the page */
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    height: fit-content;
+  }
+}
+
+
 
 /* Make the header bg full width, but the content inline with body */
 body > header {
@@ -102,7 +136,7 @@ body > header p {
 
 /* Add a little padding to ensure spacing is correct between content and header > nav */
 main {
-  padding-top: 1.5rem;
+  padding-top: 0.5rem;
 }
 
 body > footer {
@@ -177,9 +211,12 @@ h3 {
 }
 
 /* Format links & buttons */
-a,
-a:visited {
-  color: var(--accent);
+h2 a{
+  color: #ffb300;
+}
+
+h2 a:visited{
+  color: #ffb300;
 }
 
 a:hover {
@@ -301,7 +338,7 @@ header > nav a[aria-current="true"] {
 }
 
 /* Consolidate box styling */
-aside, details, pre, progress {
+aside, pre, progress {
   background-color: var(--accent-bg);
   border: 1px solid var(--border);
   border-radius: var(--standard-border-radius);
@@ -372,7 +409,7 @@ details {
 summary {
   cursor: pointer;
   font-weight: bold;
-  padding: 0.7rem 1rem;
+  padding: 1.7rem 1rem 0.1rem;
   margin: -0.7rem -1rem;
   word-break: break-all;
 }

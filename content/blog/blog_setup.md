@@ -3,17 +3,16 @@ title: How this Blog Works
 date: 2025-04-22
 lastmod: 2025-04-20
 categories:
-  - web
   - cloud
+  - web
 tags:
-  - meta
   - hugo
+  - meta
 draft: false
 image: /img/banner/blog_structure.png
 layout: blog-post
+toc: true
 ---
-
-![image](../../../img/banner/blog_structure.png)
 
 The structure of this site is simple.
 ### Hugo Static Generator
