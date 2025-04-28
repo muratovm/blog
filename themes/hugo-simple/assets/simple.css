@@ -11,7 +11,7 @@
   --text: #212121;
   --text-light: #585858;
   --border: #898EA4;
-  --accent: #0d47a1;
+  --accent: #1a55af;
   --accent-hover: #1266e2;
   --accent-text: var(--bg);
   --code: #d81b60;
@@ -28,8 +28,8 @@
   --accent-bg: #2b2b2b;
   --text: #dcdcdc;
   --text-light: #ababab;
-  --accent: white;
-  --accent-hover: #b2d4ff;
+  --accent: rgb(181, 186, 255);
+  --accent-hover: rgb(219, 221, 255);
   --accent-text: var(--bg);
   --code: #f06292;
   --preformatted: #ccc;
@@ -89,7 +89,7 @@ body {
   font-size: 1.15rem;
   line-height: 1.5;
   display: grid;
-  grid-template-columns: 1fr min(50rem, 90%) 1fr;
+  grid-template-columns: 0.75fr min(50rem, 90%) 1fr;
   margin: 0;
 }
 
@@ -108,8 +108,6 @@ body > * {
     height: fit-content;
   }
 }
-
-
 
 /* Make the header bg full width, but the content inline with body */
 body > header {
@@ -146,6 +144,14 @@ body > footer {
   font-size: 0.9rem;
   text-align: center;
   border-top: 1px solid var(--border);
+}
+
+a {
+  color: var(--accent);
+}
+
+h2 a {
+  color: var(--accent);
 }
 
 /* Format headers */
@@ -208,15 +214,6 @@ h3 {
   h4 {
     font-size: 1.25rem;
   }
-}
-
-/* Format links & buttons */
-h2 a{
-  color: #ffb300;
-}
-
-h2 a:visited{
-  color: #ffb300;
 }
 
 a:hover {

@@ -2,6 +2,8 @@
 <html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en{{ end }}">
   <meta charset="UTF-8" />
   <head>
+    <script src="/js/script.js"></script>
+
     {{ partial "google-analytics.html" . }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{- partial "favicon.html" . -}}
@@ -52,7 +54,7 @@
     </nav>
 
     {{ if .Params.toc }}
-      <details>
+      <details open>
         <summary>Table of Contents</summary>
         {{ .TableOfContents }}
       </details>

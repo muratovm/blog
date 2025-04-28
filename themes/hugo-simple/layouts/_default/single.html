@@ -1,29 +1,4 @@
 {{ define "main" }}
-<script>
-  function goUpDirectory() {
-    // Remove any #hash
-    const url = window.location.href.split('#')[0];
-    const urlObj = new URL(url);
-  
-    // Clean the path
-    let path = urlObj.pathname;
-    if (path.endsWith('/')) {
-      path = path.slice(0, -1); // remove trailing slash
-    }
-  
-    // Go up one directory
-    const parentPath = path.substring(0, path.lastIndexOf('/')) || '/';
-  
-    // Rebuild the URL
-    urlObj.pathname = parentPath;
-    urlObj.hash = ''; // ensure no leftover hashes
-  
-    // Redirect
-    window.location.href = urlObj.href;
-  }
-  </script>
-
-
 <button onclick="goUpDirectory()" style="position: absolute; top: 1rem; left: 1rem; z-index: 1000;">
   ⬅ Back
 </button>

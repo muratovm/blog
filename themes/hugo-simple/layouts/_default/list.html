@@ -1,4 +1,8 @@
 {{ define "main" }}
+<button onclick="goUpDirectory()" style="position: absolute; top: 1rem; left: 1rem; z-index: 1000;">
+  ⬅ Back
+</button>
+
   <content>
     {{ if .Data.Singular }}
       <h3>Filtering for "{{ .Title }}"</h3>
@@ -25,13 +29,16 @@
           {{ else }}
             <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             <!--align text right to left-->
+
+            <!--
             <div style="margin-left: auto; margin-right: 0;">
-            {{ range .GetTerms "categories" }}
-              <code class="tag">
-                <a href="{{.RelPermalink }}">#{{ lower .LinkTitle}}</a>
-              </code>
-            {{ end }}
+              {{ range .GetTerms "categories" }}
+                <code class="tag">
+                  <a href="{{.RelPermalink }}">#{{ lower .LinkTitle}}</a>
+                </code>
+              {{ end }}
             </div>
+            -->
 
           {{ end }}
         </li>
@@ -50,7 +57,4 @@
       </small>
     {{ end }}
   </content>
-  <button onclick="history.back()" style="position: fixed; top: 1rem; left: 1rem; z-index: 1000;">
-    ⬅ Back
-  </button>
 {{ end }}
