@@ -41,23 +41,24 @@ The success of the project hinges on the completion of the following objectives:
 ### Resources
 
 - AWS Cloud Resources:
-  - IaC: Cloud Formation
-  - AI Model: Amazon Bedrock
-  - Authentication: AWS Cognito
-  - Storage: S3 and Amazon RDS
-  - Backend: Fast API
-  - Frontend: HTML/JS
+  - `[Front-end]` HTML / JS 
+  - `[Back-end]` Fast API 
+  - `[Authentication]` AWS Cognito 
+  - `[AI Framework]` Amazon Bedrock 
+  - `[Conversations]` Amazon RDS 
+  - `[Files]` Amazon S3
+  - `[Deployment]` AWS Cloud Formation 
 - AI Model:
-  - Llama v3
+  - `[Open Source Model]` Llama v3 
 - Testing Toolkit:
-  - Nmap
-  - SQLmap
-  - BurpSuite
-  - ZAP
+  - `[SQL]` SQLmap
+  - `[Endpoints]` Nikto
+  - `[Web Interface]` BurpSuite
+  - `[Web Interface]` ZAP
 
 ### Web
 
-The front end and back end of the application will feature basic components such as authentication, input fields, and file submission. The point of the exercise is not to stress test new and complex web features, but rather to expose basic and common features that are frequently exploited by attackers. 
+The front-end, and back-end of the application will feature basic components such as authentication, input fields, and file submission. The point of the exercise is not to stress test new and complex web features, but rather to expose basic and common features that are frequently exploited by attackers. 
 
 ### Cloud
 

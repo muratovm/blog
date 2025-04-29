@@ -1,9 +1,11 @@
 ---
-title: Exploiting SMTP
+title: TryHackMe - SMTP
+description: Network Services 2 Room
 date: 2024-10-17
 categories:
   - ctf
 tags:
+  - tryhackme
   - brute force
   - mail
   - smtp
@@ -13,8 +15,10 @@ layout: blog-post
 toc: true
 ---
 
+This is a `TryHackMe Room Writeup`
+
 > [!Reference]
-> [💻 TryHackMe CTF Room](https://tryhackme.com/r/room/networkservices2)
+> [💻 TryHackMe Network Services Room](https://tryhackme.com/r/room/networkservices2)
 ### SMTP Intrusion
 
 Simple Mail Transfer Protocol aka **SMTP** allows for the process by which mail clients send mail to each other. If we were to compare the email service to the postal delivery service, SMTP would be the courier, delivering mail from the post office to the recipient's address, except in this case every address is also its own post office. The courier tends to know important information about its sender so we'll be trying to get as much information out of it as we can. Thankfully the SMTP service is very receptive to questions so we will be able to **pry valuable insights from it** in order to compromise its server.
@@ -116,7 +120,3 @@ Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-111-generic x86_64)
 
 administrator@polosmtp:~$
 ```
-
-### Connect with Me
-If you found this write-up helpful, follow me on Twitter for more content like this. 
-Happy hacking! 👾

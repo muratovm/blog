@@ -1,7 +1,7 @@
 ---
 title: "Portfolio"
 description: "Personal log for writing and development"
-layout: "landing-page"
+layout: "single"
 ---
 
 ## Learn More [About]({{< ref "about/_index.md" >}}) Me

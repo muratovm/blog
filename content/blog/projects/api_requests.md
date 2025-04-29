@@ -2,7 +2,7 @@
 title: API Request Cookbook
 date: 2025-04-25
 categories:
-  - api
+  - web
   - database
 tags:
   - python

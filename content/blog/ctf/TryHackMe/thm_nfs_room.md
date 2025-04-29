@@ -1,10 +1,11 @@
 ---
-title: Exploiting NFS and Privilege Escalation
-description: 
+title: TryHackMe - NFS
+description: Network Services 2 Room
 date: 2024-10-12
 categories:
   - ctf
 tags:
+  - tryhackme
   - file server
   - nmap
   - privilege escalation
@@ -15,10 +16,10 @@ layout: blog-post
 toc: true
 ---
 
-> [!Reference]
-> [💻 THM CTF Room](https://tryhackme.com/r/room/networkservices2)
+This is a `TryHackMe Room Writeup`
 
-Audio recording: {{< audio "noise.mp3" >}}
+> [!Reference]
+> [💻 THM Network Services Room](https://tryhackme.com/r/room/networkservices2)
 ### Gaining Access Through NFS
 
 #### Initial Reconnaissance

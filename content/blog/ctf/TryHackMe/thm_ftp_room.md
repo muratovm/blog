@@ -1,10 +1,11 @@
 ---
-title: Exploiting FTP
+title: TryHackMe - FTP
+description: Network Services Room
 date: 2024-10-05
 categories:
   - ctf
-  - database
 tags:
+  - tryhackme
   - ftp
 draft: true
 image: /img/banner/mysql_exploitation.png
@@ -13,5 +14,7 @@ toc: true
 ---
 ## How to Enumerate and Exploit an Exposed FTP (File) Server
 
+This is a `TryHackMe Room Writeup`
+
 >[!Reference]
-[💻 TryHackMe CTF Room](https://tryhackme.com/r/room/networkservices)
+[💻 TryHackMe Network Services Room](https://tryhackme.com/r/room/networkservices)

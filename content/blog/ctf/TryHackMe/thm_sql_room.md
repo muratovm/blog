@@ -1,10 +1,11 @@
 ---
-title: Enum and Exploit of MySQL
+title: TryHackMe - SQL
+description: Network Services 2 Room
 date: 2024-10-20
 categories:
   - ctf
-  - database
 tags:
+  - tryhackme
   - enumeration
   - hash cracking
   - mysql
@@ -14,8 +15,10 @@ layout: blog-post
 toc: true
 ---
 
+This is a `TryHackMe Room Writeup`
+
 >[!Reference]
-[💻 TryHackMe CTF Room](https://tryhackme.com/r/room/networkservices2)
+[💻 TryHackMe Network Services Room](https://tryhackme.com/r/room/networkservices2)
 
 
 ### Initial Reconnaissance

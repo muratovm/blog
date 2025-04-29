@@ -13,6 +13,16 @@
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
       {{- partial "pagination.html" . -}}
     {{ end }}
+
+    <!--If another list page is in here -->
+    {{ range .Pages }}
+      {{ if .IsSection }}
+        <button class="btn_inner_list" onclick="window.location.href={{ .RelPermalink }}">
+          {{ .Title }}: <div style="display:inline;">{{ len .RegularPagesRecursive }}</div>
+        </button>
+      {{ end }}
+    {{ end }}
+
     <ul class="blog-posts">
       {{ range .Paginator.Pages }}
         {{ if not .Draft }}
