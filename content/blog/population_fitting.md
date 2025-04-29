@@ -2,11 +2,8 @@
 title: Curve Fitting Univariate Data
 date: 2024-11-01
 categories:
-    - modeling
     - statistics
 tags:
-    - distribution
-    - subsets
 draft: false
 image: /img/banner/population_fitting.png
 layout: blog-post

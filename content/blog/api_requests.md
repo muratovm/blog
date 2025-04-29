@@ -87,9 +87,9 @@ requests.get(endpoint, verify=True)
 requests.get(endpoint, verify=True, cert="cert.pem")
 ```
 
-![Cert Dropdown](../../img/screenshot/api_requests-cert_dropdown.png)
+{{< img src="/img/screenshot/api_requests-cert_dropdown.png" >}}
 
-![SSL Cert](../../img/screenshot/api_requests-ssl_cert.png)
+{{< img src="/img/screenshot/api_requests-ssl_cert.png" >}}
 
 ### API Caching
 

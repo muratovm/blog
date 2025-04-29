@@ -7,7 +7,6 @@ categories:
   - web
 tags:
   - hugo
-  - meta
 draft: false
 image: /img/banner/blog_structure.png
 layout: blog-post
