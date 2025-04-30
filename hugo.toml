@@ -49,3 +49,13 @@ enableRobotsTXT = true
 
 [sitemap]
   changeFreq = 'monthly'
+
+
+[related]
+  includeNewer = true
+  threshold = 20
+  toLower = false
+  [[related.indices]]
+    applyFilter = true
+    name = 'tags'
+    weight = 80

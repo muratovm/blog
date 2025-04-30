@@ -1,0 +1,19 @@
+<div class="page-card" style="border: 1px solid #ccc; border-radius: 8px; overflow: hidden; max-width: 300px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+  {{ with .Params.image }}
+  <a href="{{ $.RelPermalink }}">
+    <img src="{{ . | relURL }}" alt="{{ $.Title }}">
+  </a>
+  {{ end }}
+
+  <div style="padding-left: 0.5rem;">
+    <h3>
+      <a href="{{ .RelPermalink }}" style="text-decoration: none; color: inherit;">
+        {{ .Title }}
+      </a>
+    </h3>
+
+    {{ with .Params.description }}
+      <p style="margin-bottom: 0; color: #555;">{{ . }}</p>
+    {{ end }}
+  </div>
+</div>

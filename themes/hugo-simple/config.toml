@@ -1,6 +1,6 @@
 [module.hugoVersion]
-extended = false
-min = "0.112.4"
+  extended = false
+  min = "0.112.4"
 
 [outputFormats.JSON]
   mediaType = "application/json"
@@ -8,10 +8,17 @@ min = "0.112.4"
   isPlainText = true
 
 [outputs]
-home = ["HTML", "JSON"]
-section = ["HTML", "JSON"]
-page = ["HTML"]
+  home = ["HTML", "JSON"]
+  section = ["HTML", "JSON"]
+  page = ["HTML"]
 
 [taxonomies]
   category = "categories"
   tag = "tags"
+
+[params]
+  favicon = "/favicon.ico"
+  dateFormat = "01-02-2006"
+
+[params.meta]
+  favicon=true

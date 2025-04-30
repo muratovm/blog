@@ -58,7 +58,7 @@ Remotely mounting the server's NFS share from our attacker machine gains us acce
 root@ip-10-10-71-105:~# sudo mount -t nfs $IP:home /tmp/mount/ -nolock
 ```
 
-![image] (../../../img/diagrams/nfs_exploitation-mounting_nfs.png)
+![image](/img/diagrams/nfs_exploitation-mounting_nfs.png)
 
 
 #### SSH Key Extraction
@@ -73,7 +73,7 @@ root@ip-10-10-71-105:~# chmod 600 id_rsa
 root@ip-10-10-71-105:~# cp id_rsa /$local_folder
 ```
 
-![image](../../../img/diagrams/nfs_exploitation-privatekey_transfer.png)
+![image](/img/diagrams/nfs_exploitation-privatekey_transfer.png)
 
 #### SSH Login with Stolen Key
 
@@ -106,7 +106,7 @@ root@ip-10-10-71-105:/tmp/mount/cappucino# ls -la bash
 ```
 
 
-![image](../../../img/diagrams/nfs_exploitation-bash_transfer.png)
+![image](/img/diagrams/nfs_exploitation-bash_transfer.png)
 
 #### Escalating to Superuser Privileges
 

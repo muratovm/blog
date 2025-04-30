@@ -15,7 +15,7 @@ My passion lies in protecting critical assets and extracting actionable insights
 \
 > Beyond threat intelligence, I’m also passionate about data visualization and AI. My recent projects have involved creating intuitive dashboards and engaging, visually compelling proof-of-concept work for stakeholders, including deep dive presentations on AI technologies like deep fakes. I take pride in my ability to quickly learn new tools and deliver insights that are as informative as they are visually impactful.
 
-> [!Info] 
+> [!Info]Unrelated
 > When I’m not working, I enjoy experimenting in my home lab, staying current with the latest cybersecurity trends, and exploring new ways to use technology to solve emerging security challenges.
 
 Thank you for visiting my page—feel free to reach out if you’d like to connect!

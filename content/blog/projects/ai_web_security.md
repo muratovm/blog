@@ -16,15 +16,16 @@ toc: true
 ---
 
 
->[!Important]
+>[!Important]Disclaimer
 > Securing an AI Wrapper requires a multifaceted and hybrid approach — that can be implemented in many different ways.\
 \
 This article will not be a comprehensive guide to securing your AI wrapper but rather an overview of general principles.
 
-### Goals
+### Objective
 
-1. Create a secure web wrapper for an LLM model, adhering to modern security principles.
-2. Open source a security checklist used to stress test this implementation.
+>[!Goal]Goals
+> 1. Create a secure web wrapper for an LLM model, adhering to modern security principles.
+> 2. Open source a security checklist used to stress test this implementation.
 
 This project serves as the intersection between `3` areas of interest for me — scalable cloud computing, cyber security, and artificial intelligence. The goal is to implement the `product` and the `testing` methodology required to secure it.
 
