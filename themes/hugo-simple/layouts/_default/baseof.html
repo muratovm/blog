@@ -6,10 +6,10 @@
     <script>
       (function () {
         try {
-          const isDark = localStorage.getItem('theme') === 'dark' ||
+          const isDark = localStorage.getItem('theme') === 'dark-mode' ||
             (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
           if (isDark) {
-            document.documentElement.classList.add('dark');
+            document.documentElement.classList.add('dark-mode');
             document.body.style.backgroundColor = '#0f172a'; // match your dark background color
           }
         } catch (e) {}
