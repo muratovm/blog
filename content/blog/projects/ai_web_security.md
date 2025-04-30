@@ -40,6 +40,10 @@ The success of the project hinges on the completion of the following objectives:
 
 ### Resources
 
+{{< aside >}}
+Will add links to these `later`
+{{</ aside >}}
+
 - AWS Cloud Resources:
   - `[Front-end]` HTML / JS 
   - `[Back-end]` Fast API 

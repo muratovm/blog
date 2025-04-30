@@ -1,0 +1,8 @@
+<aside>
+    {{ .Inner | markdownify }}
+      <div class="gallery">
+      {{ if .Get "img" }}
+        <img style="height: 100%;" src="{{ .Get "img" }}" alt="image">
+      {{ end }}
+      </div>
+  </aside>

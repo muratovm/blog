@@ -130,7 +130,7 @@ body > header {
   margin: 0;
   text-align: center;
   padding: 0 0.5rem 2rem 0.5rem;
-  border-bottom: 4px dashed var(--border);
+  border-bottom: 5px dashed var(--border);
   grid-column: 1 / -1;
 }
 
@@ -146,11 +146,6 @@ body > header h1 {
 body > header p {
   max-width: 40rem;
   margin: 1rem auto;
-}
-
-/* Add a little padding to ensure spacing is correct between content and header > nav */
-main {
-  padding-top: 0.5rem;
 }
 
 body > footer {
@@ -353,7 +348,7 @@ header > nav a[aria-current="true"] {
 }
 
 /* Consolidate box styling */
-aside, pre, progress {
+pre, progress {
   background-color: var(--accent-bg);
   border: 1px solid var(--border);
   border-radius: var(--standard-border-radius);
@@ -362,20 +357,30 @@ aside, pre, progress {
 
 aside {
   font-size: 1rem;
-  width: 30%;
-  padding: 0 15px;
   margin-inline-start: 15px;
   float: right;
+  grid-column: 1;
+  margin: 0 0 0 auto;
+  width: 90%;
+  max-width: 300px;
+  padding: 1.5rem;
+  height: 90%;
+  /* 
+  background-color: var(--accent-bg);
+  border-radius: var(--standard-border-radius);
+  */
 }
+
 *[dir="rtl"] aside {
   float: left;
 }
 
 /* Make aside full-width on mobile */
-@media only screen and (max-width: 720px) {
+@media only screen and (max-width: 920px) {
   aside {
     width: 100%;
     float: none;
+    grid-column: 2;
     margin-inline-start: 0;
   }
 }
