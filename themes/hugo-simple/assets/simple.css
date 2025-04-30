@@ -6,9 +6,9 @@
     "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --standard-border-radius: 5px;
-  --bg: #fff;
+  --bg: #f5f7ff;
   --opposite: #000;
-  --accent-bg: #f5f7ff;
+  --accent-bg: #fff;
   --text: #212121;
   --text-light: #585858;
   --border: #898EA4;
@@ -130,6 +130,7 @@ body > header {
   margin: 0;
   text-align: center;
   padding: 0 0.5rem 2rem 0.5rem;
+  border-bottom: 4px dashed var(--border);
   grid-column: 1 / -1;
 }
 

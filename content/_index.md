@@ -4,6 +4,8 @@ description: "Personal log for writing and development"
 layout: "single"
 ---
 
+&nbsp;
+
 ## Learn More [About]({{< ref "about/_index.md" >}}) Me
 
 I’m thrilled to have you here. 
