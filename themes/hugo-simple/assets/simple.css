@@ -364,11 +364,9 @@ aside {
   width: 90%;
   max-width: 300px;
   padding: 1.5rem;
-  height: 90%;
-  /* 
+  height: fit-content;
   background-color: var(--accent-bg);
   border-radius: var(--standard-border-radius);
-  */
 }
 
 *[dir="rtl"] aside {
@@ -382,6 +380,7 @@ aside {
     float: none;
     grid-column: 2;
     margin-inline-start: 0;
+    max-width: none;
   }
 }
 
@@ -823,4 +822,33 @@ sub {
   color: var(--bg);
   border-color: var(--bg);
   border-width: 1px;
+}
+
+.blog-separator {
+  width: 2px;
+  margin-right: 20px;
+  height: 1fr;
+  background-color: var(--accent);
+  flex-shrink: 0;
+}
+
+a.dot::before{
+  content: "";
+  display: inline-block;
+  position: relative;
+  width: 12px;
+  height: 12px;
+  left: 0.38em;
+  top: 0px;
+  border: 6px solid;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 2px 0 #c2c6cc;
+  z-index: 1;
+}
+
+@media (max-width: 720px) {
+  .list_page_tags{
+    visibility: hidden;
+  }
 }

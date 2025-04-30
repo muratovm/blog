@@ -31,25 +31,31 @@
           <span>
             <i>
               <time datetime="{{ .Date.Format "01-02-2006" }}" pubdate>
-                {{ .Date.Format (default "01-02-2006" .Site.Params.dateFormat) }}
+                {{ .Date.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
               </time>
             </i>
           </span>
+
+          <!--
+          <a class="dot" href="{{ .RelPermalink }}"></a>
+          -->
+          <div class="blog-separator">
+          
+
+          </div>
           {{ if .Params.link }}
             <a href="{{ .Params.link }}" target="_blank">{{ .Title }} ↪</a>
           {{ else }}
             <a href="{{ .RelPermalink }}">{{ .Title }}</a>
             <!--align text right to left-->
 
-            <!--
-            <div style="margin-left: auto; margin-right: 0;">
+            <div class="list_page_tags" style="margin-left: auto; margin-right: 0;">
               {{ range .GetTerms "categories" }}
                 <code class="tag">
                   <a href="{{.RelPermalink }}">#{{ lower .LinkTitle}}</a>
                 </code>
               {{ end }}
             </div>
-            -->
 
           {{ end }}
         </li>

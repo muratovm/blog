@@ -1,6 +1,6 @@
 ---
 title: AI Web Security Lab
-description: Launching my AI Web App Security Lab — Here’s Why and What I’m Building
+description: Launching my AI Web Security Lab — Here’s Why I’m Building It
 date: 2025-04-29
 categories:
   - ai

@@ -1,18 +1,17 @@
 ---
-title: "Portfolio"
+title: "Building in Public"
 description: "Personal log for writing and development"
 layout: "single"
 ---
 
 &nbsp;
 
-## Learn More [About]({{< ref "about/_index.md" >}}) Me
+## About: [Michael Muratov]({{< ref "about.md" >}}) 
 
-I’m thrilled to have you here. 
-
-This is the place where I share my journey, expertise, and insights on various topics. Whether you’re interested in learning more about me or diving into some in-depth articles, you'll find it all here. 
-
-If you’d like to know more about my background, experiences, and interests, head over to the link `above` for a deeper dive.
+> [!Summary]
+> I'm Michael, a cybersecurity professional with over 5 years of experience in threat intelligence, incident response, and vulnerability management, mainly in the financial industry. I focus on solving problems with both technical skills and creative thinking — building tools that save time or turn data into clear, useful dashboards.\
+\
+> I’m also interested in AI and data visualization, and I’ve worked on projects that explain complex topics like deep fakes in simple, visual ways. In my free time, I learn new tools in my home lab and keep up with the latest security trends.
 
 ## Check out my [Blog]({{< ref "blog/_index.md" >}})
 Explore the latest articles, guides, and insights on topics that I myself was interested to learn about. 
