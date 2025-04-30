@@ -9,15 +9,12 @@
           const isDark = localStorage.getItem('theme') === 'dark-mode' ||
             (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
           if (isDark) {
-            document.documentElement.classList.add('dark-mode');
-            document.body.style.backgroundColor = '#0f172a'; // match your dark background color
+            const body = document.body;
+            body.classList.toggle('dark-mode');
           }
         } catch (e) {}
       })();
     </script>
-    {{ partial "dark_mode_toggle.html" . }}  
-      
-
     {{ partial "google-analytics.html" . }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {{- partial "favicon.html" . -}}
@@ -64,6 +61,7 @@
     </header>
     
     <nav>
+    {{ partial "dark_mode_toggle.html" . }}    
     </nav>
 
     {{ if .Params.toc }}
