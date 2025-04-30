@@ -792,14 +792,30 @@ sub {
   margin: 2rem 0;
 }
 
-.btn_inner_list{
+#theme-toggle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  cursor: pointer;
+  border-radius: 25px;
+  border-width: 2px;
+  border-color: #333;
+  border-style: dashed;
+}
+
+.link_button{
   margin-top: 1.5rem;
   display: inline-block;
+  text-decoration: none;
   background-color: var(--accent);
+  border-radius: var(--standard-border-radius);
+  padding: 0.3rem 0.5rem;
   border-width: 2px;
-  box-shadow: 0 5px 15px var(--accent);
   color: var(--bg);
   border-color: var(--bg);
   border-width: 1px;
-  border-style: dashed;
 }

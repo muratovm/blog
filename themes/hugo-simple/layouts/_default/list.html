@@ -17,11 +17,12 @@
     <!--If another list page is in here -->
     {{ range .Pages }}
       {{ if .IsSection }}
-        <button class="btn_inner_list" onclick="window.location.href={{ .RelPermalink }}">
-          {{ .Title }}: <div style="display:inline;">{{ len .RegularPagesRecursive }}</div>
-        </button>
+        <a class="link_button" href={{ .RelPermalink }}>
+          ➥ {{ .Title }}: <div style="display:inline;">{{ len .RegularPagesRecursive }}</div>
+        </a>
       {{ end }}
     {{ end }}
+    <br>
 
     <ul class="blog-posts">
       {{ range .Paginator.Pages }}

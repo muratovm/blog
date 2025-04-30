@@ -3,6 +3,7 @@
   <meta charset="UTF-8" />
   <head>
     <script src="/js/script.js"></script>
+    {{ partial "dark_mode_toggle.html" . }}    
 
     {{ partial "google-analytics.html" . }}
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,7 +51,6 @@
     </header>
     
     <nav>
-    {{ partial "dark_mode_toggle.html" . }}    
     </nav>
 
     {{ if .Params.toc }}
