@@ -5,7 +5,7 @@ categories:
     - ai
 tags:
 draft: false
-image: /img/banner/population_fitting.png
+image: /img/banner/tensorflow.png
 layout: blog-post
 toc: true
 ---
