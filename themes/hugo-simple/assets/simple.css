@@ -41,7 +41,7 @@
 
 .dark-mode img{
   /* Tint images slightly */
-  filter: saturate(125%) brightness(70%) contrast(150%);
+  filter: saturate(125%) brightness(70%) contrast(125%);
 }
 
 .tag a{
@@ -903,4 +903,11 @@ a.dot::before{
   margin: 0;
   color: #555;
   font-size: 0.75rem;
+}
+
+.list_page_tags{
+  margin-left: auto; 
+  margin-right: 0; 
+  padding-right:25px;
+  padding-bottom: 20px;
 }

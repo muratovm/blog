@@ -73,7 +73,7 @@
             -->
           </div>
 
-            <div class="list_page_tags" style="margin-left: auto; margin-right: 0; padding-right:25px;">
+            <div class="list_page_tags">
               {{ range .GetTerms "categories" }}
                 <code class="tag">
                   <a href="{{.RelPermalink }}">#{{ lower .LinkTitle}}</a>
@@ -81,11 +81,11 @@
               {{ end }}
             </div>
 
-            <!-- Mini Image -->
+            <!-- Mini Image 
             {{ if .Params.image }}
             <img style="border-radius: 10px; opacity: 1; filter: grayscale(50%); box-shadow:none; margin-left: 15px; width:60px; height:40px; object-fit: cover; align-items: left;margin:0px 10px 10px 10px;" src="{{ .Params.image }}" alt="{{ .Title }}" />
             {{ end }}
-
+            -->
           {{ end }}
         </li>
         {{ end }}

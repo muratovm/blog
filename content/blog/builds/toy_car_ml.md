@@ -1,5 +1,5 @@
 ---
-title: Toy Reinforcement Learning
+title: Toy Car Reinforcement Learning
 description: Undergraduate introduction to machine learning on human generated data
 date: 2019-08-11
 categories:
