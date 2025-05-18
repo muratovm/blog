@@ -9,6 +9,14 @@
 		 class="{{ .Get "class" }}"
 		 width="{{ .Get "width" }}"
 		 height="{{ .Get "height" }}"
+		 title="{{ .Get "description" }}"
 	     {{- with .Get "mouse" }} title="{{.}}"{{ end -}}
 	     {{- with .Get "alt" }} alt="{{.}}"{{ end -}}
 	>
+
+<!--Description-->
+{{- with .Get "caption" }}
+	<figcaption style="margin:0px;" class="figure-caption">
+		{{ . }}
+	</figcaption>
+{{ end -}}
