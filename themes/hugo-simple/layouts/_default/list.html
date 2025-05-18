@@ -15,10 +15,13 @@
     {{ end }}
 
     <!--If another list page is in here -->
-    {{ range .Pages }}
+    {{- $pages := union .Pages (where .Pages "Section" "blog") -}}
+    {{ $sortedPages := sort $pages "Params.order" "asc"}}
+
+    {{ range $sortedPages }}
       {{ if .IsSection }}
         <a class="link_button" href={{ .RelPermalink }}>
-          ➥ {{ .Title }}: <div style="display:inline;">{{ len .RegularPagesRecursive }}</div>
+          ➥ {{ .Title }} <div style="display:inline;"><h6 style="margin:0px; text-align: end;">{{ len .RegularPagesRecursive }}</h6></div>
         </a>
       {{ end }}
     {{ end }}

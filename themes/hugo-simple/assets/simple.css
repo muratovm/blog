@@ -818,13 +818,14 @@ sub {
   margin-top: 1.5rem;
   display: inline-block;
   text-decoration: none;
-  background-color: var(--accent);
   border-radius: var(--standard-border-radius);
   padding: 0.3rem 0.5rem;
   border-width: 2px;
-  color: var(--bg);
-  border-color: var(--bg);
+  color: var(--accent);
+  border-color: var(--accent);
+  border-style: dashed;
   border-width: 1px;
+  min-width: 150px;
 }
 
 .blog-separator {
