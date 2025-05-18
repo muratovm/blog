@@ -12,7 +12,7 @@ tags:
   - python
   - node
 draft: false
-image: /img/banner/tools.png
+image: /img/banner/reverse_shells.png
 layout: blog-post
 toc: true
 ---

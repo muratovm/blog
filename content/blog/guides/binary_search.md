@@ -9,7 +9,7 @@ tags:
   - trees
   - recursion
 draft: false
-image: /img/banner/binary_search-fruits.webp
+image: /img/banner/binary_search.webp
 layout: blog-post
 toc: true
 ---
