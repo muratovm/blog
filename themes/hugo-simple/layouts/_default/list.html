@@ -59,18 +59,32 @@
 
           </div>
           {{ if .Params.link }}
-            <a href="{{ .Params.link }}" target="_blank">{{ .Title }} ↪</a>
+            <a style="height: 100%;" href="{{ .Params.link }}" target="_blank">{{ .Title }} ↪</a>
           {{ else }}
-            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-            <!--align text right to left-->
+            <div>
+            <a style="height: 100%;" href="{{ .RelPermalink }}">{{ .Title }}</a>
 
-            <div class="list_page_tags" style="margin-left: auto; margin-right: 0;">
+            <!--Description
+            <p class="description" style="margin:0px;">
+              {{ if .Description }}
+                {{ .Description | safeHTML }}
+              {{ end }}
+            </p>
+            -->
+          </div>
+
+            <div class="list_page_tags" style="margin-left: auto; margin-right: 0; padding-right:25px;">
               {{ range .GetTerms "categories" }}
                 <code class="tag">
                   <a href="{{.RelPermalink }}">#{{ lower .LinkTitle}}</a>
                 </code>
               {{ end }}
             </div>
+
+            <!-- Mini Image -->
+            {{ if .Params.image }}
+            <img style="border-radius: 10px; opacity: 1; filter: grayscale(50%); box-shadow:none; margin-left: 15px; width:60px; height:40px; object-fit: cover; align-items: left;margin:0px 10px 10px 10px;" src="{{ .Params.image }}" alt="{{ .Title }}" />
+            {{ end }}
 
           {{ end }}
         </li>
