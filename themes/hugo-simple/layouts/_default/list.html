@@ -27,6 +27,18 @@
     {{ end }}
     <br>
 
+
+    <!-- Total pages count-->
+    {{ $total := len .RegularPagesRecursive }}
+    {{ if eq $total 0 }}
+    {{ else }}
+      <p style="text-align: start;">Total Posts: {{ $total }}</p>
+    {{ end }}
+
+    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
+
     <ul class="blog-posts">
       {{ range .Paginator.Pages }}
         {{ if not .Draft }}

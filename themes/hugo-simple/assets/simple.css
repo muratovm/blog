@@ -23,15 +23,15 @@
 }
 
 .dark-mode {
-  color: #f0f0f0;
+  color: #dcdcdc;
   color-scheme: dark;
-  --bg: #333;
+  --bg: #061321;
   --opposite: #fff;
-  --accent-bg: #212121;
+  --accent-bg: rgb(24, 38, 58);
   --text: #dcdcdc;
   --text-light: #ababab;
-  --accent: rgb(181, 186, 255);
-  --accent-hover: rgb(219, 221, 255);
+  --accent: #dadada;
+  --accent-hover: rgb(255, 245, 219);
   --accent-text: var(--bg);
   --code: #f06292;
   --preformatted: #ccc;
@@ -41,7 +41,7 @@
 
 .dark-mode img{
   /* Tint images slightly */
-  filter: saturate(125%) brightness(80%) contrast(125%);
+  filter: saturate(125%) brightness(70%) contrast(150%);
 }
 
 .tag a{
@@ -174,14 +174,10 @@ h1 {
 
 h2 {
   font-size: 2.6rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
 }
 
 h3 {
   font-size: 2rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
 }
 
 h4 {
@@ -203,6 +199,8 @@ p {
 /* Prevent long strings from overflowing container */
 p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 /* Fix line height when title wraps */
@@ -824,7 +822,7 @@ sub {
   color: var(--accent);
   border-color: var(--accent);
   border-style: dashed;
-  border-width: 1px;
+  border-width: 0.5px;
   min-width: 150px;
 }
 
