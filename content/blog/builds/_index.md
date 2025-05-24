@@ -1,6 +1,6 @@
 ---
 title: "Builds"
-description: "All the Projects I've completed and Currently Work On"
+description: "Completed and in-progress Projects"
 sitemap:
   changeFreq: daily
 order: 1

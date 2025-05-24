@@ -1,6 +1,6 @@
 ---
 title: "Security"
-description: "Collection of Completed CTF Challenges"
+description: "Collection of Security Themed Writeups"
 sitemap:
   changeFreq: weekly
 order: 6

@@ -1,6 +1,6 @@
 ---
 title: "Blog"
-description: "Latest articles and thoughts"
+description: "All articles and thoughts"
 sitemap:
   changeFreq: daily
 ---
