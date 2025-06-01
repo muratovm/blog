@@ -1,0 +1,16 @@
+{{ $cols := .Get "cols" | default "3" }}
+{{ $gap := .Get "gap" | default "1rem" }}
+{{ $minWidth := .Get "minWidth" | default "200px" }}
+
+{{/* Get raw .Inner (not pre-markdownified), then split on <item> */}}
+{{ $raw := .Inner | safeHTML }}
+{{ $items := split $raw "<item>" }}
+
+<div style="
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax({{ $minWidth }}, 1fr));
+  gap: {{ $gap }};
+  align-items: start;
+">
+ {{ .Inner }}
+</div>

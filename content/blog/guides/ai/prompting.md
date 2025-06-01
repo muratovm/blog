@@ -13,7 +13,7 @@ layout: blog-post
 toc: true
 ---
 
-> [!NOTE]
+> [!Note]
 > This is a guide to writing effective prompts for text based models based on my experience. It is a work in progress and will be updated as I learn and improve.
 
 ### Prompting Basics
@@ -141,6 +141,8 @@ Prompting is an iterative process. You may not get the desired response on the f
 > Iteration is key to effective prompting. Don't be afraid to experiment with different prompts and refine them based on the model's responses.
 
 ### Full Prompt
+After understanding the key principles of effective prompting, it's important to put them all together into a cohesive prompt. A well-structured prompt should include the role assignment, context, direct instructions, thought process, output format, and examples.
+
 Here's a full example of a prompt that incorporates all the principles we've discussed:
 
 >[!Task] Prompt
@@ -174,6 +176,56 @@ Here's a full example of a prompt that incorporates all the principles we've dis
 
 This prompt sets the role, provides context, gives clear instructions, asks the model to think step by step, specifies the output format, and includes an example. By following these principles, you can create effective prompts that lead to better responses from language models.
 
+>[!Abstract]ChatGPT 4o Response
+> ```python
+>import logging
+>
+>#Configure logging
+>logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+>
+>def factorial(n: int) -> int:
+>    """
+>    Calculate the factorial of a non-negative integer using an iterative approach.
+>
+>    Parameters:
+>    n (int): A non-negative integer whose factorial is to be computed.
+>
+>    Returns:
+>    int: The factorial of the input integer.
+>
+>    Raises:
+>    ValueError: If the input is a negative integer.
+>
+>    Examples:
+>    >>> factorial(5)
+>    120
+>    >>> factorial(0)
+>    1
+>    >>> factorial(-3)
+>    ValueError: Negative numbers do not have a factorial.
+>    """
+>    if n < 0:
+>        logging.error("Invalid input: Factorial is not defined for negative numbers.")
+>        raise ValueError("Error: Negative numbers do not have a factorial.")
+>
+>    result = 1
+>    for i in range(2, n + 1):
+>        result *= i
+>
+>    return result
+> 
+> #Example test cases
+> if __name__ == "__main__":
+>    try:
+>        print("factorial(5) =", factorial(5))  # Expected: 120
+>        print("factorial(0) =", factorial(0))  # Expected: 1
+>        print("factorial(-3) =", factorial(-3))  # Should raise ValueError
+>    except ValueError as e:
+>        print(e)
+
+
+In the response, the model has provided a Python function that calculates the factorial of a number, including error handling for negative inputs. The function is well-documented with a docstring, and it uses the logging module to log errors. The examples provided in the prompt are also reflected in the code comments and test cases. Overall a successful response that includes everything we asked for and is verifyably correct.
+
 ### Conclusion
 Prompting is a skill that takes time and practice to master. By following the principles outlined in this guide, you can improve your prompting skills and get better results from language models. 
 
@@ -198,3 +250,11 @@ Happy prompting!
 - [OpenAI Examples](https://help.openai.com/en/articles/6654000-best-practices-for-prompt-engineering-with-the-openai-api)
 - [Anthropic Prompting Guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
 - [Prompting Guide](https://www.promptingguide.ai/)
+
+{{< columns cols="2" minWidth="180px" gap="1.5rem" >}}
+
+{{< img src="/img/diagrams/prompting_[prompting_flow].png" alt="Prompting Flow" class="img-fluid" >}}
+
+{{< img src="/img/diagrams/prompting_[prompting_text].png" alt="Prompting Flow" class="img-fluid" >}}
+
+{{< /columns >}}
