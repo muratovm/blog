@@ -31,7 +31,6 @@
 	}
 
 .admonition-content code {
-	background-color: #f5f5f5;
 	color: #24292e;
 	padding: 0.2em 0.4em;
 	border-radius: 3px;
@@ -55,10 +54,7 @@
 	 background-color: #1d1e20;
 	 color: #e6e6e6;
 }
-.dark-mode .admonition-content code {
-	 background-color: #1e1e2e;
-	 color: #cdd6f4;
-}
+
 .dark-mode .admonition-content blockquote {
 	 border-left-color: #45475a;
 	 color: #cdd6f4;
