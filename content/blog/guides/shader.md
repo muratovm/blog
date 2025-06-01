@@ -43,6 +43,43 @@ void main() {
 }
 ```
 
+### HTML Setup
+To use GLSL Canvas, you need to include the library in your HTML file and create a canvas element where the shader will be rendered. Here's a simple setup:
+
+```html
+<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+
+<textarea id="shaderEditor">
+    {{ GLSL shader code here }}
+</textarea>
+
+<canvas id="shaderCanvas" style="display:block; width:100%; height:500px;"></canvas>
+
+<script>
+const canvas = document.getElementById("shaderCanvas");
+const sandbox = new GlslCanvas(canvas);
+const editor = document.getElementById("shaderEditor");
+
+function resizeCanvasToCSSSize() {
+    const displayWidth = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    // Only update if size changed
+    if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+    }
+  }
+
+// Resize initially and on window resize
+resizeCanvasToCSSSize();
+sandbox.load(editor.value);
+editor.addEventListener("input", () => {
+    sandbox.load(editor.value);
+});
+</script>
+```
+
 ### Shader: Spiral
 You can edit the values in the textarea below to see how they affect the shader in real-time. The shader creates a colorful spiral effect that changes over time.
 
