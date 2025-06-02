@@ -5,6 +5,7 @@
 	caption: caption
 	mouse: what the image says when moused over ("title" in HTML)
 -->
+<div>
 <img src="{{ .Get "src" }}" 
 		 class="{{ .Get "class" }}"
 		 width="{{ .Get "width" }}"
@@ -13,10 +14,10 @@
 	     {{- with .Get "mouse" }} title="{{.}}"{{ end -}}
 	     {{- with .Get "alt" }} alt="{{.}}"{{ end -}}
 	>
-
 <!--Description-->
 {{- with .Get "caption" }}
 	<figcaption style="margin:0px;" class="figure-caption">
 		{{ . }}
 	</figcaption>
 {{ end -}}
+</div>
