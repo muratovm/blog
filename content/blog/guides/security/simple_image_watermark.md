@@ -53,8 +53,9 @@ These techniques are more complex but provide better security and robustness aga
 
 {{< img src="/img/diagrams/dwt.png" caption="https://www.intechopen.com/chapters/18615" class="img-fluid" >}}
 
-### Least Signifiacant Bit Watermarking
-To implement watermarking in your images, you can use various libraries and tools available in programming languages like Python, Java, or C#. Here’s a simple example using Python with the stegano library.
+### Least Significant Bit Watermarking
+To implement the simplest form of invisible watermarking in your images, you can use the cv2 library in Python to read in the image and modify the last bits of each pixel.
+
 ```python
 import cv2
 
@@ -101,7 +102,27 @@ if __name__ == "__main__":
     print("Extracted message:", message)
 ```
 
-This code opens an image, creates a watermark with text, and combines the two images before saving the result. You can customize the watermark text, position, and opacity as needed.
+The embed_lsb function will take an image, a message, and an output path to save the watermarked image. The extract_lsb function will read the watermarked image and extract the hidden message. There are simpler was of doing this such as using a dedicated steganography library like `stegano`, but this example shows how you can implement it from scratch.
+
+#### Stegano Code Example
+```python
+from stegano import lsb
+def embed_message(image_path, message, output_path):
+    # Embed the message in the image
+    watermarked_image = lsb.hide(image_path, message)
+    watermarked_image.save(output_path)
+
+def extract_message(image_path):
+    # Extract the message from the image
+    return lsb.reveal(image_path)
+
+if __name__ == "__main__":
+    embed_message("image.png", "Secret Watermark", "watermarked_image.png")
+    message = extract_message("watermarked_image.png")
+    print("Extracted message:", message)
+```
+
+This is a much simpler way to achieve the same result and it abstracts away the details of how the LSB is manipulated. The `stegano` library handles the encoding and decoding of messages in images, making it easier to implement watermarking without needing to understand the underlying pixel manipulation. There are also other modules within stegano that allow for more complex watermarking techniques, such as using different color channels or even embedding multiple messages.
 
 ### Watermarking Example
 
