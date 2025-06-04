@@ -15,4 +15,4 @@ Disallow: /*?*ref=
 Allow: /
 
 # Provide sitemap location
-Sitemap: https://https://michaelmuratov.com/sitemap.xml
+Sitemap: https://michaelmuratov.com/sitemap.xml
