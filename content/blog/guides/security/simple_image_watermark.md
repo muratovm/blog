@@ -102,7 +102,7 @@ if __name__ == "__main__":
     print("Extracted message:", message)
 ```
 
-The embed_lsb function will take an image, a message, and an output path to save the watermarked image. The extract_lsb function will read the watermarked image and extract the hidden message. There are simpler was of doing this such as using a dedicated steganography library like `stegano`, but this example shows how you can implement it from scratch.
+The `embed_lsb` function will take an image, a message, and an output path to save the watermarked image. The `extract_lsb` function will read the watermarked image and extract the hidden message. There are simpler was of doing this such as using a dedicated steganography library like `stegano`, but this example shows how you can implement it from scratch.
 
 #### Stegano Code Example
 ```python
@@ -137,7 +137,7 @@ This is a much simpler way to achieve the same result and it abstracts away the 
 ### Reading the Watermark
 To read the watermark from an image, you can reverse the process by extracting the pixel values or frequency coefficients where the watermark was embedded. This can be done using similar libraries and techniques as mentioned above.
 
-#### Using the extract_lsb function
+#### Using the `extract_lsb` function
 
 >[!Success] Results
 > **Original Image Text:**\

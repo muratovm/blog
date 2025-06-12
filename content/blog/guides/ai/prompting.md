@@ -50,7 +50,7 @@ Models tend to work well when you set the scene by placing them in an appropriat
 In this example, the model is given a specific role to play, which helps give contextual information for the kind of information the user is looking for. By specifying that the model should act as a senior software developer, the model is more likely to generate a response that was produced by a senior developer, rather than a beginner or intermediate one. This behavior is not guaranteed, but it helps build a foundation for the rest of the prompt.
 
 #### 2. Context
-Some problems which are more difficult than the example above require additional context. If you ask the model to pick the best gardening tool, you likely won't get satisfying answer. What does best mean? In what context? Some things are better than others in different contexts. A rake is better in autumn while a shovel is better in spring. There are countless ways to approach even what seems like a simple question. 
+Some problems which are more difficult than the example above, require additional context. If you ask the model to pick the best gardening tool, you likely won't get a satisfying answer. What does best mean? In what context? Some things are better than others in different contexts. A rake is better in autumn while a shovel is better in spring. There are countless ways to approach even what seems like a simple question. 
 
 >[!Example]
 >Suggest the best gardening tool for repotting
