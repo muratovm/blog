@@ -1,12 +1,107 @@
 <textarea id="shaderEditor" width="100%" rows="10" cols="60" color="white" style="width: 100%; height: 500px; font-family: monospace; background-color: #222; color: #fff; border: none; padding: 10px; resize: vertical;">
     {{ .Inner | safeHTML }}
 </textarea>
+
+<style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .slider-block {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+    }
+
+    .slider-block input[type="range"] {
+      width: 100%;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  </style>
+
+
+<!--4 by 2 grid of ranges-->
+
+<div class="grid-container">
+  <!-- 8 identical sliders -->
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Width</h4>
+    </div>
+    <input type="range" min="0.1" max="0.9" step="0.1" value="0.1" id="widthSlider" style="width:50%;">
+    <span id="widthValue">0.1</span>
+  </div>
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Distance</h4>
+    </div>
+    <input type="range" min="0.1" max="0.9" step="0.1" value="0.5" id="distanceSlider" style="width:50%;">
+    <span id="distanceValue">0.5</span>
+  </div>
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Blur</h4>
+    </div>
+    <input type="range" min="0.1" max="0.9" step="0.1" value="0.7" id="blurSlider" style="width:50%;">
+    <span id="blurValue">0.7</span>
+  </div>
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Repetition</h4>
+    </div>
+    <input type="range" min="0.1" max="0.9" step="0.1" value="1.0" id="repetitionSlider" style="width:50%;">
+    <span id="repetitionValue">1.0</span>
+  </div>
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Multiply</h4>
+    </div>
+    <input type="range" min="0.1" max="0.9" step="0.1" value="0.15" id="multiplySlider" style="width:50%;">
+    <span id="multiplyValue">0.15</span>
+  </div>
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Exponent</h4>
+    </div>
+    <input type="range" min="1" max="10" step="1" value="1" id="exponentSlider" style="width:50%;">
+    <span id="exponentValue">1</span>
+  </div>
+  <div class="slider-block">
+    <div class="label-row">
+        <h4>Points</h4>
+    </div>
+    <input type="range" min="0" max="10" step="1" value="5" id="pointsSlider" style="width:50%;">
+    <span id="pointsValue">5</span>
+  </div>
+</div>
+
+
+
 <canvas id="shaderCanvas" style="display:block; width:100%; height:500px;"></canvas>
 
 <script>
 const canvas = document.getElementById("shaderCanvas");
 const sandbox = new GlslCanvas(canvas);
 const editor = document.getElementById("shaderEditor");
+
+const volumeSlider = document.getElementById("volumeSlider");
+const volumeValue = document.getElementById("volumeValue");
+
+const widthSlider = document.getElementById("widthSlider");
+const distanceSlider = document.getElementById("distanceSlider");
+const blurSlider = document.getElementById("blurSlider");
+const repetitionSlider = document.getElementById("repetitionSlider");
+const multiplySlider = document.getElementById("multiplySlider");
+const exponentSlider = document.getElementById("exponentSlider");
+const pointsSlider = document.getElementById("pointsSlider");
 
 function resizeCanvasToCSSSize() {
     const displayWidth = canvas.clientWidth;
@@ -25,4 +120,47 @@ sandbox.load(editor.value);
 editor.addEventListener("input", () => {
     sandbox.load(editor.value);
 });
+
+widthSlider.oninput = function () {
+  widthValue.textContent = this.value;
+  editor.value = editor.value.replace(/float width = [0-9]*\.[0-9]*/g, `float width = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
+distanceSlider.oninput = function () {
+  distanceValue.textContent = this.value;
+  editor.value = editor.value.replace(/float dis = [0-9]*\.[0-9]*/g, `float dis = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
+blurSlider.oninput = function () {
+  blurValue.textContent = this.value;
+  editor.value = editor.value.replace(/float blur = [0-9]*\.[0-9]*/g, `float blur = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
+repetitionSlider.oninput = function () {
+  repetitionValue.textContent = this.value;
+  editor.value = editor.value.replace(/float rep = [0-9]*\.[0-9]*/g, `float rep = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
+multiplySlider.oninput = function () {
+  multiplyValue.textContent = this.value;
+  editor.value = editor.value.replace(/float mul = [0-9]*\.[0-9]*/g, `float mul = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
+exponentSlider.oninput = function () {
+  exponentValue.textContent = this.value;
+  editor.value = editor.value.replace(/float ex = [0-9]*/g, `float ex = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
+pointsSlider.oninput = function () {
+  pointsValue.textContent = this.value;
+  editor.value = editor.value.replace(/float points = [0-9]*/g, `float points = ${this.value}`);
+  sandbox.load(editor.value);
+}
+
 </script>

@@ -99,12 +99,12 @@ precision mediump float;
 uniform float u_time;
 uniform vec2 u_resolution;
 
-float width= 0.1;
-float dis  = 0.5;
+float width = 0.1;
+float dis = 0.5;
 float blur = 0.7;
-float rep  = 1.0;
-float mul  = 0.15;
-float ex   = 1.0;
+float rep = 1.0;
+float mul = 0.15;
+float ex = 1.0;
 float points = 5.0;
 
 #define PI 3.14159
