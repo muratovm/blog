@@ -1,0 +1,13 @@
+{{/* Expect . to be a Page object */}}
+{{- $imgName := .Params.image | default "default.png" -}}
+{{- $img     := resources.Get (printf "banners/%s" $imgName) -}}
+{{- if not $img }}
+  {{ errorf "Banner %q not found in assets/banners/" $imgName }}
+{{- end -}}
+
+{{/* Example: resize + fingerprint */}}
+{{ $hero := $img.Fill "1600x900 q75" }}
+<img  src="{{ $hero.RelPermalink }}"
+      width="{{ $hero.Width }}" height="{{ $hero.Height }}"
+      loading="lazy"
+      alt="{{ .Title }}">

@@ -1,19 +1,32 @@
+{{/* page-card.html */}}
+{{- $page := . -}}
+
+{{/* 1. Try to grab a page-local banner first (leaf bundle) */}}
+{{ $img := $page.Resources.GetMatch $page.Params.image }}
+
+{{/* 2. Fall back to the shared library in assets/banners/ */}}
+{{ if not $img }}
+  {{ $img = resources.Get (printf "banners/%s" $page.Params.image) }}
+{{ end }}
+
+{{/* 3. Optional: fail-fast if the image wasn’t found */}}
+{{ if not $img }}
+  {{ errorf "Banner %q not found for %q" $page.Params.image $page.File.Path }}
+{{ end }}
+
 <div class="page-card">
-  {{ with .Params.image }}
-  <a href="{{ $.RelPermalink }}">
-    <img src="{{ . | relURL }}" alt="{{ $.Title }}">
-  </a>
+  {{ with $img }}
+    <a href="{{ $page.RelPermalink }}">
+      <img src="{{ .RelPermalink }}"
+           width="{{ .Width }}" height="{{ .Height }}"
+           loading="lazy"
+           alt="{{ $page.Title }}">
+    </a>
   {{ end }}
 
-  <div style="padding-left: 0.5rem;">
-    <h3>
-      <a href="{{ .RelPermalink }}" style="text-decoration: none; color: inherit;">
-        {{ .Title }}
-      </a>
-    </h3>
-
-    {{ with .Params.description }}
-      <p style="margin-bottom: 0; color: #555;">{{ . }}</p>
-    {{ end }}
+  <div style="padding-left:0.5rem;">
+    <h3><a href="{{ $page.RelPermalink }}" style="text-decoration:none;color:inherit;">
+      {{ $page.Title }}
+    </a></h3>
   </div>
 </div>

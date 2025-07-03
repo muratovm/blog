@@ -4,11 +4,7 @@
 </button>
 
   <!-- Show banner image-->  
-  <div class="banner">
-    {{ if .Params.image }}
-      <img src="{{ .Params.image }}" alt="Banner image" style="width: 100%; height: auto;">
-    {{ end }}
-  </div>
+  {{ partial "banner.html" . }}
 
   {{ if eq .Type "blog" }}
     {{ if not .Params.menu }}

@@ -5,7 +5,7 @@ lastmod: 2025-04-20
 tags:
   - Web
 draft: false
-image: /img/banner/blog_structure.png
+image: blog_structure.png
 layout: blog-post
 ---
 ### Purpose
