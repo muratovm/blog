@@ -31,7 +31,18 @@
         </p>
     {{ end }}
   {{ end }}
+  
   <content>
     {{ .Content }}
   </content>
+
+  {{ with site.RegularPages.Related . | first 3 }}
+    <!--Divider-->
+    <h5 style="margin: 1rem 0rem;">Related content:</h5>
+    <div class="card-grid">
+      {{ range . }}
+        {{ partial "page_card.html" . }}
+      {{ end }}
+    </div>
+  {{ end }}
 {{ end }}

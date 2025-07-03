@@ -49,18 +49,18 @@ The site consists of three quality of life features that would be non negotiable
 
 Version control is pretty important for a site like this. For one it keeps a consistent backup of my files on an external server, while giving me the freedom to modify my files offline. There are other benefits that git provides as a version control system such as reliable metrics for commit times and native CI/CD functionality for building the static site. The build at commit functionality allows me to  track only Markdown file changes, which are easy to read and edit. 
 
-![image](blog_setup-git.png)
+![image](git.png)
 ### Text Editor
 
 Because most of the files on this site are written in Markdown, they can be viewed and edited in nice rich text editors like Obsidian. The integration between Obsidian and Hugo doesn't exist directly but I've been able to port common elements such as code snippets and call outs.
 
 {{< img 
-    src="blog_setup-obsidian_editor.png"
+    src="obsidian_editor.png"
     class="png"
 >}}
 ### AWS Integration
 
-![CI/CD](blog_setup-ci_cd.png)
+![CI/CD](ci_cd.png)
 
 Learning a cloud platform like AWS has been on my priority list this year. In addition the existence of dedicated services like **AWS Amplity** makes it fairly cost efficient to host the website myself and monitor spending on all my cloud services through a unified interface. AWS does fall short in terms of identifying usage metrics but I've augmented the website with Google Analytics tags that fills in for that gap.
 
@@ -68,22 +68,22 @@ My domain name is registered on Squarespace but I don't want to use them for hos
 
 Instead I set up a Hosted Zone for my domain on Amazon's Route 53. Amazon will use its name servers to map my domain to their external IPs:
 
-![AWS Name Servers](blog_setup-aws_nameservers.png)
+![AWS Name Servers](aws_nameservers.png)
 
 All I have to do is enter the name servers I was assigned to my Squarespace Domain Nameservers list.  
 
-![Square Space Name Servers](blog_setup-squarespace.png)
+![Square Space Name Servers](squarespace.png)
 
 
 This setup allows me to own my domains on Squarespace and manage them from AWS.
 
 The hosting itself is defined by a direct relationship between AWS Amplify and your version control system in this case Github.
 
-![image](blog_setup-github.png)
+![image](github.png)
 
 Every time I make a commit on Github the CI/CD pipeline syncs the changes to the AWS instance and runs a prebuild command to generate the static files.
 
-![image](blog_setup-prebuild.png)
+![image](prebuild.png)
 
 The version control, rich text editor and cloud deployment make this blog setup seamless, cost efficient and salable with minimal setup.
 
@@ -145,4 +145,4 @@ This tag is included in the `baseof.html` template of every single page that Hug
 
 Ensuring that every individual blog post and site page will feature a tag that links usage data to Google's server and my dashboard. 
 
-![image](blog_setup-google_analytics.png)
+![image](google_analytics.png)
