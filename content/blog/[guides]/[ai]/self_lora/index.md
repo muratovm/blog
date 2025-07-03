@@ -9,7 +9,7 @@ tags:
   - lora
   - brand
 draft: false
-image: /img/banner/in_progress.png
+image: default.png
 layout: blog-post
 toc: true
 ---
