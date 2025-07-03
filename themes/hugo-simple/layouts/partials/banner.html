@@ -6,7 +6,7 @@
 {{- end -}}
 
 {{/* Example: resize + fingerprint */}}
-{{ $hero := $img.Fill "1600x900 q75" }}
+{{ $hero := $img.Fill "1200x1200 q75" }}
 <img  src="{{ $hero.RelPermalink }}"
       width="{{ $hero.Width }}" height="{{ $hero.Height }}"
       loading="lazy"
