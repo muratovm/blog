@@ -99,7 +99,9 @@ If you’re not very familiar with recursion, this code block might still look v
 
 The time complexity for this question appears to be difficult to pin down. After all, there are two points of recursion and one full stop. And like I said before, the answer to the complexity is given in the solutions with no further explanations. For text of length T and pattern of length P, with the text being indexed at text[i:] and pattern[2j:], the time complexity for this question is….**drum roll**
 
-{{< img src="summation.png">}}
+\[
+  \sum_{i=0}^{T}\sum_{j=0}^{P/2}\binom{i+j}{i} \space O(T-i) +  \space  O(P-2j)
+\]
 
 Well, that’s quite something.
 
@@ -109,11 +111,11 @@ Normally you’d expect something like O(T*P) or anything else to that effect an
 
 The reason why the complexity isn’t as simple as it is for something like [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort), is because we’re not making linear passes over our text and pattern. Instead we’re doing things recursively, diving deeper and deeper through sections of our text and pattern and revisiting the same sub problems for what can feel like an arbitrary number of times. The reason I bring up bubble sort, which has O(n²) complexity, is because its complexity decreases in the shape of a pyramid as we sort more and more digits.
 
-{{< img src="pyramid.png">}}
+![alt text](pyramid.png)
 
 On the other hand, recursion has the classic shape of a tree due to the multiple places where the function can call itself.
 
-{{< img src="tree.png">}}
+![alt text](tree.png)
 
 The structures look deceptively similar but the crucial difference is that where the pyramid decreases linearly, the tree grows exponentially. This creates a world of a difference when analyzing time and space complexity.
 
@@ -121,7 +123,7 @@ The structures look deceptively similar but the crucial difference is that where
 
 When analyzing worst case complexity we have to think of the worst case input. Because we have two inputs, text and pattern, I will focus on the pattern because one depends on the other and at least for me it’s easier to think of the rules rather than the results. In this question each new character we add to our pattern can be either a `.*` or `.` where `.` can be any character. From the code it should be pretty clear which choice causes more computation. If we include the `*` character, our code splits into two streams which must both be computed until inevitably they should return whether there’s a match, meanwhile if we are matching a single character the fun stops pretty quickly as we are only taking a single route, linearly.
 
-{{< img src="pseudocode2.png">}}
+![alt text](pseudocode2.png)
 
 It looks pretty clear that a worst case pattern would consist of many .* to create as many diverging paths as possible, with a final text character which does or doesn’t match the pattern.
 
@@ -135,15 +137,14 @@ In this scenario we must get both to the end of the pattern and to the end of th
 
 In order to figure out the time complexity we have to find how many times each sub-problem had to be computed. Because we are not saving the result like in dynamic programming this will largely contribute to the exploding runtime. Each sub-problem consists of answering whether text[i:] and pattern[2j:] are a match. We use pattern[2j:] because we are using `.*` repeatedly in our pattern for the worst case, every time we take the **skip_asterisk_matched** path we skip one of the `.*` which take up two spaces. In order to visualize the two branches of **skip_asterisk_matched** and **keep_asterisk_matched** we will draw a tree diagram to illustrate all the visited sub-problems. Each node will have the format (i,j) for where the text and pattern are indexed at each point in time.
 
-
-{{< img src="tree_combos.png">}}
+![alt text](tree_combos.png)
 
 A quick side note on this, when performing recursion, the algorithm will perform a [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) by taking the left path first on each iteration. This doesn’t make much of a difference though because in the worst case we’ll have to traverse the entire tree anyways. Let’s take an example sub-problem where we want to see if text[2:] and pattern[2:] were a match. This will appear as (2,1) on our tree:
 
 i=2 because we are at text[2:] for the text
 j=1 because we are at pattern[2:] which in the worst case means we have only a single `.*` asterisk that takes up two spaces. Following pattern[2j:] means j=1.
 
-{{< img src="tree_path.png">}}
+![alt text](tree_path.png)
 
 We can see that this sub-problem had been encountered 3 times during computation. The tree format is good for seeing when these sub-problems will be encountered but it’s not very good at determining how many times that will happen.
 
@@ -151,11 +152,11 @@ We can see that this sub-problem had been encountered 3 times during computation
 
 The way to systematically consider how many times a sub-problem will be encountered is to consider how come these sub-problems tend to repeat themselves in the first place. In order to arrive at (2,1) on our tree we have to take two lefts and one right.
 
-{{< img src="tree_pathing.png">}}
+![alt text](tree_pathing.png)
 
 As we can see this can happen in three ways, if we traverse the tree in the sequence LLR, LRL and RLL.
 
-{{< img src="path_block.png">}}
+![alt text](path_block.png)
 
 In the example of (2,1) we know that we will have 2+1=3 place holders where 2 of the placeholders will be an L and 1 will be an R. In order to find how many combinations are possible we can simply compute 3C2 where out of 3 place holders we will choose 2 to be an L and the rest will automatically be Rs.
 
