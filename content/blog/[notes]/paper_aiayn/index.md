@@ -27,20 +27,31 @@ The paper proposes a new architecture called the `Transformer`, which is based o
 
 ### Attention Mechanism
 
-So how do we relate words to each other in a sentence without treating it as a continuous sequence? The attention mechanism takes the approach that all words have **some** level of relationship to each other and computes these relationships at the same time. In order to do this, each word's embedding is transformed into three vectors: `Query`, `Key`, and `Value`. The attention mechanism then computes a weighted sum of these values between words to determine how much **attention** each word should pay to all other words in the sequence.
-
+So how do we relate words to each other in a sentence without treating it as a continuous sequence? The attention mechanism takes the approach that all words have **some** level of relationship to each other and computes these relationships at the same time. 
 
 ### Self Attention
+Self attention computes the attention between a single word, and all the words in the sequence in relation to it. In order to do this, each word's embedding is transformed into three vectors: `Query`, `Key`, and `Value`. Each of these 
 
-Self attention computes the attention between a single word, and all the words in the sequence in relation to it. 
+
+The attention mechanism then computes a weighted sum of these values between words to determine how much **attention** each word should pay to all other words in the sequence.
+
+
+# Encoder Embedding
+
+The paper proposes encoding the initial word em
+
 
 ### Multi Head Attention
 
-Multi Head attention is does the attention learning with multiple starting conditions for the `Query`, `Key`, and `Value` vectors, allowing the model to learn different but similar relationships between words. The paper uses 8 different attention heads, each having 512/8 = 64 dimensions, which are then concatenated to produce a final output of 512 dimensions per word.
+Multi Head attention does the attention learning on part of the embedding dimension 
+
+
+
+ the `Query`, `Key`, and `Value` vectors, allowing the model to learn different but similar relationships between words. The paper uses 8 different attention heads, each having 512/8 = 64 dimensions, which are then concatenated to produce a final output of 512 dimensions per word.
 
 
 ### Transformer
-The architecture is popularized by this image, which shows the main components of the transformer architecture. The transformer is made up of an `encoder` and a `decoder`, each containing multiple layers of attention and feed-forward networks.
+The architecture is popularized by this image, which shows the main components of the transformer architecture. The transformer is made up of an `encoder` of the left and a `decoder` on the right, each containing multiple layers of attention and feed-forward networks.
 
 ![alt text](architecture.png)
 
