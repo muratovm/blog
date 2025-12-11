@@ -14,6 +14,13 @@
       {{- partial "pagination.html" . -}}
     {{ end }}
 
+    <!-- Total pages count-->
+    {{ $total := len .RegularPagesRecursive }}
+    {{ if eq $total 0 }}
+    {{ else }}
+      <p style="text-align: start;">Total Posts: {{ $total }}</p>
+    {{ end }}
+
     <!--If another list page is in here -->
     {{- $pages := union .Pages (where .Pages "Section" "blog") -}}
     {{ $sortedPages := sort $pages "Params.order" "asc"}}
@@ -26,15 +33,7 @@
       {{ end }}
     {{ end }}
     <br>
-
-
-    <!-- Total pages count-->
-    {{ $total := len .RegularPagesRecursive }}
-    {{ if eq $total 0 }}
-    {{ else }}
-      <p style="text-align: start;">Total Posts: {{ $total }}</p>
-    {{ end }}
-
+    
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
       {{- partial "pagination.html" . -}}
     {{ end }}

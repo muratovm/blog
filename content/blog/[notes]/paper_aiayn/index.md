@@ -6,7 +6,7 @@ categories:
 tags:
     - paper
     - transformer
-draft: false
+draft: true
 image: paper_aiayn.png
 layout: blog-post
 toc: true

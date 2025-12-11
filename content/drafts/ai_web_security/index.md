@@ -9,7 +9,7 @@ categories:
 tags:
   - python
   - fast api
-draft: false
+draft: true
 image: secure_ai_wrapper.png
 layout: blog-post
 toc: true

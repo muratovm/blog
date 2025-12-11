@@ -91,9 +91,10 @@ Hard to remember without a password manager which introduces a new risk: if you 
 
 {{< password_generator >}}
 
-This checker only takes into account the entropy of the password itself. It does not take into account the presence of dictionary words, common patterns, the security of the site you are using it on, or any other factors that may affect the strength of your password.
+>[!Warning]
+> This checker only takes into account the entropy of the password itself. It does not take into account the presence of dictionary words, common patterns, the security of the site you are using it on, or any other factors that may affect the strength of your password.
 
-For a more accurate assessment of your password's strength, consider using a password manager that includes a password strength checker. These tools can help you generate strong passwords and store them securely.
+For a more accurate assessment of your password's strength, consider using a password manager that includes a `password strength checker`. These tools can help you generate strong passwords and store them securely.
 
 ### Additional Resources
 

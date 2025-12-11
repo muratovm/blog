@@ -815,7 +815,6 @@ sub {
 }
 
 .link_button{
-  margin-top: 1.5rem;
   display: inline-block;
   text-decoration: none;
   border-radius: var(--standard-border-radius);

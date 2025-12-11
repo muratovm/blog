@@ -1,5 +1,5 @@
 ---
-title: "Building in Public"
+title: "Home"
 description: "Personal log for writing and development"
 layout: "single"
 ---
