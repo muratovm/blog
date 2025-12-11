@@ -11,7 +11,7 @@ tags:
   - php
   - python
   - node
-draft: false
+draft: true
 image: reverse_shells.png
 layout: blog-post
 toc: true

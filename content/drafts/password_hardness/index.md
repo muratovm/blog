@@ -7,7 +7,7 @@ categories:
   - statistics
 tags:
   - passwords
-draft: false
+draft: true
 image: password_hardness.png
 layout: blog-post
 toc: true

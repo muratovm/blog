@@ -7,7 +7,7 @@ categories:
   - ai
 tags:
   - prompting
-draft: false
+draft: true
 image: prompting.png
 layout: blog-post
 toc: true

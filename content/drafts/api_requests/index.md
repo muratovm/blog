@@ -8,7 +8,7 @@ tags:
   - python
   - requests
   - sqlite
-draft: false
+draft: true
 image: api_requests.png
 layout: blog-post
 toc: true

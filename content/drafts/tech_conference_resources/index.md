@@ -6,7 +6,7 @@ categories:
     - security
 tags:
     - conference
-draft: false
+draft: true
 image: default.png
 layout: blog-post
 toc: true

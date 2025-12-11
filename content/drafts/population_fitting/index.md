@@ -4,7 +4,7 @@ date: 2024-11-01
 categories:
     - statistics
 tags:
-draft: false
+draft: true
 image: population_fitting.png
 layout: blog-post
 toc: true
