@@ -1,23 +1,44 @@
 <!-- Primary Meta Tags -->
+{{- $metaTitle := cond (ne .Title "") .Title .Site.Title -}}
+{{- $metaDescription := "" -}}
+{{- if .Description -}}
+  {{- $metaDescription = .Description -}}
+{{- else if .IsPage -}}
+  {{- $metaDescription = (.Summary | plainify) -}}
+{{- else -}}
+  {{- $metaDescription = (default "" .Site.Params.description) -}}
+{{- end -}}
+{{- $canonicalBase := default .Site.BaseURL .Site.Params.canonicalBaseURL -}}
+{{- $canonicalURL := (printf "%s%s" (strings.TrimSuffix "/" $canonicalBase) .RelPermalink) -}}
+{{- $ogImageURL := "" -}}
+{{- $ogImageWidth := 0 -}}
+{{- $ogImageHeight := 0 -}}
+{{- if .IsPage -}}
+  {{- $img := false -}}
+  {{- with .Params.image -}}
+    {{- $img = $.Resources.GetMatch . -}}
+    {{- if not $img -}}
+      {{- $img = resources.Get (printf "banners/%s" .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if not $img -}}
+    {{- $img = resources.Get "banners/default.png" -}}
+  {{- end -}}
+  {{- if and $img (eq $img.ResourceType "image") -}}
+    {{- $ogImage := $img.Fill "1200x630 smart webp q82" -}}
+    {{- $ogImageURL = printf "%s%s" (strings.TrimSuffix "/" $canonicalBase) $ogImage.RelPermalink -}}
+    {{- $ogImageWidth = $ogImage.Width -}}
+    {{- $ogImageHeight = $ogImage.Height -}}
+  {{- end -}}
+{{- end -}}
+
 <meta
   name="title"
-  content="{{ with .Title -}}
-    {{ . }}
-  {{- else -}}
-    {{ .Site.Title }}
-  {{- end }}"
+  content="{{ $metaTitle }}"
 />
 <meta
   name="description"
-  content="{{ with .Description -}}
-    {{ . }}
-  {{- else -}}
-    {{ if .IsPage -}}
-      {{ .Summary }}
-    {{- else -}}
-      {{ with .Site.Params.description }}{{ . }}{{ end }}
-    {{- end }}
-  {{- end }}"
+  content="{{ $metaDescription }}"
 />
 <meta
   name="keywords"
@@ -33,15 +54,55 @@
 {{ with .Site.Params.author.name }}
   <meta name="author" content="{{ . }}" />
 {{ end }}
+<link rel="canonical" href="{{ $canonicalURL }}" />
 
 
 <!-- Open Graph / Facebook -->
 {{ template "_internal/opengraph.html" . }}
+{{- if $ogImageURL -}}
+  <meta property="og:image" content="{{ $ogImageURL }}" />
+  <meta property="og:image:width" content="{{ $ogImageWidth }}" />
+  <meta property="og:image:height" content="{{ $ogImageHeight }}" />
+  <meta property="og:image:alt" content="{{ $metaTitle }}" />
+{{- end -}}
 
 
 <!-- Twitter -->
 {{ template "_internal/twitter_cards.html" . }}
+{{- if $ogImageURL -}}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{{ $ogImageURL }}" />
+{{- end -}}
 
 
 <!-- Microdata -->
 {{ template "_internal/schema.html" . }}
+
+{{- if .IsPage -}}
+<script type="application/ld+json">
+{{- dict
+  "@context" "https://schema.org"
+  "@type" "BlogPosting"
+  "headline" .Title
+  "description" $metaDescription
+  "url" $canonicalURL
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+  "keywords" (delimit (default (slice) .Params.tags) ", ")
+  "articleSection" (delimit (default (slice) .Params.categories) ", ")
+  "wordCount" .WordCount
+  "timeRequired" (printf "PT%dM" .ReadingTime)
+  "isPartOf" (dict "@type" "Blog" "name" .Site.Title "url" (printf "%s/" (strings.TrimSuffix "/" $canonicalBase)))
+| jsonify | safeJS -}}
+</script>
+{{- else if .IsHome -}}
+<script type="application/ld+json">
+{{- dict
+  "@context" "https://schema.org"
+  "@type" "WebSite"
+  "name" .Site.Title
+  "url" (printf "%s/" (strings.TrimSuffix "/" $canonicalBase))
+  "description" $metaDescription
+| jsonify | safeJS -}}
+</script>
+{{- end -}}

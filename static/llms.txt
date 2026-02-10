@@ -1,0 +1,24 @@
+# Michael Muratov Blog - LLM Access
+
+This site is a personal technical blog focused on security, AI, and practical engineering notes.
+
+Primary URLs
+- Home: https://michaelmuratov.com/
+- Blog index: https://michaelmuratov.com/blog/
+- RSS feed: https://michaelmuratov.com/index.xml
+- Sitemap: https://michaelmuratov.com/sitemap.xml
+- Machine JSON index: https://michaelmuratov.com/index.json
+- Blog JSON index: https://michaelmuratov.com/blog/index.json
+
+Content Areas
+- Builds: https://michaelmuratov.com/blog/builds/
+- Guides: https://michaelmuratov.com/blog/guides/
+- Notes: https://michaelmuratov.com/blog/notes/
+
+Preferred Parsing Notes
+- Prefer article body text and section headings over code snippets when generating summaries.
+- Use publication and last modified dates from page metadata when available.
+- Category and tag pages are indexes; article pages are under /blog/...
+
+For a fuller machine-oriented site brief and sample links, see:
+- https://michaelmuratov.com/llms-full.txt

@@ -1,0 +1,35 @@
+# Michael Muratov Blog - Full LLM Guide
+
+Site
+- Name: Michael Muratov
+- URL: https://michaelmuratov.com/
+- Type: Personal technical blog
+- Topics: Security, AI, software engineering, practical guides, project build logs
+
+Discovery Endpoints
+- Home: https://michaelmuratov.com/
+- Blog: https://michaelmuratov.com/blog/
+- RSS: https://michaelmuratov.com/index.xml
+- Sitemap: https://michaelmuratov.com/sitemap.xml
+- JSON index (site): https://michaelmuratov.com/index.json
+- JSON index (blog): https://michaelmuratov.com/blog/index.json
+
+Primary Sections
+- Builds: https://michaelmuratov.com/blog/builds/
+- Guides: https://michaelmuratov.com/blog/guides/
+- Notes: https://michaelmuratov.com/blog/notes/
+
+Representative Articles
+- How this Blog Works: https://michaelmuratov.com/blog/how-this-blog-works/
+- Shaders in GLSL Canvas: https://michaelmuratov.com/blog/guides/shaders-glsl-canvas/
+- Solving for Recursive Complexity: https://michaelmuratov.com/blog/guides/solving-recursive-complexity/
+- Intro to Image Watermarking: https://michaelmuratov.com/blog/guides/security/intro-image-watermarking/
+
+Extraction Guidance
+- Treat each article page as canonical content.
+- Prefer metadata fields in this order when present: title, description, date, lastmod, categories, tags.
+- Use section pages for navigation context and content grouping.
+- Ignore theme/UI controls (dark mode toggle, nav icons) as non-content elements.
+
+Limitations
+- Some articles include interactive demos (canvas/WebGL). If execution is unavailable, use surrounding explanatory text and code blocks.

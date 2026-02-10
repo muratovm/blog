@@ -167,6 +167,9 @@
 
 
 <canvas id="shaderCanvas" style="display:block; width:100%; height:500px;"></canvas>
+<noscript>
+  <p>This interactive shader demo requires JavaScript. The GLSL source code is shown above.</p>
+</noscript>
 
 <script>
 const canvas = document.getElementById("shaderCanvas");
@@ -190,6 +193,7 @@ const pointsValue = document.getElementById("pointsValue");
 
 if (!window.GlslCanvas) {
   console.error("GlslCanvas failed to load. Check CDN/network access.");
+  canvas.outerHTML = '<p>Interactive shader preview is unavailable right now. The GLSL source code is still available above.</p>';
 } else {
   const sandbox = new GlslCanvas(canvas);
 

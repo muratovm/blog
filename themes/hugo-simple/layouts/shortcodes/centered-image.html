@@ -1,4 +1,8 @@
+{{- $preset := "md" -}}
+{{- if ge (len .Params) 3 -}}
+  {{- $preset = index .Params 2 -}}
+{{- end -}}
 <div class="centered-image">
-    <img src="{{ index .Params 0 }}" alt="{{ index .Params 1 }}">
+    <img class="img-preset {{ printf "img-preset-%s" $preset }}" src="{{ index .Params 0 }}" alt="{{ index .Params 1 }}">
     <p class="image_subtext">{{ index .Params 1 }}</p>
 </div>

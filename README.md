@@ -1,62 +1,113 @@
 # Blog
 
-## Overview
-This site is built with [Hugo](https://gohugo.io/) using the [hugo-simple](https://github.com/maolonglong/hugo-simple) theme. It serves as a template for a lightweight blog and showcases usage of the theme along with optional Tailwind based styling.
+## Current State
+This site is a Hugo blog (`hugo v0.155+`) using the local theme at `themes/hugo-simple`.
 
-## Prerequisites
-- **Hugo** `>=0.112.4`
-- **Node & npm** (optional) – to install the dependencies listed in `package.json` for Tailwind and PostCSS tooling.
-- **ripgrep (`rg`)** (optional, recommended) – used by validation scripts when available.
+It is set up for:
+- Weekly publishing from a draft-first workflow (`content/drafts` -> `content/blog`)
+- Structured track navigation (Builds, Guides, Notes)
+- A custom homepage layout with pinned posts and sectioned activity
+- Machine-readable outputs for feeds and LLM ingestion (`index.json`, `llms.txt`)
 
-## Development
-1. Install the prerequisites.
-2. Run `npm run dev` to start a local development server at `http://127.0.0.1:1313` with a local `baseURL`.
-3. Build the site for production by running `npm run build:site`. The generated files will appear in the `public/` directory.
+## Stack
+- Hugo (extended)
+- Theme: local `themes/hugo-simple`
+- Node scripts (optional but used for workflow commands)
+
+## Local Development
+- Start local server: `npm run dev`
+- Build production output: `npm run build:site`
+- Output directory: `public/`
+
+Local server is pinned to:
+- `http://127.0.0.1:1313/`
 
 ## Article Workflow
-- Create a new draft article bundle: `npm run new:article -- <slug>`
-- Publish a draft into `content/blog`: `npm run publish:article -- <draft-slug-or-path>`
+- Create draft bundle: `npm run new:article -- <slug>`
+- Publish draft: `npm run publish:article -- <draft-slug-or-path>`
 - Validate published posts: `npm run check:posts`
-- Validate draft-only section rules: `npm run check:drafts`
-- Validate image and banner references: `npm run check:assets`
-- Run full release gate: `npm run check:strict`
-- Production-style build check: `npm run build:site`
-- Weekly flow (validate, build, then preview): `npm run weekly`
-- Publishing checklist: `docs/publishing-checklist.md`
+- Validate draft rules: `npm run check:drafts`
+- Validate image references: `npm run check:assets`
+- Full strict gate: `npm run check:strict`
+- Weekly flow: `npm run weekly`
 
-## Directory Structure
-- `content/` – Markdown content for pages and posts.
-- `static/` – Files copied directly to the output (images, fonts, etc.).
-- `themes/` – Contains the bundled `hugo-simple` theme and other theme assets.
-- `resources/` – Auto‑generated assets such as processed CSS.
+## Content Structure
+- `content/_index.md`
+  - Home metadata + curated `start_here` slugs
+- `content/blog/`
+  - Published posts only
+- `content/drafts/`
+  - Draft posts only (`draft: true` before publish)
+- `content/archive/_index.md`
+  - Archive landing content
+- `content/about.md`, `content/activity.md`
+  - Static top-level pages
 
-## Quick Navigation
-- `README.md` – Project overview, setup, and navigation.
-- `hugo.toml` – Main Hugo site configuration.
-- `content/_index.md` – Home page content entry point.
-- `content/about.md` – About page content.
-- `content/activity.md` – Activity page content.
-- `content/blog/` – Published blog posts and section indexes only.
-- `content/drafts/` – Work-in-progress drafts only (`draft: true` enforced).
-- `assets/banners/` – Post banner images used across articles.
-- `static/img/` – Static images served as-is.
-- `static/js/script.js` – Custom client-side JavaScript.
-- `themes/hugo-simple/` – Active theme source (layouts, partials, styles).
-- `themes/hugo-simple/layouts/` – Hugo templates and shortcodes.
-- `themes/hugo-simple/assets/` – Theme CSS/SCSS assets.
-- `archetypes/default.md` – Default front matter template for new content.
-- `scripts/new-article.sh` – Standardized command for creating new post bundles.
-- `scripts/publish-article.sh` – Move a draft to published and set `draft: false`.
-- `scripts/validate-posts.sh` – Front matter and banner validation for publish readiness.
-- `scripts/validate-drafts.sh` – Enforces `draft: true` in `content/drafts`.
-- `scripts/validate-assets.sh` – Checks markdown/shortcode/front matter image references.
-- `scripts/weekly-workflow.sh` – Weekly command: validate, build, then run preview server.
-- `docs/publishing-checklist.md` – Pre-publish editorial and technical checklist.
-- `excalidraw/` – Diagram source files and related docs.
+Track-style organization is kept in folder paths under `content/blog/` using bracketed folders (for author-side clarity), for example:
+- `content/blog/[builds]/...`
+- `content/blog/[guides]/...`
+- `content/blog/[notes]/...`
 
-## Credits
-- [Hugo ʕ•ᴥ•ʔ Simple Theme](https://github.com/maolonglong/hugo-simple)
-- [Admonitions Styling](https://github.com/KKKZOZ/hugo-admonitions)
+## Theme/Layout Ownership
+- `themes/hugo-simple/layouts/index.html`
+  - Home page layout structure
+- `themes/hugo-simple/layouts/archive/list.html`
+  - Archive page rendering (grouped chronologically)
+- `themes/hugo-simple/layouts/_default/single.html`
+- `themes/hugo-simple/layouts/_default/blog-post.html`
+  - Article templates and related-content fallback
+- `themes/hugo-simple/layouts/partials/nav.html`
+  - Global header nav
+- `themes/hugo-simple/layouts/partials/footer.html`
+  - Footer + social links rendering
+- `themes/hugo-simple/assets/style.css`
+  - Site-level custom styling
 
-## License
-This project uses the MIT license, matching the license of the hugo-simple theme.
+## Assets
+- `assets/banners/`
+  - Banner images used by front matter `image`
+- `static/img/`
+  - Static image files copied as-is
+- `static/js/script.js`
+  - Client-side behavior (palette mode, copy buttons, reading progress)
+
+## Shortcodes in Active Use
+Located in `themes/hugo-simple/layouts/shortcodes/`:
+- `img.html`
+- `figure.html`
+- `centered-image.html`
+- `canvas.html`
+
+Image shortcodes support size presets:
+- `xs`, `sm`, `md`, `lg`, `xl`, `full`
+
+## Machine-Readable Endpoints
+Configured outputs include HTML/RSS/JSON for home and sections.
+
+Important endpoints:
+- `/index.xml` (RSS)
+- `/index.json` (site JSON index)
+- `/blog/index.json` (blog section JSON index)
+- `/llms.txt`
+- `/llms-full.txt`
+
+## Site Configuration
+Primary config file: `hugo.toml`
+
+Notable settings:
+- `params.canonicalBaseURL`
+- `params.description`
+- `params.social` (footer social links)
+- output formats for home/section JSON
+
+## Quick Edit Map
+- Change homepage pinned posts: `content/_index.md` (`start_here`)
+- Change homepage layout/order: `themes/hugo-simple/layouts/index.html`
+- Change footer social links: `hugo.toml` -> `[[params.social]]`
+- Change archive behavior/style: `themes/hugo-simple/layouts/archive/list.html` and `themes/hugo-simple/assets/style.css`
+- Change global visual style: `themes/hugo-simple/assets/style.css`
+
+## Notes
+- `themes/` contains the active theme source; most UI edits happen there.
+- `public/` is generated output and should not be edited manually.
+- Draft/publish scripts enforce front matter and asset sanity checks before publishing.

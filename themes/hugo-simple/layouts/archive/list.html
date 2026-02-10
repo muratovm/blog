@@ -1,0 +1,32 @@
+{{ define "main" }}
+  {{- $posts := where site.RegularPages "Section" "blog" -}}
+  {{- $posts = where $posts "Draft" false -}}
+  {{- $posts = $posts.ByDate.Reverse -}}
+  {{- $currentYear := "" -}}
+  {{- $currentMonth := "" -}}
+
+  <content>
+    <p class="archive-summary">A chronological index of published posts.</p>
+
+    {{ range $posts }}
+      {{- $year := .Date.Format "2006" -}}
+      {{- $month := .Date.Format "January" -}}
+
+      {{ if ne $year $currentYear }}
+        {{ $currentYear = $year }}
+        {{ $currentMonth = "" }}
+        <h3 class="archive-year">{{ $year }}</h3>
+      {{ end }}
+
+      {{ if ne $month $currentMonth }}
+        {{ $currentMonth = $month }}
+        <h4 class="archive-month">{{ $month }}</h4>
+      {{ end }}
+
+      <div class="archive-entry">
+        <span class="archive-date">{{ .Date.Format "Jan 2" }}</span>
+        <a class="archive-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </div>
+    {{ end }}
+  </content>
+{{ end }}

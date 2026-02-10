@@ -44,6 +44,11 @@
     {{ with .OutputFormats.Get "rss" -}}
       {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
     {{ end -}}
+    {{ with .OutputFormats.Get "json" -}}
+      {{ printf `<link rel="alternate" type="%s" href="%s" title="%s JSON Index" />` .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+    {{ end -}}
+    <link rel="alternate" type="text/plain" href="{{ "llms.txt" | relURL }}" title="{{ .Site.Title }} LLM Guide" />
+    <link rel="alternate" type="text/plain" href="{{ "llms-full.txt" | relURL }}" title="{{ .Site.Title }} Full LLM Guide" />
 
     {{ if .Param "math" }}
       {{ partialCached "math.html" . }}
@@ -55,7 +60,10 @@
     {{- partial "custom_head.html" . -}}
   </head>
 
-  <body class="{{ if .Params.toc }}has-page-toc{{ end }}">
+  <body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }}">
+    {{ if .IsPage }}
+      <div id="reading-progress" aria-hidden="true"></div>
+    {{ end }}
     <header>
       {{ partial "header.html" . }}
     </header>

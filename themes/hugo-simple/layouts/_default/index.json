@@ -1,14 +1,30 @@
-{{- $.Scratch.Set "list" slice -}}
-
-{{- /* Loop through section pages (like /blog/, /projects/) */ -}}
-{{- range where .Site.Pages "Kind" "section" -}}
-  {{- $.Scratch.Add "list" (dict
-    "uri" .Permalink
+{{- $pages := where .Site.RegularPages "Section" "blog" -}}
+{{- $pages = where $pages "Draft" false -}}
+{{- $pages = where $pages "WordCount" "gt" 0 -}}
+{{- $items := slice -}}
+{{- range $pages.ByDate.Reverse -}}
+  {{- $items = $items | append (dict
+    "url" .Permalink
     "title" .Title
-    "kind" .Kind
-    "page_count" (len .Pages)
+    "description" (.Description | default "")
+    "summary" (.Summary | plainify)
+    "date" (.Date.Format "2006-01-02")
+    "lastmod" (.Lastmod.Format "2006-01-02")
+    "section" .Section
+    "slug" (or .Params.slug .File.ContentBaseName)
+    "categories" (default (slice) .Params.categories)
+    "tags" (default (slice) .Params.tags)
+    "reading_time" .ReadingTime
+    "word_count" .WordCount
   ) -}}
 {{- end -}}
-
-{{- /* Now output everything as JSON */ -}}
-{{- $.Scratch.Get "list" | jsonify (dict "indent" "    ") -}}
+{{- dict
+  "site" (dict
+    "title" .Site.Title
+    "base_url" .Site.BaseURL
+    "generated_at" now
+  )
+  "count" (len $items)
+  "items" $items
+| jsonify (dict "indent" "  ")
+-}}

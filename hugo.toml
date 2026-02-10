@@ -4,6 +4,11 @@ title = 'Michael Muratov'
 theme='hugo-simple'
 enableRobotsTXT = true
 
+[outputs]
+home = ['HTML', 'RSS', 'JSON']
+section = ['HTML', 'RSS', 'JSON']
+taxonomy = ['HTML', 'RSS']
+
 [markup]
   defaultMarkdownHandler = 'goldmark' 
   _merge = 'deep'
@@ -37,6 +42,16 @@ enableRobotsTXT = true
           inline = [['\(', '\)']]
 
 [params]
+    description = "Personal log for writing and development"
+    canonicalBaseURL = "https://michaelmuratov.com"
+    [[params.social]]
+      name = "LinkedIn"
+      url = "https://www.linkedin.com/in/michaelmuratov/"
+      icon = "linkedin"
+    [[params.social]]
+      name = "X"
+      url = "https://x.com/MichaelMuratov"
+      icon = "x"
     [assets]
         disableHLJS = true
     math = true

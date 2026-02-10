@@ -4,13 +4,19 @@
 	alt: alternative text
 	caption: caption
 	mouse: what the image says when moused over ("title" in HTML)
+	preset|size: xs|sm|md|lg|xl|full (optional width preset)
 -->
 <div>
 {{- $title := .Get "mouse" | default (.Get "description") -}}
+{{- $preset := .Get "preset" | default (.Get "size") | default "md" -}}
+{{- $classes := slice "img-preset" (printf "img-preset-%s" $preset) -}}
+{{- with .Get "class" -}}
+  {{- $classes = $classes | append . -}}
+{{- end -}}
 <img src="{{ .Get "src" }}" 
-		 class="{{ .Get "class" }}"
-		 width="{{ .Get "width" }}"
-		 height="{{ .Get "height" }}"
+		 class="{{ delimit $classes " " }}"
+		 {{- with .Get "width" }} width="{{ . }}"{{ end -}}
+		 {{- with .Get "height" }} height="{{ . }}"{{ end -}}
 		 {{- with $title }} title="{{.}}"{{ end -}}
 	     {{- with .Get "alt" }} alt="{{.}}"{{ end -}}
 	>

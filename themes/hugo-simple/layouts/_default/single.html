@@ -1,6 +1,12 @@
 {{ define "main" }}
   {{ if eq .Type "blog" }}
     {{ if not .Params.menu }}
+      <p class="article-meta-row">
+        Last updated:
+        <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+          {{ .Lastmod.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
+        </time>
+      </p>
       {{ $tags := .GetTerms "tags" }}
       {{ $categories := .GetTerms "categories" }}
       {{ if or (gt (len $categories) 0) (gt (len $tags) 0) }}
@@ -33,13 +39,21 @@
   
   {{ .Content }}
 
-  {{ with site.RegularPages.Related . | first 3 }}
-    <!--Divider-->
-    <h5 style="margin: 1rem 0rem;">Related content:</h5>
-    <div class="card-grid">
-      {{ range . }}
-        {{ partial "page_card.html" . }}
-      {{ end }}
-    </div>
+  {{ if eq .Section "blog" }}
+    {{- $related := site.RegularPages.Related . | first 3 -}}
+    {{- if lt (len $related) 1 -}}
+      {{- $related = where site.RegularPages "Section" .Section -}}
+      {{- $related = where $related "Permalink" "ne" .Permalink -}}
+      {{- $related = first 3 ($related.ByDate.Reverse) -}}
+    {{- end -}}
+    {{ with $related }}
+      <!--Divider-->
+      <h5 style="margin: 1rem 0rem;">Related content:</h5>
+      <div class="card-grid">
+        {{ range . }}
+          {{ partial "page_card.html" . }}
+        {{ end }}
+      </div>
+    {{ end }}
   {{ end }}
 {{ end }}

@@ -13,6 +13,8 @@ Disallow: /*?*ref=
 
 # Allow everything else
 Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
 
 # Provide sitemap location
 Sitemap: {{ "sitemap.xml" | relURL }}
