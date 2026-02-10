@@ -1,7 +1,9 @@
 <section class="ai-assist" data-ai-assist data-page-title="{{ .Title }}" data-page-url="{{ .Permalink }}">
   <div class="ai-assist-row">
-    <span class="ai-assist-inline-text">Summarize page with AI</span>
-    <div class="ai-assist-actions">
+    <button type="button" class="ai-assist-toggle" data-ai-assist-toggle aria-expanded="false" aria-controls="ai-assist-actions">
+      Summarize page with AI
+    </button>
+    <div class="ai-assist-actions" id="ai-assist-actions" data-ai-assist-actions hidden>
       <a class="ai-assist-button" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
         data-ai-provider="ChatGPT" data-ai-url-template="https://chatgpt.com/?q=%s">
         <img src="{{ "img/image/chatgpt_logo.webp" | relURL }}" alt="" aria-hidden="true">

@@ -204,10 +204,27 @@ header>nav .header-search-results .header-search-result-link:visited {
   flex-wrap: wrap;
 }
 
-.ai-assist-inline-text {
+.ai-assist-toggle {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
   font-size: 0.82rem;
   color: var(--text-light);
   line-height: 1.2;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
+
+.ai-assist-toggle:hover {
+  color: var(--text);
+}
+
+.ai-assist-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .ai-assist-actions {
@@ -216,6 +233,10 @@ header>nav .header-search-results .header-search-result-link:visited {
   gap: 0.42rem;
   justify-content: center;
   align-items: center;
+}
+
+.ai-assist-actions[hidden] {
+  display: none !important;
 }
 
 .ai-assist-button,

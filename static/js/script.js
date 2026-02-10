@@ -648,8 +648,20 @@ function onScreenResize() {
         const title = section.dataset.pageTitle || document.title || 'This page';
         const url = section.dataset.pageUrl || window.location.href;
         const note = section.querySelector('[data-ai-assist-note]');
+        const toggle = section.querySelector('[data-ai-assist-toggle]');
+        const actions = section.querySelector('[data-ai-assist-actions]');
         const buttons = section.querySelectorAll('[data-ai-provider]');
         const prompt = buildPrompt(title, url);
+
+        if (toggle && actions) {
+            toggle.addEventListener('click', () => {
+                const expanded = toggle.getAttribute('aria-expanded') === 'true';
+                const next = !expanded;
+                toggle.setAttribute('aria-expanded', next ? 'true' : 'false');
+                actions.hidden = !next;
+                if (!next && note) note.hidden = true;
+            });
+        }
 
         buttons.forEach((button) => {
             button.addEventListener('click', async (event) => {
@@ -666,14 +678,18 @@ function onScreenResize() {
                 window.open(targetUrl, '_blank', 'noopener,noreferrer');
                 const ok = await copyText(prompt);
                 if (note) {
+                    note.hidden = false;
                     const prefix = provider === 'Gemini'
                         ? 'Copied prompt (paste into Gemini; autofill is not reliable):'
                         : 'Copied prompt:';
-                    note.hidden = false;
                     note.textContent = `${prefix}\n\n${prompt}`;
                     if (!ok) {
                         note.textContent = `Clipboard copy failed. Use this prompt manually:\n\n${prompt}`;
                     }
+                }
+                if (toggle && actions) {
+                    toggle.setAttribute('aria-expanded', 'true');
+                    actions.hidden = false;
                 }
             });
         });
