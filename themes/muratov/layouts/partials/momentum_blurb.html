@@ -9,23 +9,16 @@
   {{ $weeks := int 8 }}
   {{ $chartW := int 220 }}
   {{ $chartH := int 54 }}
-  {{ $weekday := int now.Weekday }}
-  {{ $startOfWeek := now.AddDate 0 0 (mul -1 (sub $weekday 1)) }}
-  {{ if eq $weekday 0 }}
-    {{ $startOfWeek = now.AddDate 0 0 -6 }}
-  {{ end }}
-  {{ $startOfWeek = time.AsTime ($startOfWeek.Format "2006-01-02") }}
-  {{ $startUnix := int (($startOfWeek.AddDate 0 0 (mul -7 (sub $weeks 1))).Unix) }}
+  {{ $windowStart := time.AsTime ((now.AddDate 0 0 -56).Format "2006-01-02") }}
   {{ $counts := slice }}
   {{ $maxCount := int 1 }}
   {{ range seq 0 (sub $weeks 1) }}
     {{ $i := . }}
-    {{ $bucketStart := add $startUnix (mul $i 604800) }}
-    {{ $bucketEnd := add $bucketStart 604800 }}
+    {{ $bucketStart := $windowStart.AddDate 0 0 (mul $i 7) }}
+    {{ $bucketEnd := $bucketStart.AddDate 0 0 7 }}
     {{ $count := int 0 }}
     {{ range $posts }}
-      {{ $lastmodUnix := int .Lastmod.Unix }}
-      {{ if and (ge $lastmodUnix $bucketStart) (lt $lastmodUnix $bucketEnd) }}
+      {{ if and (ge .Lastmod $bucketStart) (lt .Lastmod $bucketEnd) }}
         {{ $count = add $count 1 }}
       {{ end }}
     {{ end }}
