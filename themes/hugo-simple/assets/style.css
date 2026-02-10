@@ -1,5 +1,18 @@
 body {
-  -webkit-text-size-adjust: 100%; /* prevent Mobile Safari from adjusting font sizes */
+  -webkit-text-size-adjust: 100%;
+  /* prevent Mobile Safari from adjusting font sizes */
+}
+
+content {
+  padding-top: 10px;
+}
+
+body > header {
+  padding: 0 !important;
+}
+
+header > nav {
+  padding: 0 !important;
 }
 
 nav a.current {
@@ -16,17 +29,80 @@ ul.blog-posts {
   padding-left: 0;
 }
 
-ul.blog-posts > li {
+ul.blog-posts>li {
   list-style-type: none;
   display: flex;
 }
 
-ul.blog-posts > li span {
+ul.blog-posts>li span {
   flex: 0 0 130px;
   color: var(--text-light);
 }
 
-nav#TableOfContents > ul {
+.list-link-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 0 0 1.25rem 0;
+}
+
+.list-total-posts {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem 0;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.list-total-posts-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9rem;
+  padding: 0.05rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--accent-bg);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.list-link-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--standard-border-radius);
+  padding: 0.45rem 0.65rem;
+  color: var(--text);
+  background: var(--accent-bg);
+}
+
+.list-link-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.list-link-button-title {
+  font-weight: 600;
+}
+
+.list-link-button-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.8rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  border: 1px solid var(--border);
+  color: var(--text-light);
+}
+
+nav#TableOfContents>ul {
   margin-block-start: 0;
 }
 
@@ -48,33 +124,110 @@ div.highlight pre span {
   color: inherit;
 }
 
+.back-nav {
+  margin: 0.25rem 0 1rem 0;
+}
+
+.back-nav-btn {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: var(--standard-border-radius);
+  color: var(--text);
+  padding: 0.3rem 0.7rem;
+  text-decoration: none;
+}
+
+.back-nav-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.side-nav {
+  margin: 0;
+  width: auto;
+}
+
+.header-quick-nav {
+  margin: 0.35rem auto 0;
+  width: fit-content;
+}
+
+.side-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.55rem;
+}
+
+.side-nav-list li {
+  margin: 0;
+}
+
+.side-nav-list a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 0;
+  border-radius: 999px;
+  width: 2rem;
+  height: 2rem;
+  color: var(--text-light);
+  font-size: 1.1rem;
+}
+
+.side-nav-list a:hover {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.side-nav-list a[aria-disabled="true"] {
+  pointer-events: none;
+  opacity: 0.35;
+}
+
 .home-layout {
-  display: grid;
-  gap: 2rem;
-  margin: 1.5rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
 }
 
 .home-hero {
-  background: linear-gradient(135deg, var(--accent-bg), color-mix(in srgb, var(--accent) 9%, var(--accent-bg)));
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.5rem;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 1.5rem 0;
+  box-shadow: none;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
 .home-eyebrow {
   margin: 0;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--text-light);
+  color: var(--accent);
 }
 
 .home-hero h2 {
-  margin: 0.4rem 0 0.7rem;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin: 0;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
   line-height: 1.1;
+  background: linear-gradient(to right, var(--text), var(--text-light));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.2em;
+  /* prevent descender clipping */
 }
+
 
 .home-summary {
   margin: 0;
@@ -83,10 +236,12 @@ div.highlight pre span {
 }
 
 .home-cta-row {
-  margin-top: 1rem;
+  margin: 0;
   display: flex;
-  gap: 0.7rem;
+  justify-content: center;
+  gap: 1rem;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .home-link-button {
@@ -95,11 +250,9 @@ div.highlight pre span {
   color: var(--text);
   padding: 0.5rem 0.9rem;
   text-decoration: none;
-}
-
-.home-link-button:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  line-height: normal;
+  /* Match .button from simple.css */
+  display: inline-block;
 }
 
 .home-section-head {
@@ -107,13 +260,18 @@ div.highlight pre span {
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
 }
 
 .home-section-head h3 {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   margin: 0;
+  font-weight: 800;
+  /* Increased from 700 */
 }
+
 
 .home-grid {
   display: grid;
@@ -126,6 +284,10 @@ div.highlight pre span {
 
 .home-grid-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-grid-1 {
+  grid-template-columns: 1fr;
 }
 
 .home-card,
@@ -142,9 +304,8 @@ div.highlight pre span {
 
 .home-card img {
   width: 100%;
-  max-height: 260px;
-  object-fit: contain;
-  background: color-mix(in srgb, var(--accent) 6%, var(--accent-bg));
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   margin: 0 0 0.6rem 0;
 }
 
@@ -166,9 +327,8 @@ div.highlight pre span {
 
 .home-featured-card img {
   width: 100%;
-  max-height: 480px;
-  object-fit: contain;
-  background: color-mix(in srgb, var(--accent) 6%, var(--accent-bg));
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
   margin: 0;
 }
 
@@ -262,6 +422,14 @@ div.highlight pre span {
 }
 
 @media only screen and (max-width: 900px) {
+  .home-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .home-side-column {
+    position: static;
+  }
+
   .home-grid-3,
   .home-grid-2 {
     grid-template-columns: 1fr;

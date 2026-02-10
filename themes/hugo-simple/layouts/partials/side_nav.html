@@ -1,0 +1,44 @@
+<nav class="side-nav header-quick-nav" aria-label="Section navigation">
+  <ul class="side-nav-list" role="list">
+    <li>
+      <a href="{{ relURL "/" }}" title="Home" aria-label="Home">
+        <span aria-hidden="true">⌂</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ relURL "blog/" }}" title="All Posts" aria-label="All Posts">
+        <span aria-hidden="true">◫</span>
+      </a>
+    </li>
+    {{- $upLink := relURL "blog/" -}}
+    {{- $upDisabled := false -}}
+    {{ if .IsHome }}
+      {{ $upLink = "#" }}
+      {{ $upDisabled = true }}
+    {{ end }}
+    {{ if .IsPage }}
+      {{ with .CurrentSection }}
+        {{ with .Parent }}
+          {{ $upLink = .RelPermalink }}
+        {{ else }}
+          {{ $upLink = .RelPermalink }}
+        {{ end }}
+      {{ end }}
+    {{ else if .IsSection }}
+      {{ with .Parent }}
+        {{ $upLink = .RelPermalink }}
+      {{ else }}
+        {{ $upLink = relURL "blog/" }}
+      {{ end }}
+    {{ else if and (eq .Kind "taxonomy") (eq .Data.Plural "categories") }}
+      {{ $upLink = relURL "blog/" }}
+    {{ else if and (eq .Kind "taxonomy") (eq .Data.Plural "tags") }}
+      {{ $upLink = relURL "blog/" }}
+    {{ end }}
+    <li>
+      <a href="{{ $upLink }}" title="Up one level" aria-label="Up one level" {{ if $upDisabled }}aria-disabled="true" tabindex="-1"{{ end }}>
+        <span aria-hidden="true">↖</span>
+      </a>
+    </li>
+  </ul>
+</nav>

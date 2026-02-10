@@ -1,7 +1,4 @@
 {{ define "main" }}
-<button onclick="goUpDirectory()" style="position: absolute; top: 1rem; left: 1rem; z-index: 1000;">
-  ⬅ Back
-</button>
   {{ if eq .Type "blog" }}
     {{ if not .Params.menu }}
       {{ $tags := .GetTerms "tags" }}

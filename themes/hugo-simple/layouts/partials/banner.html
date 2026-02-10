@@ -8,7 +8,7 @@
 
 {{- $banner := $img -}}
 {{- if eq $img.ResourceType "image" -}}
-  {{- $banner = $img.Resize "1280x webp q82" -}}
+  {{- $banner = $img.Fill "1600x900 smart webp q82" -}}
 {{- end -}}
 
 <img src="{{ $banner.RelPermalink }}"

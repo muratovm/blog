@@ -814,19 +814,6 @@ sub {
   border-style: dashed;
 }
 
-.link_button{
-  display: inline-block;
-  text-decoration: none;
-  border-radius: var(--standard-border-radius);
-  padding: 0.3rem 0.5rem;
-  border-width: 2px;
-  color: var(--accent);
-  border-color: var(--accent);
-  border-style: dashed;
-  border-width: 0.5px;
-  min-width: 150px;
-}
-
 .blog-separator {
   width: 2px;
   margin-right: 20px;

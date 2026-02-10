@@ -1,8 +1,4 @@
 {{ define "main" }}
-<button onclick="goUpDirectory()" style="position: absolute; top: 1rem; left: 1rem; z-index: 1000;">
-  ⬅ Back
-</button>
-
   <content>
     {{ if .Data.Singular }}
       <h3>Filtering for "{{ .Title }}"</h3>
@@ -18,19 +14,24 @@
     {{ $total := len .RegularPagesRecursive }}
     {{ if eq $total 0 }}
     {{ else }}
-      <p style="text-align: start;">Total Posts: {{ $total }}</p>
+      <p class="list-total-posts">
+        <span>Total Posts</span>
+        <span class="list-total-posts-count">{{ $total }}</span>
+      </p>
     {{ end }}
 
-    <!--If another list page is in here -->
-    {{- $pages := union .Pages (where .Pages "Section" "blog") -}}
-    {{ $sortedPages := sort $pages "Params.order" "asc"}}
-
-    {{ range $sortedPages }}
-      {{ if .IsSection }}
-        <a class="link_button" href={{ .RelPermalink }}>
-          ➥ {{ .Title }} <div style="display:inline;"><h6 style="margin:0px; text-align: end;">{{ len .RegularPagesRecursive }}</h6></div>
-        </a>
-      {{ end }}
+    <!-- Child section quick links -->
+    {{- $sections := where .Pages "IsSection" true -}}
+    {{- $sortedSections := sort $sections "Params.order" "asc" -}}
+    {{ if gt (len $sortedSections) 0 }}
+      <div class="list-link-buttons">
+        {{ range $sortedSections }}
+          <a class="list-link-button" href="{{ .RelPermalink }}">
+            <span class="list-link-button-title">➥ {{ .Title }}</span>
+            <span class="list-link-button-count">{{ len .RegularPagesRecursive }}</span>
+          </a>
+        {{ end }}
+      </div>
     {{ end }}
     
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
