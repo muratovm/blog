@@ -1,3 +1,170 @@
 {{ define "main" }}
-  {{ .Content }}
+  {{ $posts := where site.RegularPages "Section" "blog" }}
+  {{ $postsByDate := $posts.ByDate.Reverse }}
+  {{ $featured := first 1 $postsByDate }}
+
+  {{ $startSlugs := slice "how-this-blog-works" "binary-search-python" "toy-car-ml" }}
+  {{ $startPages := slice }}
+  {{ range $startSlugs }}
+    {{ $matches := where $posts "Params.slug" . }}
+    {{ if gt (len $matches) 0 }}
+      {{ $startPages = $startPages | append (index $matches 0) }}
+    {{ end }}
+  {{ end }}
+
+  {{ $guides := slice }}
+  {{ $security := slice }}
+  {{ $builds := slice }}
+  {{ $notes := slice }}
+  {{ range $postsByDate }}
+    {{ if in .RelPermalink "/blog/guides/security/" }}
+      {{ $security = $security | append . }}
+    {{ else if in .RelPermalink "/blog/guides/" }}
+      {{ $guides = $guides | append . }}
+    {{ else if in .RelPermalink "/blog/builds/" }}
+      {{ $builds = $builds | append . }}
+    {{ else if in .RelPermalink "/blog/notes/" }}
+      {{ $notes = $notes | append . }}
+    {{ end }}
+  {{ end }}
+
+  <main class="home-layout">
+    <section class="home-hero">
+      <p class="home-eyebrow">Personal Blog</p>
+      <h2>Security, AI, and Practical Engineering Notes</h2>
+      <p class="home-summary">
+        A weekly stream of field notes, guides, and build logs from hands-on work.
+      </p>
+      <div class="home-cta-row">
+        <a class="button" href="{{ "blog/" | relURL }}">Latest Posts</a>
+        <a class="home-link-button" href="{{ "about/" | relURL }}">Start Here</a>
+      </div>
+    </section>
+
+    <section class="home-start-here">
+      <div class="home-section-head">
+        <h3>Start Here</h3>
+      </div>
+      <div class="home-grid home-grid-3">
+        {{ range $startPages }}
+          {{ $page := . }}
+          <article class="home-card">
+            {{ $cardImg := .Resources.GetMatch .Params.image }}
+            {{ if not $cardImg }}
+              {{ $cardImg = resources.Get (printf "banners/%s" .Params.image) }}
+            {{ end }}
+            {{ if and $cardImg (eq $cardImg.ResourceType "image") }}
+              {{ $cardImg = $cardImg.Fit "720x420 webp q80" }}
+            {{ end }}
+            {{ with $cardImg }}
+              <a href="{{ $page.RelPermalink }}">
+                <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" alt="{{ $page.Title }}">
+              </a>
+            {{ end }}
+            <h4><a href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
+            <p>{{ .Description }}</p>
+          </article>
+        {{ end }}
+      </div>
+    </section>
+
+    <section class="home-featured">
+      <div class="home-section-head">
+        <h3>Latest Feature</h3>
+        <a href="{{ "blog/" | relURL }}">Browse all posts</a>
+      </div>
+      {{ range $featured }}
+        {{ $page := . }}
+        <article class="home-featured-card">
+          {{ $featureImg := .Resources.GetMatch .Params.image }}
+          {{ if not $featureImg }}
+            {{ $featureImg = resources.Get (printf "banners/%s" .Params.image) }}
+          {{ end }}
+          {{ if and $featureImg (eq $featureImg.ResourceType "image") }}
+            {{ $featureImg = $featureImg.Resize "1100x webp q82" }}
+          {{ end }}
+          {{ with $featureImg }}
+            <a href="{{ $page.RelPermalink }}">
+              <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" loading="lazy" alt="{{ $page.Title }}">
+            </a>
+          {{ end }}
+          <div class="home-featured-body">
+            <p class="home-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
+            <h4><a href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
+            <p>{{ .Description }}</p>
+          </div>
+        </article>
+      {{ end }}
+    </section>
+
+    <section class="home-tracks">
+      <div class="home-section-head">
+        <h3>Explore by Track</h3>
+      </div>
+      <div class="home-grid home-grid-2">
+        <article class="home-track">
+          <div class="home-track-head">
+            <h4>Guides</h4>
+            <a href="{{ "blog/guides/" | relURL }}">View all</a>
+          </div>
+          <ul>
+            {{ range first 3 $guides }}
+              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "Jan 2" }}</span></li>
+            {{ end }}
+          </ul>
+        </article>
+
+        <article class="home-track">
+          <div class="home-track-head">
+            <h4>Security</h4>
+            <a href="{{ "blog/guides/security/" | relURL }}">View all</a>
+          </div>
+          <ul>
+            {{ range first 3 $security }}
+              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "Jan 2" }}</span></li>
+            {{ end }}
+          </ul>
+        </article>
+
+        <article class="home-track">
+          <div class="home-track-head">
+            <h4>Builds</h4>
+            <a href="{{ "blog/builds/" | relURL }}">View all</a>
+          </div>
+          <ul>
+            {{ range first 3 $builds }}
+              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "Jan 2" }}</span></li>
+            {{ end }}
+          </ul>
+        </article>
+
+        <article class="home-track">
+          <div class="home-track-head">
+            <h4>Notes</h4>
+            <a href="{{ "blog/notes/" | relURL }}">View all</a>
+          </div>
+          <ul>
+            {{ range first 3 $notes }}
+              <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "Jan 2" }}</span></li>
+            {{ end }}
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="home-recent">
+      <div class="home-section-head">
+        <h3>Recent Activity</h3>
+      </div>
+      <ul class="home-recent-list">
+        {{ range first 6 $postsByDate }}
+          <li>
+            <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <em>{{ .ReadingTime }} min read</em>
+          </li>
+        {{ end }}
+      </ul>
+    </section>
+  </main>
 {{ end }}

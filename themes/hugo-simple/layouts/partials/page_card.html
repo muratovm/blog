@@ -16,7 +16,7 @@
 
 {{ $cardImage := $img }}
 {{ if and $img (eq $img.ResourceType "image") }}
-  {{ $cardImage = $img.Fill "640x360 webp q80" }}
+  {{ $cardImage = $img.Fit "640x360 webp q80" }}
 {{ end }}
 
 <div class="page-card">

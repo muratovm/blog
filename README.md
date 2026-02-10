@@ -10,7 +10,7 @@ This site is built with [Hugo](https://gohugo.io/) using the [hugo-simple](https
 
 ## Development
 1. Install the prerequisites.
-2. Run `hugo server` to start a local development server at `http://localhost:1313`.
+2. Run `npm run dev` to start a local development server at `http://127.0.0.1:1313` with a local `baseURL`.
 3. Build the site for production by running `npm run build:site`. The generated files will appear in the `public/` directory.
 
 ## Article Workflow

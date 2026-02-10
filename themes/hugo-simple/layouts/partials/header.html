@@ -1,6 +1,10 @@
 <nav>{{- partial "nav.html" . -}}</nav>
 
-<h1>{{ .Title }}</h1>
+{{- $heading := .Title -}}
+{{- if .IsHome -}}
+  {{- $heading = .Site.Title -}}
+{{- end -}}
+<h1>{{ $heading }}</h1>
 {{ with .Description }}
   <p>{{ . }}</p>
   

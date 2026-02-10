@@ -12,4 +12,4 @@ hugo --cacheDir "$cache_dir" --cleanDestinationDir --gc --minify
 
 echo
 echo "Checks passed. Starting preview server at http://localhost:1313/"
-exec hugo server --cacheDir "$cache_dir" --bind 127.0.0.1 --port 1313 --disableFastRender
+exec hugo server --cacheDir "$cache_dir" --bind 127.0.0.1 --port 1313 --baseURL "http://127.0.0.1:1313/" --disableFastRender
