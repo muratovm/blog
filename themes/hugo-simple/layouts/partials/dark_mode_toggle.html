@@ -17,6 +17,7 @@
             set_toggle_properties(body, themeToggle);
             const newTheme = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
             localStorage.setItem('theme', newTheme);
+            window.dispatchEvent(new CustomEvent('site-theme-change', { detail: { theme: newTheme } }));
         });
 
         // Apply saved or system theme
@@ -34,6 +35,7 @@
         }
 
         let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
+        window.dispatchEvent(new CustomEvent('site-theme-change', { detail: { theme: current_mode } }));
 
         set_toggle_properties(body, themeToggle);
     });
@@ -63,6 +65,7 @@
 
 
         let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
+        window.dispatchEvent(new CustomEvent('site-theme-change', { detail: { theme: current_mode } }));
 
     });
 </script>

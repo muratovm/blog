@@ -273,3 +273,66 @@ function onScreenResize() {
         init();
     }
 })();
+
+(function initGiscusMount() {
+    function currentSiteTheme() {
+        const body = document.body;
+        return body && body.classList.contains('dark-mode') ? 'dark' : 'light';
+    }
+
+    function mapTheme(theme) {
+        if (theme === 'dark-mode' || theme === 'dark') return 'dark';
+        return 'light';
+    }
+
+    function mountOne(section, explicitTheme) {
+        const mount = section.querySelector('.article-comments-mount');
+        if (!mount) return;
+
+        const theme = mapTheme(explicitTheme || currentSiteTheme());
+        if (section.dataset.currentTheme === theme && mount.querySelector('iframe.giscus-frame')) {
+            return;
+        }
+
+        mount.innerHTML = '';
+        const script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        script.async = true;
+        script.crossOrigin = 'anonymous';
+        script.dataset.repo = section.dataset.repo || '';
+        script.dataset.repoId = section.dataset.repoId || '';
+        script.dataset.category = section.dataset.category || '';
+        script.dataset.categoryId = section.dataset.categoryId || '';
+        script.dataset.mapping = section.dataset.mapping || 'pathname';
+        script.dataset.strict = section.dataset.strict || '0';
+        script.dataset.reactionsEnabled = section.dataset.reactionsEnabled || '1';
+        script.dataset.emitMetadata = section.dataset.emitMetadata || '0';
+        script.dataset.inputPosition = section.dataset.inputPosition || 'top';
+        script.dataset.theme = theme;
+        script.dataset.lang = section.dataset.lang || 'en';
+        script.dataset.loading = section.dataset.loading || 'lazy';
+        mount.appendChild(script);
+        section.dataset.currentTheme = theme;
+    }
+
+    function remountAll(explicitTheme) {
+        const sections = document.querySelectorAll('.article-comments[data-comments-provider="giscus"]');
+        if (!sections.length) return;
+        sections.forEach((section) => mountOne(section, explicitTheme));
+    }
+
+    function init() {
+        remountAll();
+        window.addEventListener('site-theme-change', (event) => {
+            const theme = event && event.detail ? event.detail.theme : undefined;
+            remountAll(theme);
+        });
+        window.addEventListener('pageshow', () => remountAll());
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
