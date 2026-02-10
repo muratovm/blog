@@ -2,7 +2,7 @@
 title: How this Blog Works
 description: Setup notes for this Hugo blog, including tooling, deployment, and workflow.
 date: 2025-04-22
-lastmod: 2025-04-20
+lastmod: 2026-02-10
 slug: how-this-blog-works
 categories:
   - cloud
@@ -89,11 +89,24 @@ Every time I make a commit on Github the CI/CD pipeline syncs the changes to the
 
 The version control, rich text editor and cloud deployment make this blog setup seamless, cost efficient and salable with minimal setup.
 
-### Themes
+### Theme and Visual System
 
-Right now I'm using the [Hugo Simple](https://github.com/maolonglong/hugo-simple/) theme and dumping all of my writing into sequential articles — meanwhile borrowing elements from other themes and my own design choices.
+This site started on [Hugo Simple](https://github.com/maolonglong/hugo-simple/) and has now diverged into my own custom theme (`themes/muratov`) with project-specific layouts and styling.
 
-My credits section is sitting in my private git repo but I'll be working on making it an official page.
+The front page is organized into:
+
+- A **Latest Feature** card
+- A curated **Pinned** section
+- **Explore by Track** (Builds, Guides, Notes)
+- **Recent Activity** and **Recently Updated**
+- A dedicated **Archive** entry point
+
+Two status-oriented UI components near the top:
+
+- **In Progress**: the current focus and target date
+- **Momentum**: weekly publishing/edit counts and an 8-week sparkline trend
+
+Giscus comments were added to make it easier for readers to engage with the content.
 
 ### Metadata
 

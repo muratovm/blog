@@ -1,7 +1,7 @@
 baseURL = 'https://michaelmuratov.com'
 languageCode = 'en-us'
 title = 'Michael Muratov'
-theme='hugo-simple'
+theme='muratov'
 enableRobotsTXT = true
 
 [outputs]
@@ -78,6 +78,10 @@ series = "series"
       name = "X"
       url = "https://x.com/MichaelMuratov"
       icon = "x"
+    [[params.social]]
+      name = "GitHub"
+      url = "https://github.com/muratovm"
+      icon = "github"
     [assets]
         disableHLJS = true
     math = true
