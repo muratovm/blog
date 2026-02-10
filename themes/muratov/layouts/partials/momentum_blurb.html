@@ -1,38 +1,32 @@
 {{ $posts := where site.RegularPages "Section" "blog" }}
 {{ $posts = where $posts "Draft" false }}
 {{ if gt (len $posts) 0 }}
-  {{ $zero := int 0 }}
-  {{ $one := int 1 }}
-  {{ $minusOne := int -1 }}
-  {{ $minusSeven := int -7 }}
-  {{ $daySeconds := int 86400 }}
-  {{ $weekSeconds := int 604800 }}
   {{ $weekStart := now.AddDate 0 0 -7 }}
   {{ $publishedWeek := where $posts "Date" "ge" $weekStart }}
   {{ $editedWeek := where $posts "Lastmod" "ge" $weekStart }}
   {{ $latest := index (sort $posts "Lastmod" "desc") 0 }}
-  {{ $daysSince := div (sub (int now.Unix) (int $latest.Lastmod.Unix)) $daySeconds }}
+  {{ $daysSince := div (sub (int now.Unix) (int $latest.Lastmod.Unix)) 86400 }}
   {{ $weeks := int 8 }}
   {{ $chartW := int 220 }}
   {{ $chartH := int 54 }}
   {{ $weekday := int now.Weekday }}
-  {{ $startOfWeek := now.AddDate 0 0 (mul $minusOne (sub $weekday $one)) }}
-  {{ if eq $weekday $zero }}
+  {{ $startOfWeek := now.AddDate 0 0 (mul -1 (sub $weekday 1)) }}
+  {{ if eq $weekday 0 }}
     {{ $startOfWeek = now.AddDate 0 0 -6 }}
   {{ end }}
   {{ $startOfWeek = time.AsTime ($startOfWeek.Format "2006-01-02") }}
-  {{ $startUnix := int (($startOfWeek.AddDate 0 0 (mul $minusSeven (sub $weeks $one))).Unix) }}
+  {{ $startUnix := int (($startOfWeek.AddDate 0 0 (mul -7 (sub $weeks 1))).Unix) }}
   {{ $counts := slice }}
   {{ $maxCount := int 1 }}
-  {{ range seq $zero (sub $weeks $one) }}
+  {{ range seq 0 (sub $weeks 1) }}
     {{ $i := . }}
-    {{ $bucketStart := add $startUnix (mul $i $weekSeconds) }}
-    {{ $bucketEnd := add $bucketStart $weekSeconds }}
+    {{ $bucketStart := add $startUnix (mul $i 604800) }}
+    {{ $bucketEnd := add $bucketStart 604800 }}
     {{ $count := int 0 }}
     {{ range $posts }}
       {{ $lastmodUnix := int .Lastmod.Unix }}
       {{ if and (ge $lastmodUnix $bucketStart) (lt $lastmodUnix $bucketEnd) }}
-        {{ $count = add $count $one }}
+        {{ $count = add $count 1 }}
       {{ end }}
     {{ end }}
     {{ $counts = $counts | append $count }}
@@ -40,7 +34,7 @@
       {{ $maxCount = $count }}
     {{ end }}
   {{ end }}
-  {{ $stepX := div (sub $chartW $one) (sub $weeks $one) }}
+  {{ $stepX := div (sub $chartW 1) (sub $weeks 1) }}
   {{ $points := slice }}
   {{ $areaPoints := slice (printf "0,%d" (sub $chartH 5)) }}
   {{ $lastPoint := "" }}
@@ -53,7 +47,7 @@
     {{ $areaPoints = $areaPoints | append $pt }}
     {{ $lastPoint = $pt }}
   {{ end }}
-  {{ $areaPoints = $areaPoints | append (printf "%d,%d" (sub $chartW $one) (sub $chartH 5)) }}
+  {{ $areaPoints = $areaPoints | append (printf "%d,%d" (sub $chartW 1) (sub $chartH 5)) }}
   {{ $lastParts := split $lastPoint "," }}
   {{ $lastX := index $lastParts 0 }}
   {{ $lastY := index $lastParts 1 }}
