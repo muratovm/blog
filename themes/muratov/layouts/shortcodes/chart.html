@@ -1,0 +1,22 @@
+{{- $id := .Get "id" | default (printf "chart-%d" now.UnixNano) -}}
+{{- $height := .Get "height" | default "260" -}}
+{{- $class := .Get "class" | default "" -}}
+{{- $config := .Get "config" -}}
+{{- if not $config -}}
+  {{- $config = trim .Inner "\n\r\t " -}}
+{{- end -}}
+{{- $configEncoded := $config | base64Encode -}}
+<figure class="viz-figure viz-chart{{ with $class }} {{ . }}{{ end }}">
+  <div class="viz-chart-wrap" style="height: {{ $height }}px;">
+    <canvas id="{{ $id }}" class="viz-chart-canvas" data-chart="true" data-chart-config="{{ $configEncoded }}" aria-label="{{ .Get "ariaLabel" | default "Data chart" }}" role="img"></canvas>
+  </div>
+  {{- with .Get "caption" -}}
+    <figcaption>{{ . }}</figcaption>
+  {{- end -}}
+  {{- with .Get "source" -}}
+    <p class="viz-source">
+      Source:
+      {{- with $.Get "sourceLink" -}}<a href="{{ . }}">{{ $.Get "source" }}</a>{{- else -}}{{ . }}{{- end -}}
+    </p>
+  {{- end -}}
+</figure>

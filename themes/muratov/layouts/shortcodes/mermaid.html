@@ -1,0 +1,16 @@
+{{- $class := .Get "class" | default "" -}}
+{{- $align := .Get "align" | default "left" -}}
+<figure class="viz-figure viz-mermaid{{ with $class }} {{ . }}{{ end }} viz-align-{{ $align }}">
+  <div class="viz-mermaid-block mermaid">
+{{ .Inner | safeHTML }}
+  </div>
+  {{- with .Get "caption" -}}
+    <figcaption>{{ . }}</figcaption>
+  {{- end -}}
+  {{- with .Get "source" -}}
+    <p class="viz-source">
+      Source:
+      {{- with $.Get "sourceLink" -}}<a href="{{ . }}">{{ $.Get "source" }}</a>{{- else -}}{{ . }}{{- end -}}
+    </p>
+  {{- end -}}
+</figure>

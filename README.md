@@ -16,6 +16,9 @@ It is set up for:
 - Added a homepage `Momentum` component with 7-day counters + 8-week sparkline
 - Reduced `Latest Feature` card height to keep top-of-home content visible with new status widgets
 - Improved small-screen related content cards to use full column width
+- Added a dedicated `/search/` page with client-side search powered by Hugo `/index.json`
+- Added random prepopulated search suggestions + reroll button on the search page
+- Moved search entry to the header icon navigation
 - Enabled per-article comments with Giscus (GitHub Discussions-backed)
 - Added duplicated top-of-article series navigation and a `Jump to Start` action in the series nav header
 - Ongoing custom palette and interaction tuning lives in:
@@ -54,6 +57,8 @@ Local server is pinned to:
   - Draft posts only (`draft: true` before publish)
 - `content/archive/_index.md`
   - Archive landing content
+- `content/search/_index.md`
+  - Dedicated search page metadata
 - `content/about.md`, `content/activity.md`
   - Static top-level pages
 
@@ -79,6 +84,10 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
   - Breadcrumb navigation (rendered globally for non-home pages)
 - `themes/muratov/layouts/partials/nav.html`
   - Global header nav
+- `themes/muratov/layouts/partials/side_nav.html`
+  - Header icon navigation (home, posts, search, up-level)
+- `themes/muratov/layouts/search/list.html`
+  - Search page template and results mount
 - `themes/muratov/layouts/partials/footer.html`
   - Footer + social links rendering
 - `themes/muratov/layouts/partials/status_blurb.html`
@@ -106,9 +115,39 @@ Located in `themes/muratov/layouts/shortcodes/`:
 - `figure.html`
 - `centered-image.html`
 - `canvas.html`
+- `mermaid.html`
+- `chart.html`
 
 Image shortcodes support size presets:
 - `xs`, `sm`, `md`, `lg`, `xl`, `full`
+
+Visual shortcode notes:
+- `mermaid.html` renders native Mermaid diagrams from shortcode body content
+- `chart.html` renders Chart.js charts from inline JSON config (`config` param or shortcode body)
+- `figure.html` supports optional `source` and `sourceLink` metadata for scientific/technical references
+
+### Diagrams and Charts
+- Mermaid diagrams:
+```md
+{{< mermaid caption="System flow" >}}
+flowchart LR
+  A[Idea] --> B[Draft]
+  B --> C[Publish]
+{{< /mermaid >}}
+```
+- Chart.js charts:
+```md
+{{< chart id="trend-sample" height="240" caption="Weekly trend" >}}
+{
+  "type": "line",
+  "data": {
+    "labels": ["W1","W2","W3","W4"],
+    "datasets": [{ "label": "Edits", "data": [1,2,3,2] }]
+  },
+  "options": { "responsive": true, "maintainAspectRatio": false }
+}
+{{< /chart >}}
+```
 
 ## Machine-Readable Endpoints
 Configured outputs include HTML/RSS/JSON for home and sections.
@@ -138,6 +177,10 @@ Notable settings:
 - Change homepage layout/order: `themes/muratov/layouts/index.html`
 - Change `/blog/` main hub card layout: `themes/muratov/layouts/blog/list.html`
 - Change article comments behavior: `themes/muratov/layouts/partials/comments.html` and `hugo.toml` (`[params.comments]`)
+- Change Mermaid/Chart rendering runtime: `static/js/script.js`
+- Change visual shortcode presentation styles: `themes/muratov/assets/style.css`
+- Change search page layout: `themes/muratov/layouts/search/list.html`
+- Change search indexing fields: `themes/muratov/layouts/_default/index.json`
 - Change footer social links: `hugo.toml` -> `[[params.social]]`
 - Change breadcrumbs behavior: `themes/muratov/layouts/partials/breadcrumbs.html`
 - Change series pages/layout: `themes/muratov/layouts/series/`

@@ -3,10 +3,16 @@
 	link: url the image directs to
 	alt: alternative text
 	caption: caption
+	source: source label below caption
+	sourceLink: optional URL for source
 	mouse: what the image says when moused over ("title" in HTML)
 	preset|size: xs|sm|md|lg|xl|full (optional width preset)
 -->
-<figure {{ with .Get "class" }}class="{{.}}"{{ end -}}>
+{{- $figureClasses := slice "viz-figure" -}}
+{{- with .Get "class" -}}
+  {{- $figureClasses = $figureClasses | append . -}}
+{{- end -}}
+<figure class="{{ delimit $figureClasses " " }}">
 	{{- $preset := .Get "preset" | default (.Get "size") | default "md" -}}
 	{{- $imgClasses := slice "img-preset" (printf "img-preset-%s" $preset) -}}
 	{{- with .Get "link"}}<a href="{{.}}">{{ end -}}
@@ -22,5 +28,11 @@
 	<figcaption>
 	{{- . -}}
 	</figcaption>
+	{{- end -}}
+	{{- with .Get "source" -}}
+	<p class="viz-source">
+		Source:
+		{{- with $.Get "sourceLink" -}}<a href="{{ . }}">{{ $.Get "source" }}</a>{{- else -}}{{ . }}{{- end -}}
+	</p>
 	{{- end -}}
 </figure>

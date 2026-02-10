@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <content class="search-page">
+    <p class="search-page-copy">Type at least 2 characters to search all published posts.</p>
+    <div class="header-search search-page-search" data-search-root data-search-index="{{ "index.json" | relURL }}">
+      <div class="search-page-controls">
+        <label class="sr-only" for="site-search-page">Search posts</label>
+        <input id="site-search-page" class="header-search-input" type="search" autocomplete="off" spellcheck="false" placeholder="Search posts..." />
+        <button type="button" class="search-reroll-button" data-search-reroll aria-label="Show different random suggestions">↻</button>
+      </div>
+      <ul class="header-search-results" data-search-results hidden></ul>
+    </div>
+  </content>
+{{ end }}

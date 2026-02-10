@@ -4,7 +4,7 @@
 {{- $items := slice -}}
 {{- range $pages.ByDate.Reverse -}}
   {{- $items = $items | append (dict
-    "url" .Permalink
+    "url" .RelPermalink
     "title" .Title
     "description" (.Description | default "")
     "summary" (.Summary | plainify)

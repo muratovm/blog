@@ -38,7 +38,7 @@
     "check:drafts": "./scripts/validate-drafts.sh",
     "check:assets": "./scripts/validate-assets.sh",
     "check:strict": "npm run check:posts && npm run check:drafts && npm run check:assets && npm run build:site",
-    "dev": "hugo server --cacheDir \"$PWD/.hugo_cache\" --bind 127.0.0.1 --port 1313 --baseURL \"http://127.0.0.1:1313/\" --disableFastRender",
+    "dev": "hugo server --buildDrafts --cacheDir \"$PWD/.hugo_cache\" --bind 127.0.0.1 --port 1313 --baseURL \"http://127.0.0.1:1313/\" --disableFastRender",
     "build:site": "hugo --cacheDir \"$PWD/.hugo_cache\" --cleanDestinationDir --gc --minify",
     "weekly": "./scripts/weekly-workflow.sh"
   }

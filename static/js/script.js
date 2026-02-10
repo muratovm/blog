@@ -276,8 +276,21 @@ function onScreenResize() {
 
 (function initGiscusMount() {
     function currentSiteTheme() {
+        try {
+            const saved = window.localStorage.getItem('theme');
+            if (saved === 'dark-mode') return 'dark';
+            if (saved === 'light-mode') return 'light';
+        } catch (error) {
+            // Fall through to DOM/system-based detection.
+        }
+
         const body = document.body;
-        return body && body.classList.contains('dark-mode') ? 'dark' : 'light';
+        if (body && body.classList.contains('dark-mode')) return 'dark';
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return 'dark';
+        }
+        return 'light';
     }
 
     function mapTheme(theme) {
@@ -328,6 +341,268 @@ function onScreenResize() {
             remountAll(theme);
         });
         window.addEventListener('pageshow', () => remountAll());
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
+(function initVisualEmbeds() {
+    let mermaidLoader = null;
+    let chartLoader = null;
+
+    function loadScript(src) {
+        return new Promise((resolve, reject) => {
+            const existing = document.querySelector(`script[src="${src}"]`);
+            if (existing) {
+                existing.addEventListener('load', () => resolve(), { once: true });
+                existing.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)), { once: true });
+                if (existing.dataset.loaded === 'true') resolve();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.addEventListener('load', () => {
+                script.dataset.loaded = 'true';
+                resolve();
+            }, { once: true });
+            script.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)), { once: true });
+            document.head.appendChild(script);
+        });
+    }
+
+    async function renderMermaid() {
+        const blocks = Array.from(document.querySelectorAll('.viz-mermaid-block.mermaid'));
+        if (!blocks.length) return;
+
+        if (!mermaidLoader) {
+            mermaidLoader = loadScript('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js');
+        }
+        await mermaidLoader;
+        if (!window.mermaid) return;
+
+        window.mermaid.initialize({
+            startOnLoad: false,
+            securityLevel: 'loose',
+            theme: 'neutral'
+        });
+
+        blocks.forEach((block) => {
+            if (block.dataset.mermaidRendered === 'true') return;
+            block.removeAttribute('data-processed');
+            block.dataset.mermaidRendered = 'true';
+        });
+
+        await window.mermaid.run({
+            querySelector: '.viz-mermaid-block.mermaid:not([data-processed])'
+        });
+    }
+
+    async function renderCharts() {
+        const canvases = Array.from(document.querySelectorAll('canvas.viz-chart-canvas[data-chart="true"]'));
+        if (!canvases.length) return;
+
+        if (!chartLoader) {
+            chartLoader = loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js');
+        }
+        await chartLoader;
+        if (!window.Chart) return;
+
+        canvases.forEach((canvas) => {
+            if (canvas.dataset.chartMounted === 'true') return;
+            const encoded = canvas.dataset.chartConfig;
+            if (!encoded) return;
+
+            try {
+                const raw = window.atob(encoded);
+                const config = JSON.parse(raw);
+                // eslint-disable-next-line no-new
+                new window.Chart(canvas.getContext('2d'), config);
+                canvas.dataset.chartMounted = 'true';
+            } catch (error) {
+                console.error('Invalid chart config for', canvas.id, error);
+            }
+        });
+    }
+
+    async function init() {
+        await Promise.allSettled([renderMermaid(), renderCharts()]);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    window.addEventListener('pageshow', init);
+})();
+
+(function initHeaderSearch() {
+    const MIN_QUERY_LENGTH = 2;
+    const MAX_RESULTS = 6;
+    const PREPOPULATED_RESULTS = 3;
+    let itemsCache = null;
+
+    function normalize(value) {
+        return (value || '').toString().toLowerCase().trim();
+    }
+
+    function buildHaystack(item) {
+        const bits = [
+            item.title,
+            item.description,
+            item.summary,
+            (item.tags || []).join(' '),
+            (item.categories || []).join(' ')
+        ];
+        return normalize(bits.join(' '));
+    }
+
+    async function loadItems(root) {
+        if (itemsCache) return itemsCache;
+        const indexUrl = root.dataset.searchIndex || '/index.json';
+        const response = await fetch(indexUrl, { credentials: 'same-origin' });
+        if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+        const payload = await response.json();
+        const items = Array.isArray(payload?.items) ? payload.items : [];
+        itemsCache = items.map((item) => ({ ...item, _haystack: buildHaystack(item) }));
+        return itemsCache;
+    }
+
+    function clearResults(resultsEl) {
+        resultsEl.innerHTML = '';
+        resultsEl.hidden = true;
+    }
+
+    function renderResults(resultsEl, matches) {
+        resultsEl.innerHTML = '';
+        if (!matches.length) {
+            const li = document.createElement('li');
+            li.className = 'header-search-empty';
+            li.textContent = 'No matching posts';
+            resultsEl.appendChild(li);
+            resultsEl.hidden = false;
+            return;
+        }
+
+        matches.forEach((item) => {
+            const li = document.createElement('li');
+            const link = document.createElement('a');
+            link.href = item.url;
+            link.className = 'header-search-result-link';
+
+            const title = document.createElement('span');
+            title.className = 'header-search-result-title';
+            title.textContent = item.title || '(untitled)';
+
+            const meta = document.createElement('span');
+            meta.className = 'header-search-result-meta';
+            const tags = Array.isArray(item.tags) && item.tags.length ? ` • ${item.tags.slice(0, 2).join(', ')}` : '';
+            meta.textContent = `${item.date || ''}${tags}`;
+
+            link.appendChild(title);
+            link.appendChild(meta);
+            li.appendChild(link);
+            resultsEl.appendChild(li);
+        });
+        resultsEl.hidden = false;
+    }
+
+    function searchItems(items, query) {
+        const q = normalize(query);
+        if (q.length < MIN_QUERY_LENGTH) return [];
+        return items
+            .filter((item) => item._haystack.includes(q))
+            .slice(0, MAX_RESULTS);
+    }
+
+    function randomItems(items, count) {
+        if (!items.length) return [];
+        const copy = [...items];
+        for (let i = copy.length - 1; i > 0; i -= 1) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const tmp = copy[i];
+            copy[i] = copy[j];
+            copy[j] = tmp;
+        }
+        return copy.slice(0, count);
+    }
+
+    function initOne(root) {
+        const input = root.querySelector('.header-search-input');
+        const resultsEl = root.querySelector('[data-search-results]');
+        const rerollButton = root.querySelector('[data-search-reroll]');
+        if (!input || !resultsEl) return;
+
+        let localItems = [];
+        let loadFailed = false;
+
+        const runSearch = () => {
+            const q = input.value;
+            const nq = normalize(q);
+
+            if (!nq.length) {
+                renderResults(resultsEl, randomItems(localItems, PREPOPULATED_RESULTS));
+                return;
+            }
+
+            if (nq.length < MIN_QUERY_LENGTH) {
+                clearResults(resultsEl);
+                return;
+            }
+            const matches = searchItems(localItems, nq);
+            renderResults(resultsEl, matches);
+        };
+
+        loadItems(root).then((items) => {
+            localItems = items;
+            // If user typed before index finished loading, populate results now.
+            runSearch();
+        }).catch(() => {
+            loadFailed = true;
+        });
+
+        input.addEventListener('input', () => {
+            if (loadFailed) {
+                clearResults(resultsEl);
+                return;
+            }
+            runSearch();
+        });
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                clearResults(resultsEl);
+                input.blur();
+            }
+        });
+
+        if (rerollButton) {
+            rerollButton.addEventListener('click', () => {
+                input.value = '';
+                if (loadFailed) {
+                    clearResults(resultsEl);
+                    return;
+                }
+                renderResults(resultsEl, randomItems(localItems, PREPOPULATED_RESULTS));
+                input.focus();
+            });
+        }
+
+        document.addEventListener('click', (event) => {
+            if (!root.contains(event.target)) clearResults(resultsEl);
+        });
+    }
+
+    function init() {
+        document.querySelectorAll('[data-search-root]').forEach(initOne);
     }
 
     if (document.readyState === 'loading') {

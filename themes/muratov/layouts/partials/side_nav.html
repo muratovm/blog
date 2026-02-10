@@ -2,6 +2,7 @@
   {{- $isHomeActive := .IsHome -}}
   {{- $isBlogContext := or (hasPrefix .RelPermalink "/blog/") (and (eq .Kind "taxonomy") (or (eq .Data.Plural "categories") (eq .Data.Plural "tags"))) -}}
   {{- $isAllPostsActive := and (not .IsHome) $isBlogContext -}}
+  {{- $isSearchActive := hasPrefix .RelPermalink "/search/" -}}
   <ul class="side-nav-list" role="list">
     <li>
       <a href="{{ relURL "/" }}" title="Home" aria-label="Home" {{ if $isHomeActive }}class="current" aria-current="page"{{ end }}>
@@ -11,6 +12,11 @@
     <li>
       <a href="{{ relURL "blog/" }}" title="All Posts" aria-label="All Posts" {{ if $isAllPostsActive }}class="current" aria-current="page"{{ end }}>
         <span aria-hidden="true">◫</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ relURL "search/" }}" title="Search" aria-label="Search" {{ if $isSearchActive }}class="current" aria-current="page"{{ end }}>
+        <span aria-hidden="true">⌕</span>
       </a>
     </li>
     {{- $upLink := relURL "blog/" -}}
