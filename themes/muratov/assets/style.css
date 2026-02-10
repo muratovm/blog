@@ -7,6 +7,10 @@ body {
   --content-image-dark-filter: brightness(0.82) contrast(1.08) saturate(1.05);
 }
 
+.dark-mode {
+  --grid-dark-accent: color-mix(in srgb, var(--bg) 50%, var(--accent-bg) 50%);
+}
+
 #reading-progress {
   position: fixed;
   top: 0;
@@ -1192,10 +1196,6 @@ div.highlight {
     gap: 1px;
   }
 
-  .activity-grid-cell {
-    background: color-mix(in srgb, var(--accent-bg) 86%, var(--bg));
-  }
-
   .activity-grid-cell.level-1 {
     background: color-mix(in srgb, var(--accent-bg) 90%, #000);
   }
@@ -1230,19 +1230,19 @@ div.highlight {
 }
 
 .dark-mode .activity-grid-cell.level-1 {
-  background: color-mix(in srgb, var(--accent-bg) 97%, #fff);
+  background: color-mix(in srgb, var(--accent-bg) 45%, var(--grid-dark-accent));
 }
 
 .dark-mode .activity-grid-cell.level-2 {
-  background: color-mix(in srgb, var(--accent-bg) 94%, #fff);
+  background: color-mix(in srgb, var(--accent-bg) 35%, var(--grid-dark-accent));
 }
 
 .dark-mode .activity-grid-cell.level-3 {
-  background: color-mix(in srgb, var(--accent-bg) 91%, #fff);
+  background: color-mix(in srgb, var(--accent-bg) 25%, var(--grid-dark-accent));
 }
 
 .dark-mode .activity-grid-cell.level-4 {
-  background: color-mix(in srgb, var(--accent-bg) 88%, #fff);
+  background: color-mix(in srgb, var(--accent-bg) 15%, var(--grid-dark-accent));
 }
 
 .home-layout>section {
