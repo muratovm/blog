@@ -14,8 +14,13 @@
   {{ errorf "Banner %q not found for %q" $page.Params.image $page.File.Path }}
 {{ end }}
 
+{{ $cardImage := $img }}
+{{ if and $img (eq $img.ResourceType "image") }}
+  {{ $cardImage = $img.Fill "640x360 webp q80" }}
+{{ end }}
+
 <div class="page-card">
-  {{ with $img }}
+  {{ with $cardImage }}
     <a href="{{ $page.RelPermalink }}">
       <img src="{{ .RelPermalink }}"
            width="{{ .Width }}" height="{{ .Height }}"

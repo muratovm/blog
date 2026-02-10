@@ -7,7 +7,7 @@ categories:
 tags:
     - threat intelligence
 draft: true
-image: /img/banner/threat_intellignece.png
+image: threat_intelligence.png
 layout: blog-post
 toc: true
 ---

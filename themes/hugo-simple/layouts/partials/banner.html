@@ -6,7 +6,12 @@
   {{ errorf "Banner %q not found in assets/banners/" $imgName }}
 {{- end }}
 
-<img src="{{ $img.RelPermalink }}"
-     width="{{ $img.Width }}" height="{{ $img.Height }}"
+{{- $banner := $img -}}
+{{- if eq $img.ResourceType "image" -}}
+  {{- $banner = $img.Fill "1280x720 webp q82" -}}
+{{- end -}}
+
+<img src="{{ $banner.RelPermalink }}"
+     width="{{ $banner.Width }}" height="{{ $banner.Height }}"
      loading="lazy"
      alt="{{ .Title }}">

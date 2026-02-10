@@ -2,6 +2,8 @@
 title: TryHackMe - NFS
 description: Network Services 2 Room
 date: 2024-10-12
+lastmod: 2024-10-12
+slug: thm-nfs-room
 categories:
   - ctf
 tags:

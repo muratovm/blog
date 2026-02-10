@@ -30,5 +30,15 @@
     "tailwindcss": "^3.4.12"
   },
   "name": "portfolio",
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "scripts": {
+    "new:article": "./scripts/new-article.sh",
+    "publish:article": "./scripts/publish-article.sh",
+    "check:posts": "./scripts/validate-posts.sh",
+    "check:drafts": "./scripts/validate-drafts.sh",
+    "check:assets": "./scripts/validate-assets.sh",
+    "check:strict": "npm run check:posts && npm run check:drafts && npm run check:assets && npm run build:site",
+    "build:site": "hugo --cacheDir \"$PWD/.hugo_cache\" --cleanDestinationDir --gc --minify",
+    "weekly": "./scripts/weekly-workflow.sh"
+  }
 }

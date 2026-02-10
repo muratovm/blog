@@ -3,7 +3,7 @@ title: "Text Elements"
 date: "2024-10-02"
 tags: ["frameworks"]
 draft: true
-image: "/img/image.jpg"
+image: "default.png"
 layout: "blog-post"
 
 params:

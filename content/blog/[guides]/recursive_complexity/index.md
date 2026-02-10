@@ -2,6 +2,8 @@
 title: Solving for Recursive Complexity
 description: Analyzing a difficult Leetcode problem
 date: 2020-05-19
+lastmod: 2020-05-19
+slug: solving-recursive-complexity
 categories:
     - algorithms
 tags:
@@ -89,7 +91,7 @@ If you’re not very familiar with recursion, this code block might still look v
 
 **Line 20**: Once we get an answer for whether we get a match when keeping or skipping the asterisk after `keep_asterisk_match` and `skip_asterisk_match` are run we return the result as shown in the OR table below.
 
-{{< img src="table.png" caption="(https://dyclassroom.com/logic-gate/universal-logic-gate-nor)">}}
+{{< img src="logic_table.png" caption="(https://dyclassroom.com/logic-gate/universal-logic-gate-nor)">}}
 
 **Line 24**: If we don’t see an asterisk we check if that first character matched the pattern with `character_match` and we keep recusing by reducing the input text and pattern by that first matched character (**text[1:], pattern[1:]**) and recursively check if the rest of the string matches.
 

@@ -7,7 +7,7 @@ image: aws_pacu.png
 layout: blog-post
 ---
 
-![image](aws_pacu.png)
+![image](cloud_logs.png)
 
 ## Pacu
 
@@ -383,7 +383,7 @@ Pacu (pacu:None) > run detection__disruption
 
 The only issue with simply deleting the detections is that the acual logs are stored in S3 and are not affected by the detection service deletion. This procedue is then natuarally going to happen at the begining of the exploitation attempt rather than at the end. A likely module that would be devised in addition to these would invlove deleting these logs as well.
 
-![image](aws_pacu_[cloud_logs].png)
+![image](cloud_logs.png)
 
 ### Creating Additional Resources
 We can also create new keys for ourselves to access resources like the API Gateway with additional resources using the the ```api_gateway__create_api_keys``` module:

@@ -1,7 +1,9 @@
 ---
 title: How this Blog Works
+description: Setup notes for this Hugo blog, including tooling, deployment, and workflow.
 date: 2025-04-22
 lastmod: 2025-04-20
+slug: how-this-blog-works
 categories:
   - cloud
   - web

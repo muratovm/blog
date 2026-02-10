@@ -1,4 +1,8 @@
 /public
 /.obsidian
 /node_modules
-
+/.hugo_cache
+.DS_Store
+**/.DS_Store
+content/**/.obsidian/
+/resources/_gen/images/

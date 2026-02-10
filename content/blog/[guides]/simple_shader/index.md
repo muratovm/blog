@@ -1,6 +1,9 @@
 ---
 title: Shaders in GLSL Canvas
 date: 2025-06-01
+lastmod: 2025-06-01
+description: Build interactive WebGL effects in Hugo pages with GLSL Canvas.
+slug: shaders-glsl-canvas
 categories:
     - graphics
 tags:

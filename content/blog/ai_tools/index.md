@@ -1,7 +1,9 @@
 ---
 title: AI Tools I'm Using Right Now
+description: Practical notes on the AI tools I use most for writing and coding.
 date: 2025-05-16
 lastmod: 2025-05-16
+slug: ai-tools-using-now
 categories:
   - ai
 tags:
