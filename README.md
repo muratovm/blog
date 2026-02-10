@@ -16,6 +16,7 @@ It is set up for:
 - Added a homepage `Momentum` component with 7-day counters + 8-week sparkline
 - Reduced `Latest Feature` card height to keep top-of-home content visible with new status widgets
 - Improved small-screen related content cards to use full column width
+- Enabled per-article comments with Giscus (GitHub Discussions-backed)
 - Ongoing custom palette and interaction tuning lives in:
   - `themes/hugo-simple/assets/style.css`
   - `themes/hugo-simple/assets/simple.css`
@@ -83,6 +84,8 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
   - Reusable homepage status/in-progress component
 - `themes/hugo-simple/layouts/partials/momentum_blurb.html`
   - Reusable homepage momentum component (7-day metrics + 8-week trend)
+- `themes/hugo-simple/layouts/partials/comments.html`
+  - Reusable article comments component (Giscus)
 - `themes/hugo-simple/layouts/index.status.json`
   - Dedicated machine-readable project status output
 - `themes/hugo-simple/assets/style.css`
@@ -124,6 +127,7 @@ Notable settings:
 - `params.canonicalBaseURL`
 - `params.description`
 - `params.social` (footer social links)
+- `params.comments` (Giscus settings: repo/repoId/category/categoryId)
 - output formats for home/section JSON
 
 ## Quick Edit Map
@@ -132,6 +136,7 @@ Notable settings:
 - Change homepage momentum component logic: `themes/hugo-simple/layouts/partials/momentum_blurb.html`
 - Change homepage layout/order: `themes/hugo-simple/layouts/index.html`
 - Change `/blog/` main hub card layout: `themes/hugo-simple/layouts/blog/list.html`
+- Change article comments behavior: `themes/hugo-simple/layouts/partials/comments.html` and `hugo.toml` (`[params.comments]`)
 - Change footer social links: `hugo.toml` -> `[[params.social]]`
 - Change breadcrumbs behavior: `themes/hugo-simple/layouts/partials/breadcrumbs.html`
 - Change series pages/layout: `themes/hugo-simple/layouts/series/`

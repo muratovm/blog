@@ -412,6 +412,21 @@ ul.blog-posts>li span {
   text-underline-offset: 0.14em;
 }
 
+.article-comments {
+  margin-top: 1rem;
+  padding-top: 0.6rem;
+}
+
+.article-comments-title {
+  margin: 0 0 0.55rem;
+}
+
+.article-comments-note {
+  margin: 0;
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
 .series-index-summary,
 .series-term-summary {
   margin: 0.2rem 0 0.7rem;

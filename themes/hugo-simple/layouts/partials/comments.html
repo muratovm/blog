@@ -1,0 +1,34 @@
+{{- $comments := .Site.Params.comments -}}
+{{- if and $comments (eq (lower (default "" $comments.provider)) "giscus") ($comments.enabled) -}}
+  {{- $repo := default "" $comments.repo -}}
+  {{- $repoId := default "" $comments.repoId -}}
+  {{- $category := default "" $comments.category -}}
+  {{- $categoryId := default "" $comments.categoryId -}}
+  {{- if and $repo $repoId $category $categoryId -}}
+    <section class="article-comments" aria-label="Comments">
+      <h5 class="article-comments-title">Comments</h5>
+      <script
+        src="https://giscus.app/client.js"
+        data-repo="{{ $repo }}"
+        data-repo-id="{{ $repoId }}"
+        data-category="{{ $category }}"
+        data-category-id="{{ $categoryId }}"
+        data-mapping="{{ default "pathname" $comments.mapping }}"
+        data-strict="{{ default "0" $comments.strict }}"
+        data-reactions-enabled="{{ default "1" $comments.reactionsEnabled }}"
+        data-emit-metadata="{{ default "0" $comments.emitMetadata }}"
+        data-input-position="{{ default "top" $comments.inputPosition }}"
+        data-theme="{{ default "preferred_color_scheme" $comments.theme }}"
+        data-lang="{{ default "en" $comments.lang }}"
+        data-loading="{{ default "lazy" $comments.loading }}"
+        crossorigin="anonymous"
+        async>
+      </script>
+    </section>
+  {{- else -}}
+    <section class="article-comments">
+      <h5 class="article-comments-title">Comments</h5>
+      <p class="article-comments-note">Giscus is enabled but missing <code>repoId</code> and/or <code>categoryId</code> in <code>hugo.toml</code>.</p>
+    </section>
+  {{- end -}}
+{{- end -}}

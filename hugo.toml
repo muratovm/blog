@@ -55,6 +55,21 @@ series = "series"
 [params]
     description = "Personal log for writing and development"
     canonicalBaseURL = "https://michaelmuratov.com"
+    [params.comments]
+      enabled = true
+      provider = "giscus"
+      repo = "muratovm/blog"
+      repoId = "R_kgDOOc35og"
+      category = "General"
+      categoryId = "DIC_kwDOOc35os4C2J3Z"
+      mapping = "pathname"
+      strict = "0"
+      reactionsEnabled = "1"
+      emitMetadata = "0"
+      inputPosition = "top"
+      theme = "preferred_color_scheme"
+      lang = "en"
+      loading = "lazy"
     [[params.social]]
       name = "LinkedIn"
       url = "https://www.linkedin.com/in/michaelmuratov/"
