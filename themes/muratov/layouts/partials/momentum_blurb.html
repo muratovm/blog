@@ -14,8 +14,9 @@
   {{ $maxCount := int 1 }}
   {{ range seq 0 (sub $weeks 1) }}
     {{ $i := . }}
-    {{ $bucketStart := $windowStart.AddDate 0 0 (mul $i 7) }}
-    {{ $bucketEnd := $bucketStart.AddDate 0 0 7 }}
+    {{ $offsetDays := int (mul (int $i) 7) }}
+    {{ $bucketStart := $windowStart.AddDate 0 0 $offsetDays }}
+    {{ $bucketEnd := $bucketStart.AddDate 0 0 (int 7) }}
     {{ $count := int 0 }}
     {{ range $posts }}
       {{ if and (ge .Lastmod $bucketStart) (lt .Lastmod $bucketEnd) }}
