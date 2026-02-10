@@ -12,9 +12,10 @@ It is set up for:
 - A machine-readable project status endpoint sourced from homepage front matter (`/status.json`)
 
 ## Recent Tweaks
-- Increased header/content spacing for better readability on large screens
-- Refined homepage section spacing to reduce visual clutter
-- Reduced GLSL canvas editor (`canvas` shortcode textarea) font size for denser code editing
+- Added global header corner activity grids (static seeded state, no live animation)
+- Added a homepage `Momentum` component with 7-day counters + 8-week sparkline
+- Reduced `Latest Feature` card height to keep top-of-home content visible with new status widgets
+- Improved small-screen related content cards to use full column width
 - Ongoing custom palette and interaction tuning lives in:
   - `themes/hugo-simple/assets/style.css`
   - `themes/hugo-simple/assets/simple.css`
@@ -80,6 +81,8 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
   - Footer + social links rendering
 - `themes/hugo-simple/layouts/partials/status_blurb.html`
   - Reusable homepage status/in-progress component
+- `themes/hugo-simple/layouts/partials/momentum_blurb.html`
+  - Reusable homepage momentum component (7-day metrics + 8-week trend)
 - `themes/hugo-simple/layouts/index.status.json`
   - Dedicated machine-readable project status output
 - `themes/hugo-simple/assets/style.css`
@@ -126,6 +129,7 @@ Notable settings:
 ## Quick Edit Map
 - Change homepage pinned posts: `content/_index.md` (`start_here`)
 - Change homepage status component content: `content/_index.md` (`now_title`, `now_focus`, `now_eta`)
+- Change homepage momentum component logic: `themes/hugo-simple/layouts/partials/momentum_blurb.html`
 - Change homepage layout/order: `themes/hugo-simple/layouts/index.html`
 - Change `/blog/` main hub card layout: `themes/hugo-simple/layouts/blog/list.html`
 - Change footer social links: `hugo.toml` -> `[[params.social]]`

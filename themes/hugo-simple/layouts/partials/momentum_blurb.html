@@ -1,0 +1,54 @@
+{{ $posts := where site.RegularPages "Section" "blog" }}
+{{ $posts = where $posts "Draft" false }}
+{{ if gt (len $posts) 0 }}
+  {{ $weekStart := now.AddDate 0 0 -7 }}
+  {{ $publishedWeek := where $posts "Date" "ge" $weekStart }}
+  {{ $editedWeek := where $posts "Lastmod" "ge" $weekStart }}
+  {{ $latest := index (sort $posts "Lastmod" "desc") 0 }}
+  {{ $daysSince := div (sub now.Unix $latest.Lastmod.Unix) 86400 }}
+  {{ $weeks := 8 }}
+  {{ $weekSeconds := 604800 }}
+  {{ $nowUnix := now.Unix }}
+  {{ $counts := slice }}
+  {{ $maxCount := 1 }}
+  {{ range seq 0 (sub $weeks 1) }}
+    {{ $i := . }}
+    {{ $startUnix := sub $nowUnix (mul (sub (sub $weeks 1) $i) $weekSeconds) }}
+    {{ $endUnix := add $startUnix $weekSeconds }}
+    {{ $count := 0 }}
+    {{ range $posts }}
+      {{ $lastmodUnix := .Lastmod.Unix }}
+      {{ if and (ge $lastmodUnix $startUnix) (lt $lastmodUnix $endUnix) }}
+        {{ $count = add $count 1 }}
+      {{ end }}
+    {{ end }}
+    {{ $counts = $counts | append $count }}
+    {{ if gt $count $maxCount }}
+      {{ $maxCount = $count }}
+    {{ end }}
+  {{ end }}
+  {{ $chartW := 220 }}
+  {{ $chartH := 54 }}
+  {{ $stepX := div (sub $chartW 1) (sub $weeks 1) }}
+  {{ $points := slice }}
+  {{ range $i, $count := $counts }}
+    {{ $x := mul $i $stepX }}
+    {{ $scaled := div (mul $count (sub $chartH 10)) $maxCount }}
+    {{ $y := sub (sub $chartH 5) $scaled }}
+    {{ $points = $points | append (printf "%d,%d" $x $y) }}
+  {{ end }}
+  <section class="home-momentum">
+    <p class="home-momentum-label">Momentum</p>
+    <div class="home-momentum-grid">
+      <span><strong>{{ len $publishedWeek }}</strong> published (7d)</span>
+      <span><strong>{{ len $editedWeek }}</strong> touched (7d)</span>
+      <span><strong>{{ $daysSince }}</strong> days since last update</span>
+    </div>
+    <div class="home-momentum-trend">
+      <p class="home-momentum-trend-label">8-week trend</p>
+      <svg class="home-momentum-sparkline" viewBox="0 0 {{ $chartW }} {{ $chartH }}" preserveAspectRatio="none" role="img" aria-label="8 week momentum trend">
+        <polyline points="{{ delimit $points " " }}" />
+      </svg>
+    </div>
+  </section>
+{{ end }}
