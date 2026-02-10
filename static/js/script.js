@@ -19,7 +19,7 @@ function onScreenResize() {
 
         const params = new URLSearchParams(window.location.search);
         const paletteFromQuery = params.get('palette');
-        let palette = localStorage.getItem('palette');
+        let palette = localStorage.getItem('palette') || '2';
 
         if (paletteFromQuery) {
             if (paletteFromQuery === '2' || paletteFromQuery === 'palette-2' || paletteFromQuery === 'improved') {

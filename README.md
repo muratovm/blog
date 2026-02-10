@@ -11,6 +11,15 @@ It is set up for:
 - Machine-readable outputs for feeds and LLM ingestion (`index.json`, `llms.txt`)
 - A machine-readable project status endpoint sourced from homepage front matter (`/status.json`)
 
+## Recent Tweaks
+- Increased header/content spacing for better readability on large screens
+- Refined homepage section spacing to reduce visual clutter
+- Reduced GLSL canvas editor (`canvas` shortcode textarea) font size for denser code editing
+- Ongoing custom palette and interaction tuning lives in:
+  - `themes/hugo-simple/assets/style.css`
+  - `themes/hugo-simple/assets/simple.css`
+  - `static/js/script.js`
+
 ## Stack
 - Hugo (extended)
 - Theme: local `themes/hugo-simple`

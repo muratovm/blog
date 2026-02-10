@@ -44,9 +44,11 @@
 
 /* Palette 2 variant (opt-in via body.palette-2) */
 .palette-2 {
-  --bg: #f6f4ef;
+  /*--bg: #f6f4ef;*/
+  --bg: #ffffff;
   --opposite: #000;
-  --accent-bg: #fffdf7;
+  /*--accent-bg: #fffdf7;*/
+  --accent-bg: #f6f4ef;
   --text: #1f2d2c;
   --text-light: #4c5f5d;
   --border: #8f9d8a;
@@ -75,27 +77,29 @@
   --ad-transparency: 0.4;
 }
 
-.tag a{
+.tag a {
   color: rgb(128, 0, 0);
 }
 
-.tag a:visited{
+.tag a:visited {
   color: rgb(128, 0, 0);
 }
 
-.dark-mode .tag a{
+.dark-mode .tag a {
   color: white;
 }
 
-.tag{
+.tag {
   font-size: 13px;
-  border-radius: 0.5rem; 
-  width:fit-content;
+  border-radius: 0.5rem;
+  width: fit-content;
   height: fit-content;
 }
 
 /* Reset box-sizing */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -126,7 +130,7 @@ body {
   margin: 0;
 }
 
-body > * {
+body>* {
   grid-column: 2;
 }
 
@@ -148,23 +152,23 @@ body > * {
     column-gap: 1.5rem;
   }
 
-  body.has-page-toc > * {
+  body.has-page-toc>* {
     grid-column: 2;
   }
 
-  body.has-page-toc > header,
-  body.has-page-toc > footer {
+  body.has-page-toc>header,
+  body.has-page-toc>footer {
     grid-column: 1 / -1;
   }
 
-  body.has-page-toc > .page-toc {
+  body.has-page-toc>.page-toc {
     grid-column: 3;
     grid-row: 3;
   }
 }
 
 /* Make the header bg full width, but the content inline with body */
-body > header {
+body>header {
   background-color: var(--accent-bg);
   /*bottom shadow */
   box-shadow: 0 0px 25px var(--accent-bg);
@@ -175,21 +179,21 @@ body > header {
   grid-column: 1 / -1;
 }
 
-body > header > *:only-child {
+body>header>*:only-child {
   margin-block-start: 2rem;
 }
 
-body > header h1 {
+body>header h1 {
   max-width: 1200px;
   margin: 1rem auto;
 }
 
-body > header p {
+body>header p {
   max-width: 40rem;
   margin: 1rem auto;
 }
 
-body > footer {
+body>footer {
   margin-top: 1rem;
   padding: 2rem 1rem 1.5rem 1rem;
   color: var(--text-light);
@@ -238,10 +242,15 @@ p {
 }
 
 /* Prevent long strings from overflowing container */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading-font);
   overflow-wrap: break-word;
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: 1rem;
 }
 
@@ -277,7 +286,8 @@ a:hover {
 
 button,
 .button,
-a.button, /* extra specificity to override a */
+a.button,
+/* extra specificity to override a */
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
@@ -289,7 +299,7 @@ input[type="button"] {
   line-height: normal;
 }
 
-.button[aria-disabled="true"], 
+.button[aria-disabled="true"],
 input:disabled,
 textarea:disabled,
 select:disabled,
@@ -323,25 +333,23 @@ input[type="button"]:enabled:hover {
 
 .button:focus-visible,
 button:focus-visible:where(:enabled),
-input:enabled:focus-visible:where(
-  [type="submit"],
+input:enabled:focus-visible:where([type="submit"],
   [type="reset"],
-  [type="button"]
-) {
+  [type="button"]) {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
 
 /* Format navigation */
-header > nav {
+header>nav {
   font-size: 1rem;
   line-height: 2;
   padding: 1rem 0 0 0;
 }
 
 /* Use flexbox to allow items to wrap, as needed */
-header > nav ul,
-header > nav ol {
+header>nav ul,
+header>nav ol {
   align-content: space-around;
   align-items: center;
   display: flex;
@@ -354,13 +362,13 @@ header > nav ol {
 }
 
 /* List items are inline elements, make them behave more like blocks */
-header > nav ul li,
-header > nav ol li {
+header>nav ul li,
+header>nav ol li {
   display: inline-block;
 }
 
-header > nav a,
-header > nav a:visited {
+header>nav a,
+header>nav a:visited {
   margin: 0 0.5rem 1rem 0.5rem;
   border: 1px solid var(--border);
   border-radius: var(--standard-border-radius);
@@ -370,10 +378,10 @@ header > nav a:visited {
   text-decoration: none;
 }
 
-header > nav a:hover,
-header > nav a.current,
-header > nav a[aria-current="page"],
-header > nav a[aria-current="true"] {
+header>nav a:hover,
+header>nav a.current,
+header>nav a[aria-current="page"],
+header>nav a[aria-current="true"] {
   border-color: var(--accent);
   color: var(--accent);
   cursor: pointer;
@@ -381,7 +389,7 @@ header > nav a[aria-current="true"] {
 
 /* Reduce nav side on mobile */
 @media only screen and (max-width: 720px) {
-  header > nav a {
+  header>nav a {
     border: none;
     padding: 0;
     text-decoration: underline;
@@ -390,7 +398,8 @@ header > nav a[aria-current="true"] {
 }
 
 /* Consolidate box styling */
-pre, progress {
+pre,
+progress {
   background-color: var(--accent-bg);
   border: 1px solid var(--border);
   border-radius: var(--standard-border-radius);
@@ -430,7 +439,9 @@ aside {
   }
 }
 
-article, fieldset, dialog {
+article,
+fieldset,
+dialog {
   border: 1px solid var(--border);
   padding: 1rem;
   border-radius: var(--standard-border-radius);
@@ -452,13 +463,13 @@ section {
 }
 
 /* Don't double separators when chaining sections */
-section + section,
+section+section,
 section:first-child {
   border-top: 0;
   padding-top: 0;
 }
 
-section + section {
+section+section {
   margin-top: 0;
 }
 
@@ -479,15 +490,15 @@ summary {
   word-break: break-all;
 }
 
-details[open] > summary + * {
+details[open]>summary+* {
   margin-top: 0;
 }
 
-details[open] > summary {
+details[open]>summary {
   margin-bottom: 0.5rem;
 }
 
-details[open] > :last-child {
+details[open]> :last-child {
   margin-bottom: 0;
 }
 
@@ -497,7 +508,7 @@ table {
   margin: 1.5rem 0;
 }
 
-figure > table {
+figure>table {
   width: max-content;
   margin: 0;
 }
@@ -539,6 +550,7 @@ button,
   max-width: 100%;
   display: inline-block;
 }
+
 textarea,
 select,
 input {
@@ -546,9 +558,11 @@ input {
   background-color: var(--bg);
   border: 1px solid var(--border);
 }
+
 label {
   display: block;
 }
+
 textarea:not([cols]) {
   width: 100%;
 }
@@ -562,6 +576,7 @@ select:not([multiple]) {
   background-repeat: no-repeat;
   padding-inline-end: 25px;
 }
+
 *[dir="rtl"] select:not([multiple]) {
   background-position: 10px, 15px;
 }
@@ -574,8 +589,8 @@ input[type="radio"] {
   width: min-content;
 }
 
-input[type="checkbox"] + label,
-input[type="radio"] + label {
+input[type="checkbox"]+label,
+input[type="radio"]+label {
   display: inline-block;
 }
 
@@ -603,6 +618,7 @@ input[type="checkbox"]:checked::after {
   font-size: 1.8em;
   transform: rotate(45deg);
 }
+
 input[type="radio"]:checked::after {
   /* creates a colored circle for the checked radio button  */
   content: " ";
@@ -618,6 +634,7 @@ input[type="radio"]:checked::after {
 
 /* Makes input fields wider on smaller screens */
 @media only screen and (max-width: 720px) {
+
   textarea,
   select,
   input {
@@ -628,7 +645,7 @@ input[type="radio"]:checked::after {
 /* Set a height for color input */
 input[type="color"] {
   height: 2.5rem;
-  padding:  0.2rem;
+  padding: 0.2rem;
 }
 
 /* do not show border around file selector button */
@@ -655,7 +672,8 @@ mark a {
   color: #0d47a1;
 }
 
-img, video {
+img,
+video {
   max-width: 100%;
   height: auto;
   border-radius: var(--standard-border-radius);
@@ -666,20 +684,21 @@ img, video {
 }
 
 /*on active release */
-img:hover{
-  box-shadow: 0 0 50px var(--bg); 
+img:hover {
+  box-shadow: 0 0 50px var(--bg);
 }
 
-img:active:hover{
+img:active:hover {
   /* Expand image slightly on hover */
   transition: 0.5s ease-in-out;
   transform: scale(1.1);
 }
 
-.png{
+.png {
   /* Set PNG images to be transparent */
   box-shadow: none;
 }
+
 .png:hover {
   /* Set PNG images to be transparent */
   box-shadow: none;
@@ -698,8 +717,8 @@ figure {
   overflow-x: auto;
 }
 
-figure > img,
-figure > picture > img {
+figure>img,
+figure>picture>img {
   display: block;
   margin-inline: auto;
 }
@@ -728,7 +747,7 @@ cite {
 }
 
 dt {
-    color: var(--text-light);
+  color: var(--text-light);
 }
 
 /* Use mono font for code elements */
@@ -817,7 +836,8 @@ dialog::backdrop {
 
 /* Superscript & Subscript */
 /* Prevent scripts from affecting line-height. */
-sup, sub {
+sup,
+sub {
   vertical-align: baseline;
   position: relative;
 }
@@ -826,8 +846,8 @@ sup {
   top: -0.4em;
 }
 
-sub { 
-  top: 0.3em; 
+sub {
+  top: 0.3em;
 }
 
 /* Classes for notices */
@@ -862,7 +882,7 @@ sub {
   flex-shrink: 0;
 }
 
-a.dot::before{
+a.dot::before {
   content: "";
   display: inline-block;
   position: relative;
@@ -878,9 +898,10 @@ a.dot::before{
 }
 
 @media (max-width: 720px) {
-  .list_page_tags{
+  .list_page_tags {
     visibility: hidden;
   }
+
   .page-card {
     width: 100%;
   }
@@ -896,7 +917,8 @@ a.dot::before{
   display: flex;
   flex-wrap: wrap;
   gap: 1.5rem;
-  justify-content: left; /* or space-between, depending on alignment preference */
+  justify-content: left;
+  /* or space-between, depending on alignment preference */
 }
 
 .page-card {
@@ -905,7 +927,7 @@ a.dot::before{
   width: 12rem;
   height: 10rem;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .page-card img {
