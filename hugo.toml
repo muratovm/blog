@@ -3,6 +3,7 @@ languageCode = 'en-us'
 title = 'Michael Muratov'
 theme='muratov'
 enableRobotsTXT = true
+enableGitInfo = true
 
 [outputs]
 home = ['HTML', 'RSS', 'JSON', 'STATUS']
@@ -19,6 +20,9 @@ notAlternative = true
 category = "categories"
 tag = "tags"
 series = "series"
+
+[frontmatter]
+  lastmod = [":git", "lastmod", "date", "publishDate"]
 
 [markup]
   defaultMarkdownHandler = 'goldmark' 
