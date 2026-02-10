@@ -19,6 +19,10 @@ It is set up for:
 - Added a dedicated `/search/` page with client-side search powered by Hugo `/index.json`
 - Added random prepopulated search suggestions + reroll button on the search page
 - Moved search entry to the header icon navigation
+- Added footer-level `Summarize page with AI` controls (ChatGPT / Gemini / Claude icons)
+- Added click-to-copy prompt feedback box under AI icons (shows exact copied prompt)
+- Added provider-specific URL handling (`%s` prompt, `%u` page URL, `%t` title), with Gemini copy/paste fallback guidance
+- Updated footer spacing to `24px` top and bottom
 - Enabled per-article comments with Giscus (GitHub Discussions-backed)
 - Added duplicated top-of-article series navigation and a `Jump to Start` action in the series nav header
 - Ongoing custom palette and interaction tuning lives in:
@@ -89,7 +93,9 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
 - `themes/muratov/layouts/search/list.html`
   - Search page template and results mount
 - `themes/muratov/layouts/partials/footer.html`
-  - Footer + social links rendering
+  - Footer + social links rendering + AI summarize controls
+- `themes/muratov/layouts/partials/ai_assist.html`
+  - Reusable AI summarize controls (provider buttons + feedback box)
 - `themes/muratov/layouts/partials/status_blurb.html`
   - Reusable homepage status/in-progress component
 - `themes/muratov/layouts/partials/momentum_blurb.html`
@@ -108,6 +114,7 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
   - Static image files copied as-is
 - `static/js/script.js`
   - Client-side behavior (palette mode, copy buttons, reading progress)
+  - Also includes search runtime, AI summarize prompt generation, and provider URL token handling
 
 ## Shortcodes in Active Use
 Located in `themes/muratov/layouts/shortcodes/`:
@@ -181,6 +188,7 @@ Notable settings:
 - Change visual shortcode presentation styles: `themes/muratov/assets/style.css`
 - Change search page layout: `themes/muratov/layouts/search/list.html`
 - Change search indexing fields: `themes/muratov/layouts/_default/index.json`
+- Change footer AI summarize module: `themes/muratov/layouts/partials/ai_assist.html` and `themes/muratov/layouts/partials/footer.html`
 - Change footer social links: `hugo.toml` -> `[[params.social]]`
 - Change breadcrumbs behavior: `themes/muratov/layouts/partials/breadcrumbs.html`
 - Change series pages/layout: `themes/muratov/layouts/series/`

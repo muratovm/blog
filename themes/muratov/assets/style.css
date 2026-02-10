@@ -187,6 +187,87 @@ header>nav .header-search-results .header-search-result-link:visited {
   margin-top: 0.35rem;
 }
 
+.ai-assist {
+  position: static;
+  margin: 0.4rem auto 0.65rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  width: fit-content;
+}
+
+.ai-assist-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ai-assist-inline-text {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  line-height: 1.2;
+}
+
+.ai-assist-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 2.25rem);
+  gap: 0.42rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.ai-assist-button,
+.ai-assist-button:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.86rem;
+  border-radius: 0;
+  background: transparent;
+}
+
+.ai-assist-button:hover {
+  color: var(--text);
+}
+
+.ai-assist-button img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: none;
+}
+
+.dark-mode .ai-assist-button img {
+  filter: none;
+}
+
+.ai-assist-note {
+  margin: 0.42rem 0 0;
+  font-size: 0.8rem;
+  color: var(--text-light);
+}
+
+.ai-assist-feedback {
+  margin: 0.35rem auto 0;
+  max-width: min(34rem, 92vw);
+  border: 1px dashed var(--border);
+  background: var(--bg);
+  color: var(--text-light);
+  font-size: 0.74rem;
+  line-height: 1.35;
+  padding: 0.45rem 0.55rem;
+  white-space: pre-wrap;
+  text-align: left;
+}
+
 .site-title {
   position: relative;
   display: inline-block;
@@ -1741,6 +1822,10 @@ div.highlight {
 }
 
 @media only screen and (max-width: 900px) {
+  .header-activity-grid-right {
+    display: none;
+  }
+
   .home-columns {
     grid-template-columns: 1fr;
   }

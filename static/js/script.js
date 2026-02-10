@@ -611,3 +611,81 @@ function onScreenResize() {
         init();
     }
 })();
+
+(function initAiAssistButtons() {
+    async function copyText(text) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (_) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'absolute';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+        }
+    }
+
+    function buildPrompt(title, url) {
+        return [
+            `Help me learn this page: "${title}"`,
+            `URL: ${url}`,
+            '',
+            'Please give:',
+            '1) A concise summary.',
+            '2) Key concepts and terms.',
+            '3) Explore practical examples.',
+            '4) Propose 3 follow-up questions I can ask the author.'
+        ].join('\n');
+    }
+
+    function initOne(section) {
+        const title = section.dataset.pageTitle || document.title || 'This page';
+        const url = section.dataset.pageUrl || window.location.href;
+        const note = section.querySelector('[data-ai-assist-note]');
+        const buttons = section.querySelectorAll('[data-ai-provider]');
+        const prompt = buildPrompt(title, url);
+
+        buttons.forEach((button) => {
+            button.addEventListener('click', async (event) => {
+                event.preventDefault();
+                const provider = button.dataset.aiProvider || 'AI tool';
+                const template = button.dataset.aiUrlTemplate;
+                let targetUrl = button.href;
+                if (template) {
+                    targetUrl = template
+                        .replaceAll('%s', encodeURIComponent(prompt))
+                        .replaceAll('%u', encodeURIComponent(url))
+                        .replaceAll('%t', encodeURIComponent(title));
+                }
+                window.open(targetUrl, '_blank', 'noopener,noreferrer');
+                const ok = await copyText(prompt);
+                if (note) {
+                    const prefix = provider === 'Gemini'
+                        ? 'Copied prompt (paste into Gemini; autofill is not reliable):'
+                        : 'Copied prompt:';
+                    note.hidden = false;
+                    note.textContent = `${prefix}\n\n${prompt}`;
+                    if (!ok) {
+                        note.textContent = `Clipboard copy failed. Use this prompt manually:\n\n${prompt}`;
+                    }
+                }
+            });
+        });
+    }
+
+    function init() {
+        document.querySelectorAll('[data-ai-assist]').forEach(initOne);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();

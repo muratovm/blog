@@ -2,6 +2,8 @@
   <p class="footer-copyright">{{ . }}</p>
 {{ end }}
 
+{{ partial "ai_assist.html" . }}
+
 {{ if not .Site.Params.hideMadeWithLine }}
   <div class="footer-social-block">
     <p class="footer-social-copy">If you found this helpful, follow me for more content like this.</p>

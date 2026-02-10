@@ -195,7 +195,7 @@ body>header p {
 
 body>footer {
   margin-top: 1rem;
-  padding: 2rem 1rem 1.5rem 1rem;
+  padding: 24px 1rem 24px 1rem;
   color: var(--text-light);
   font-size: 0.9rem;
   text-align: center;

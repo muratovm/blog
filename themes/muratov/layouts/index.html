@@ -44,7 +44,7 @@
   <section class="home-featured">
     <div class="home-section-head">
       <h3>Latest Feature</h3>
-      <a href="{{ "blog/" | relURL }}">Browse all posts</a>
+      <a href="{{ " blog/" | relURL }}">Browse all posts</a>
     </div>
     {{ range $featured }}
     {{ $page := . }}
@@ -107,7 +107,7 @@
       <article class="home-track">
         <div class="home-track-head">
           <h4>Builds</h4>
-          <a href="{{ "blog/builds/" | relURL }}">View all</a>
+          <a href="{{ " blog/builds/" | relURL }}">View all</a>
         </div>
         <ul>
           {{ range first 3 $builds }}
@@ -119,7 +119,7 @@
       <article class="home-track">
         <div class="home-track-head">
           <h4>Guides</h4>
-          <a href="{{ "blog/guides/" | relURL }}">View all</a>
+          <a href="{{ " blog/guides/" | relURL }}">View all</a>
         </div>
         <ul>
           {{ range first 3 $guides }}
@@ -131,7 +131,7 @@
       <article class="home-track">
         <div class="home-track-head">
           <h4>Notes</h4>
-          <a href="{{ "blog/notes/" | relURL }}">View all</a>
+          <a href="{{ " blog/notes/" | relURL }}">View all</a>
         </div>
         <ul>
           {{ range first 3 $notes }}
@@ -177,7 +177,7 @@
   <section class="home-archive-cta">
     <div class="home-section-head">
       <h3>Archive</h3>
-      <a href="{{ "archive/" | relURL }}">Open archive</a>
+      <a href="{{ " archive/" | relURL }}">Open archive</a>
     </div>
     <p>Browse all posts in a chronological index by year and month.</p>
   </section>

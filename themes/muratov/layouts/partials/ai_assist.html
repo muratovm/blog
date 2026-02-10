@@ -1,0 +1,23 @@
+<section class="ai-assist" data-ai-assist data-page-title="{{ .Title }}" data-page-url="{{ .Permalink }}">
+  <div class="ai-assist-row">
+    <span class="ai-assist-inline-text">Summarize page with AI</span>
+    <div class="ai-assist-actions">
+      <a class="ai-assist-button" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer"
+        data-ai-provider="ChatGPT" data-ai-url-template="https://chatgpt.com/?q=%s">
+        <img src="{{ "img/image/chatgpt_logo.webp" | relURL }}" alt="" aria-hidden="true">
+        <span class="sr-only">ChatGPT</span>
+      </a>
+      <a class="ai-assist-button" href="https://gemini.google.com/" target="_blank" rel="noopener noreferrer"
+        data-ai-provider="Gemini" data-ai-url-template="https://gemini.google.com/app?q=%u">
+        <img src="{{ "img/image/gemini_color.png" | relURL }}" alt="" aria-hidden="true">
+        <span class="sr-only">Gemini</span>
+      </a>
+      <a class="ai-assist-button" href="https://claude.ai/" target="_blank" rel="noopener noreferrer"
+        data-ai-provider="Claude" data-ai-url-template="https://claude.ai/new?q=%s">
+        <img src="{{ "img/image/claude_logo.png" | relURL }}" alt="" aria-hidden="true">
+        <span class="sr-only">Claude</span>
+      </a>
+    </div>
+  </div>
+  <p class="ai-assist-feedback" data-ai-assist-note hidden></p>
+</section>

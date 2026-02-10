@@ -1,99 +1,107 @@
 <!doctype html>
 <html lang="{{ with .Site.LanguageCode }}{{ . }}{{ else }}en{{ end }}">
-  <meta charset="UTF-8" />
-  <head>
-    <script src="/js/script.js"></script>
-    <script>
-      (function () {
-        try {
-          const isDark = localStorage.getItem('theme') === 'dark-mode' ||
-            (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (isDark) {
-            const body = document.body;
-            body.classList.toggle('dark-mode');
-          }
-        } catch (e) {}
-      })();
-    </script>
-    {{ partial "google-analytics.html" . }}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap" rel="stylesheet" />
-    {{- partial "favicon.html" . -}}
-    <title>
-      {{- block "title" . -}}
-        {{- if not .IsHome -}}
-          {{ with .Title }}{{ . }}&nbsp;|&nbsp;{{ end }}
-        {{- end -}}
-        {{ .Site.Title }}
-      {{- end -}}
-    </title>
+<meta charset="UTF-8" />
 
-    {{- partial "seo_tags.html" . -}}
-    <meta name="referrer" content="no-referrer-when-downgrade" />
+<head>
+  <script src="/js/script.js"></script>
+  <script>
+    (function () {
+      try {
+        const isDark = localStorage.getItem('theme') === 'dark-mode' ||
+          (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) {
+          const body = document.body;
+          body.classList.toggle('dark-mode');
+        }
+      } catch (e) { }
+    })();
+  </script>
+  {{ partial "google-analytics.html" . }}
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap"
+    rel="stylesheet" />
+  {{- partial "favicon.html" . -}}
+  <title>
+    {{- block "title" . -}}
+    {{- if not .IsHome -}}
+    {{ with .Title }}{{ . }}&nbsp;|&nbsp;{{ end }}
+    {{- end -}}
+    {{ .Site.Title }}
+    {{- end -}}
+  </title>
 
-    {{ $simple := resources.Get "simple.css" | minify }}
-    <link href="{{ $simple.RelPermalink }}" rel="stylesheet" />
+  {{- partial "seo_tags.html" . -}}
+  <meta name="referrer" content="no-referrer-when-downgrade" />
 
-    {{ $style := resources.Get "style.css" | minify }}
-    <link href="{{ $style.RelPermalink }}" rel="stylesheet" />
+  {{ $simple := resources.Get "simple.css" | minify }}
+  <link href="{{ $simple.RelPermalink }}" rel="stylesheet" />
 
-    {{ with .Params.style }}
-      {{ $extra := resources.Get . | minify }}
-      <link href="{{ $extra.RelPermalink }}" rel="stylesheet" />
-    {{ end }}
+  {{ $style := resources.Get "style.css" | minify }}
+  <link href="{{ $style.RelPermalink }}" rel="stylesheet" />
 
-    {{ with .OutputFormats.Get "rss" -}}
-      {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
-    {{ end -}}
-    {{ with .OutputFormats.Get "json" -}}
-      {{ printf `<link rel="alternate" type="%s" href="%s" title="%s JSON Index" />` .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
-    {{ end -}}
-    <link rel="alternate" type="text/plain" href="{{ "llms.txt" | relURL }}" title="{{ .Site.Title }} LLM Guide" />
-    <link rel="alternate" type="text/plain" href="{{ "llms-full.txt" | relURL }}" title="{{ .Site.Title }} Full LLM Guide" />
+  {{ with .Params.style }}
+  {{ $extra := resources.Get . | minify }}
+  <link href="{{ $extra.RelPermalink }}" rel="stylesheet" />
+  {{ end }}
 
-    {{ if .Param "math" }}
-      {{ partialCached "math.html" . }}
-    {{ end }}
+  {{ with .OutputFormats.Get "rss" -}}
+  {{ printf `
+  <link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+  {{ end -}}
+  {{ with .OutputFormats.Get "json" -}}
+  {{ printf `
+  <link rel="alternate" type="%s" href="%s" title="%s JSON Index" />` .MediaType.Type .RelPermalink $.Site.Title |
+  safeHTML }}
+  {{ end -}}
+  <link rel="alternate" type="text/plain" href="{{ " llms.txt" | relURL }}" title="{{ .Site.Title }} LLM Guide" />
+  <link rel="alternate" type="text/plain" href="{{ " llms-full.txt" | relURL }}"
+    title="{{ .Site.Title }} Full LLM Guide" />
 
-    <!-- A partial to be overwritten by the user.
+  {{ if .Param "math" }}
+  {{ partialCached "math.html" . }}
+  {{ end }}
+
+  <!-- A partial to be overwritten by the user.
   Simply place a custom_head.html into
   your local /layouts/partials-directory -->
-    {{- partial "custom_head.html" . -}}
-  </head>
+  {{- partial "custom_head.html" . -}}
+</head>
 
-  <body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }}">
-    {{ if .IsPage }}
-      <div id="reading-progress" aria-hidden="true"></div>
-    {{ end }}
-    <header>
-      {{ partial "header.html" . }}
-    </header>
-    
-    <div class="theme-toggle-wrap">
-    {{ partial "dark_mode_toggle.html" . }}    
-    </div>
+<body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }}">
+  {{ if .IsPage }}
+  <div id="reading-progress" aria-hidden="true"></div>
+  {{ end }}
+  <header>
+    {{ partial "header.html" . }}
+  </header>
 
-    {{ if .Params.toc }}
-      <details class="page-toc" open>
-        <summary>Table of Contents</summary>
-        {{ .TableOfContents }}
-      </details>
-    {{ end }}
+  <div class="theme-toggle-wrap">
+    {{ partial "dark_mode_toggle.html" . }}
+  </div>
 
-    <div class="page-main-shell">
-      {{ partial "breadcrumbs.html" . }}
-      {{ block "main" . }}{{ end }}
-    </div>
+  {{ if .Params.toc }}
+  <details class="page-toc" open>
+    <summary>Table of Contents</summary>
+    {{ .TableOfContents }}
+  </details>
+  {{ end }}
 
-    <footer>
-      {{ partial "footer.html" . }}
-    </footer>
-  
-    <!-- A partial to be overwritten by the user.
+  <div class="page-main-shell">
+    {{ partial "breadcrumbs.html" . }}
+    {{ block "main" . }}{{ end }}
+  </div>
+
+  <footer>
+    {{ partial "footer.html" . }}
+  </footer>
+
+  <!-- A partial to be overwritten by the user.
   Simply place a custom_body.html into
   your local /layouts/partials-directory -->
-    {{- partial "custom_body.html" . -}}
-  </body>
+  {{- partial "custom_body.html" . -}}
+</body>
+
 </html>
