@@ -22,7 +22,7 @@ GLSL Canvas is a library that allows you to run GLSL shaders in a web environmen
 https://github.com/patriciogonzalezvivo/glslCanvas
 
 ```javascript
-<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glslCanvas@0.2.6/dist/GlslCanvas.min.js"></script>
 ```
 
 
@@ -50,7 +50,7 @@ void main() {
 To use GLSL Canvas, you need to include the library in your HTML file and create a canvas element where the shader will be rendered. Here's a simple setup:
 
 ```html
-<script type="text/javascript" src="https://rawgit.com/patriciogonzalezvivo/glslCanvas/master/dist/GlslCanvas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glslCanvas@0.2.6/dist/GlslCanvas.min.js"></script>
 
 <textarea id="shaderEditor">
     {{ GLSL shader code here }}

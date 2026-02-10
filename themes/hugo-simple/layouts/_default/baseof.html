@@ -55,17 +55,17 @@
     {{- partial "custom_head.html" . -}}
   </head>
 
-  <body>
+  <body class="{{ if .Params.toc }}has-page-toc{{ end }}">
     <header>
       {{ partial "header.html" . }}
     </header>
     
-    <nav>
+    <div class="theme-toggle-wrap">
     {{ partial "dark_mode_toggle.html" . }}    
-    </nav>
+    </div>
 
     {{ if .Params.toc }}
-      <details open>
+      <details class="page-toc" open>
         <summary>Table of Contents</summary>
         {{ .TableOfContents }}
       </details>

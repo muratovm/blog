@@ -1,12 +1,15 @@
 <nav class="side-nav header-quick-nav" aria-label="Section navigation">
+  {{- $isHomeActive := .IsHome -}}
+  {{- $isBlogContext := or (hasPrefix .RelPermalink "/blog/") (and (eq .Kind "taxonomy") (or (eq .Data.Plural "categories") (eq .Data.Plural "tags"))) -}}
+  {{- $isAllPostsActive := and (not .IsHome) $isBlogContext -}}
   <ul class="side-nav-list" role="list">
     <li>
-      <a href="{{ relURL "/" }}" title="Home" aria-label="Home">
+      <a href="{{ relURL "/" }}" title="Home" aria-label="Home" {{ if $isHomeActive }}class="current" aria-current="page"{{ end }}>
         <span aria-hidden="true">⌂</span>
       </a>
     </li>
     <li>
-      <a href="{{ relURL "blog/" }}" title="All Posts" aria-label="All Posts">
+      <a href="{{ relURL "blog/" }}" title="All Posts" aria-label="All Posts" {{ if $isAllPostsActive }}class="current" aria-current="page"{{ end }}>
         <span aria-hidden="true">◫</span>
       </a>
     </li>
@@ -18,11 +21,7 @@
     {{ end }}
     {{ if .IsPage }}
       {{ with .CurrentSection }}
-        {{ with .Parent }}
-          {{ $upLink = .RelPermalink }}
-        {{ else }}
-          {{ $upLink = .RelPermalink }}
-        {{ end }}
+        {{ $upLink = .RelPermalink }}
       {{ end }}
     {{ else if .IsSection }}
       {{ with .Parent }}

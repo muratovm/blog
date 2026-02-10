@@ -8,10 +8,13 @@
 
 {{- $banner := $img -}}
 {{- if eq $img.ResourceType "image" -}}
-  {{- $banner = $img.Fill "1600x900 smart webp q82" -}}
+  {{- $banner = $img.Resize "2000x webp q82" -}}
 {{- end -}}
 
-<img src="{{ $banner.RelPermalink }}"
-     width="{{ $banner.Width }}" height="{{ $banner.Height }}"
-     loading="lazy"
-     alt="{{ .Title }}">
+<div class="post-banner">
+  <img class="post-banner-image"
+       src="{{ $banner.RelPermalink }}"
+       width="{{ $banner.Width }}" height="{{ $banner.Height }}"
+       loading="lazy"
+       alt="{{ .Title }}">
+</div>

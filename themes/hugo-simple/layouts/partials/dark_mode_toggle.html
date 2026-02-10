@@ -1,15 +1,15 @@
-<button id="theme-toggle">☀️</button>
+<button id="theme-toggle" type="button" aria-label="Toggle dark mode">☀️</button>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
 
         function set_toggle_properties(body, themeToggle) {
-            /*set text and background color of button*/
+            const styles = getComputedStyle(body);
             themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-            themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-            themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
-            themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+            themeToggle.style.color = styles.getPropertyValue('--text').trim();
+            themeToggle.style.backgroundColor = styles.getPropertyValue('--bg').trim();
+            themeToggle.style.borderColor = styles.getPropertyValue('--border').trim();
         }
 
         themeToggle.addEventListener('click', () => {
@@ -49,11 +49,11 @@
         const themeToggle = document.getElementById('theme-toggle');
 
         function set_toggle_properties(body, themeToggle) {
-            /*set text and background color of button*/
+            const styles = getComputedStyle(body);
             themeToggle.textContent = body.classList.contains('dark-mode') ? '🌙' : '☀️';
-            themeToggle.style.color = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
-            themeToggle.style.backgroundColor = body.classList.contains('dark-mode') ? '#333' : '#f0f0f0';
-            themeToggle.style.borderColor = body.classList.contains('dark-mode') ? '#f0f0f0' : '#333';
+            themeToggle.style.color = styles.getPropertyValue('--text').trim();
+            themeToggle.style.backgroundColor = styles.getPropertyValue('--bg').trim();
+            themeToggle.style.borderColor = styles.getPropertyValue('--border').trim();
         }
 
         if (currentTheme == 'dark-mode') {

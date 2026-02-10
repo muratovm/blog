@@ -1,44 +1,51 @@
 {{ define "main" }}
-  <!-- Show banner image-->  
-  {{ partial "banner.html" . }}
+  <main class="article-main">
+    <!-- Show banner image-->  
+    {{ partial "banner.html" . }}
 
-  {{ if eq .Type "blog" }}
-    {{ if not .Params.menu }}
-      {{ $tags := .GetTerms "tags" }}
-      {{ $categories := .GetTerms "categories" }}
-        <p>
-          {{ if gt (len $categories) 0 }}
-            Categories:
-            {{ range $categories }}
-            <code class="tag">
-              <a href="{{.RelPermalink }}">#{{ lower .LinkTitle }}</a>&nbsp;
-            </code>
+    {{ if eq .Type "blog" }}
+      {{ if not .Params.menu }}
+        {{ $tags := .GetTerms "tags" }}
+        {{ $categories := .GetTerms "categories" }}
+        {{ if or (gt (len $categories) 0) (gt (len $tags) 0) }}
+          <div class="article-taxonomy-meta">
+            {{ if gt (len $categories) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Categories</span>
+                <div class="article-taxonomy-items">
+                  {{ range $categories }}
+                    <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              </div>
             {{ end }}
-          {{ end }}
-          <br>
-          {{ if gt (len $tags) 0 }}
-            Tags:
-            {{ range $tags }}
-            <code class="tag">
-              <a href="{{.RelPermalink }}">#{{ lower .LinkTitle }}</a>&nbsp;
-            </code>
+            {{ if gt (len $tags) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Tags</span>
+                <div class="article-taxonomy-items">
+                  {{ range $tags }}
+                    <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              </div>
             {{ end }}
-          {{ end }}
-        </p>
-    {{ end }}
-  {{ end }}
-  
-  <content>
-    {{ .Content }}
-  </content>
-
-  {{ with site.RegularPages.Related . | first 3 }}
-    <!--Divider-->
-    <h5 style="margin: 1rem 0rem;">Related content:</h5>
-    <div class="card-grid">
-      {{ range . }}
-        {{ partial "page_card.html" . }}
+          </div>
+        {{ end }}
       {{ end }}
-    </div>
-  {{ end }}
+    {{ end }}
+    
+    <content>
+      {{ .Content }}
+    </content>
+
+    {{ with site.RegularPages.Related . | first 3 }}
+      <!--Divider-->
+      <h5 style="margin: 1rem 0rem;">Related content:</h5>
+      <div class="card-grid">
+        {{ range . }}
+          {{ partial "page_card.html" . }}
+        {{ end }}
+      </div>
+    {{ end }}
+  </main>
 {{ end }}

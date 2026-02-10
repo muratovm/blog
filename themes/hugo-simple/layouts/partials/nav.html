@@ -1,8 +1,9 @@
 {{ $currentPage := . -}}
 {{ range .Site.Menus.main.ByWeight }}
+  {{- $isCurrent := or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) -}}
   <a
     href="{{ .URL }}"
-    {{ if eq $currentPage .Page }}class="current"{{ end }}
+    {{ if $isCurrent }}class="current" aria-current="page"{{ end }}
     >
     {{ .Name }}
   </a>

@@ -58,10 +58,10 @@
 
           </div>
           {{ if .Params.link }}
-            <a style="height: 100%;" href="{{ .Params.link }}" target="_blank">{{ .Title }} ↪</a>
+            <a class="list-post-title list-post-title-external" href="{{ .Params.link }}" target="_blank" rel="noopener noreferrer">{{ .Title }} ↪</a>
           {{ else }}
-            <div>
-            <a style="height: 100%;" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <div class="list-post-main">
+            <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
 
             <!--Description
             <p class="description" style="margin:0px;">
@@ -74,9 +74,7 @@
 
             <div class="list_page_tags">
               {{ range .GetTerms "categories" }}
-                <code class="tag">
-                  <a href="{{.RelPermalink }}">#{{ lower .LinkTitle}}</a>
-                </code>
+                <a class="list-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
               {{ end }}
             </div>
 
@@ -94,9 +92,9 @@
     </ul>
     {{ if not .Data.Singular }}
       <small>
-        <div>
+        <div class="list-all-taxonomies">
           {{ range .Site.Taxonomies.categories }}
-            <a href="{{ .Page.RelPermalink }}">#{{ lower .Page.LinkTitle }}</a>&nbsp;
+            <a class="list-taxonomy-chip" href="{{ .Page.RelPermalink }}">#{{ lower .Page.LinkTitle }}</a>
           {{ end }}
         </div>
       </small>

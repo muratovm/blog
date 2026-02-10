@@ -6,24 +6,105 @@
     .grid-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      padding: 20px;
+      gap: 0.9rem;
+      padding: 0.9rem;
+      border: 1px solid var(--border);
+      border-radius: var(--standard-border-radius);
+      background: var(--accent-bg);
+      margin: 0.8rem 0;
     }
 
     .slider-block {
       display: flex;
       flex-direction: column;
       align-items: start;
+      gap: 0.35rem;
+      padding: 0.5rem 0.6rem;
+      border: 1px dashed color-mix(in srgb, var(--border) 75%, transparent);
+      border-radius: var(--standard-border-radius);
+      background: color-mix(in srgb, var(--accent-bg) 92%, var(--bg));
     }
 
     .slider-block input[type="range"] {
       width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      margin: 0.1rem 0 0;
     }
 
     .label-row {
       display: flex;
       justify-content: space-between;
       width: 100%;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .label-row h4 {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .slider-block span {
+      font-size: 0.86rem;
+      color: var(--text-light);
+    }
+
+    .slider-block input[type="range"]::-webkit-slider-runnable-track {
+      height: 0.4rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent) 28%, var(--accent-bg));
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+    }
+
+    .slider-block input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 0.95rem;
+      height: 0.95rem;
+      margin-top: -0.33rem;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 1px solid var(--accent-hover);
+      box-shadow: 0 0 0 2px var(--accent-bg);
+      cursor: pointer;
+    }
+
+    .slider-block input[type="range"]::-moz-range-track {
+      height: 0.4rem;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent) 28%, var(--accent-bg));
+      border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+    }
+
+    .slider-block input[type="range"]::-moz-range-thumb {
+      width: 0.95rem;
+      height: 0.95rem;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 1px solid var(--accent-hover);
+      box-shadow: 0 0 0 2px var(--accent-bg);
+      cursor: pointer;
+    }
+
+    .slider-block input[type="range"]:focus-visible {
+      outline: none;
+    }
+
+    .slider-block input[type="range"]:focus-visible::-webkit-slider-thumb {
+      box-shadow: 0 0 0 2px var(--accent-bg), 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+
+    .slider-block input[type="range"]:focus-visible::-moz-range-thumb {
+      box-shadow: 0 0 0 2px var(--accent-bg), 0 0 0 4px color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+
+    @media (max-width: 720px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 
@@ -89,11 +170,7 @@
 
 <script>
 const canvas = document.getElementById("shaderCanvas");
-const sandbox = new GlslCanvas(canvas);
 const editor = document.getElementById("shaderEditor");
-
-const volumeSlider = document.getElementById("volumeSlider");
-const volumeValue = document.getElementById("volumeValue");
 
 const widthSlider = document.getElementById("widthSlider");
 const distanceSlider = document.getElementById("distanceSlider");
@@ -102,6 +179,19 @@ const repetitionSlider = document.getElementById("repetitionSlider");
 const multiplySlider = document.getElementById("multiplySlider");
 const exponentSlider = document.getElementById("exponentSlider");
 const pointsSlider = document.getElementById("pointsSlider");
+
+const widthValue = document.getElementById("widthValue");
+const distanceValue = document.getElementById("distanceValue");
+const blurValue = document.getElementById("blurValue");
+const repetitionValue = document.getElementById("repetitionValue");
+const multiplyValue = document.getElementById("multiplyValue");
+const exponentValue = document.getElementById("exponentValue");
+const pointsValue = document.getElementById("pointsValue");
+
+if (!window.GlslCanvas) {
+  console.error("GlslCanvas failed to load. Check CDN/network access.");
+} else {
+  const sandbox = new GlslCanvas(canvas);
 
 function resizeCanvasToCSSSize() {
     const displayWidth = canvas.clientWidth;
@@ -161,6 +251,7 @@ pointsSlider.oninput = function () {
   pointsValue.textContent = this.value;
   editor.value = editor.value.replace(/float points = [0-9]*/g, `float points = ${this.value}`);
   sandbox.load(editor.value);
+}
 }
 
 </script>
