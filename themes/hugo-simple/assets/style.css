@@ -29,12 +29,21 @@ body>header {
   overflow: hidden;
 }
 
+body>header>:not(.header-activity-grid-wrap) {
+  position: relative;
+  z-index: 2;
+}
+
 header>nav {
   padding-top: 0.25rem !important;
 }
 
 .theme-toggle-wrap {
   margin: 0;
+}
+
+#theme-toggle {
+  z-index: 6;
 }
 
 nav a.current {
@@ -49,6 +58,15 @@ nav a.current {
   letter-spacing: 0.01em;
   color: var(--text);
   text-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.site-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-title-link:hover {
+  text-decoration: none;
 }
 
 .site-title::after {
@@ -490,6 +508,21 @@ ul.blog-posts>li span {
   font-size: 0.8rem;
 }
 
+.list-main-card-example {
+  margin-top: auto;
+  padding: 0.38rem 0.5rem;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-light);
+  font-size: 0.82rem;
+  line-height: 1.3;
+  border-radius: 6px;
+}
+
+.list-main-card-example span {
+  color: var(--text);
+}
+
 .list-main-card:hover {
   border-color: var(--accent);
   color: var(--accent);
@@ -811,6 +844,82 @@ div.highlight {
   display: flex;
   flex-direction: column;
   max-width: 100%;
+}
+
+.header-activity-grid-wrap {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .header-activity-grid-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    padding: 0;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    background: transparent;
+    border: 0;
+    display: block;
+    z-index: 0;
+  }
+}
+
+.header-activity-grid-left {
+  left: 0;
+}
+
+.header-activity-grid-right {
+  right: 0;
+}
+
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.activity-grid-cell {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  border: 0;
+  background: var(--accent-bg);
+}
+
+.activity-grid-cell.level-1 {
+  background: color-mix(in srgb, var(--accent-bg) 98%, #000);
+}
+
+.activity-grid-cell.level-2 {
+  background: color-mix(in srgb, var(--accent-bg) 96%, #000);
+}
+
+.activity-grid-cell.level-3 {
+  background: color-mix(in srgb, var(--accent-bg) 94%, #000);
+}
+
+.activity-grid-cell.level-4 {
+  background: color-mix(in srgb, var(--accent-bg) 92%, #000);
+}
+
+.dark-mode .activity-grid-cell.level-1 {
+  background: color-mix(in srgb, var(--accent-bg) 97%, #fff);
+}
+
+.dark-mode .activity-grid-cell.level-2 {
+  background: color-mix(in srgb, var(--accent-bg) 94%, #fff);
+}
+
+.dark-mode .activity-grid-cell.level-3 {
+  background: color-mix(in srgb, var(--accent-bg) 91%, #fff);
+}
+
+.dark-mode .activity-grid-cell.level-4 {
+  background: color-mix(in srgb, var(--accent-bg) 88%, #fff);
 }
 
 .home-layout>section {

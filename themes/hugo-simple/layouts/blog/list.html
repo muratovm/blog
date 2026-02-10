@@ -45,17 +45,61 @@
       {{ $guidesLatest := "" }}
       {{ $notesLatest := "" }}
       {{ $seriesLatest := "" }}
+      {{ $buildsExampleTitle := "" }}
+      {{ $guidesExampleTitle := "" }}
+      {{ $notesExampleTitle := "" }}
+      {{ $seriesExampleTitle := "" }}
+      {{ $buildsSection := site.GetPage "/blog/builds" }}
+      {{ $guidesSection := site.GetPage "/blog/guides" }}
+      {{ $notesSection := site.GetPage "/blog/notes" }}
+      {{ $seriesSection := site.GetPage "/series" }}
       {{ if gt (len $builds) 0 }}
-        {{ $buildsLatest = ((index (sort $builds "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+        {{ $buildLatestPage := index (sort $builds "Date" "desc") 0 }}
+        {{ $buildsLatest = ($buildLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $buildsExampleTitle = $buildLatestPage.Title }}
       {{ end }}
       {{ if gt (len $guides) 0 }}
-        {{ $guidesLatest = ((index (sort $guides "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+        {{ $guidesLatestPage := index (sort $guides "Date" "desc") 0 }}
+        {{ $guidesLatest = ($guidesLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $guidesExampleTitle = $guidesLatestPage.Title }}
       {{ end }}
       {{ if gt (len $notes) 0 }}
-        {{ $notesLatest = ((index (sort $notes "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+        {{ $notesLatestPage := index (sort $notes "Date" "desc") 0 }}
+        {{ $notesLatest = ($notesLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $notesExampleTitle = $notesLatestPage.Title }}
       {{ end }}
       {{ if gt (len $seriesPosts) 0 }}
-        {{ $seriesLatest = ((index (sort $seriesPosts "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+        {{ $seriesLatestPage := index (sort $seriesPosts "Date" "desc") 0 }}
+        {{ $seriesLatest = ($seriesLatestPage.Date.Format "Jan 2, 2006") }}
+      {{ end }}
+      {{ with $buildsSection }}
+        {{ $buildsFirst := where .RegularPagesRecursive "Draft" false }}
+        {{ if gt (len $buildsFirst) 0 }}
+          {{ $buildsExampleTitle = (index $buildsFirst 0).Title }}
+        {{ end }}
+      {{ end }}
+      {{ with $guidesSection }}
+        {{ $guidesFirst := where .RegularPagesRecursive "Draft" false }}
+        {{ if gt (len $guidesFirst) 0 }}
+          {{ $guidesExampleTitle = (index $guidesFirst 0).Title }}
+        {{ end }}
+      {{ end }}
+      {{ with $notesSection }}
+        {{ $notesFirst := where .RegularPagesRecursive "Draft" false }}
+        {{ if gt (len $notesFirst) 0 }}
+          {{ $notesExampleTitle = (index $notesFirst 0).Title }}
+        {{ end }}
+      {{ end }}
+      {{ with $seriesSection }}
+        {{ $seriesTerms := .Pages }}
+        {{ if gt (len $seriesTerms) 0 }}
+          {{ $firstSeriesTerm := index $seriesTerms 0 }}
+          {{ $firstSeriesPosts := where $firstSeriesTerm.Pages "IsSection" false }}
+          {{ $firstSeriesPosts = where $firstSeriesPosts "Draft" false }}
+          {{ if gt (len $firstSeriesPosts) 0 }}
+            {{ $seriesExampleTitle = (index $firstSeriesPosts 0).Title }}
+          {{ end }}
+        {{ end }}
       {{ end }}
       <div class="list-main-links">
         <a class="list-main-card" href="{{ "blog/builds/" | relURL }}">
@@ -63,24 +107,28 @@
           <span>Project logs, experiments, and implementations.</span>
           {{ if ne $buildsLatest "" }}<small class="list-main-card-meta">Latest: {{ $buildsLatest }}</small>{{ end }}
           <em>{{ len $builds }} {{ if eq (len $builds) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $buildsExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $buildsExampleTitle }}</span></small>{{ end }}
         </a>
         <a class="list-main-card" href="{{ "blog/guides/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">◉</span> Guides</strong>
           <span>Step-by-step walkthroughs and technical explainers.</span>
           {{ if ne $guidesLatest "" }}<small class="list-main-card-meta">Latest: {{ $guidesLatest }}</small>{{ end }}
           <em>{{ len $guides }} {{ if eq (len $guides) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $guidesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $guidesExampleTitle }}</span></small>{{ end }}
         </a>
         <a class="list-main-card" href="{{ "blog/notes/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">✎</span> Notes</strong>
           <span>Short insights, references, and quick writeups.</span>
           {{ if ne $notesLatest "" }}<small class="list-main-card-meta">Latest: {{ $notesLatest }}</small>{{ end }}
           <em>{{ len $notes }} {{ if eq (len $notes) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $notesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $notesExampleTitle }}</span></small>{{ end }}
         </a>
         <a class="list-main-card" href="{{ "series/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">⋯</span> Series</strong>
           <span>Multi-part article collections in reading order.</span>
           {{ if ne $seriesLatest "" }}<small class="list-main-card-meta">Latest: {{ $seriesLatest }}</small>{{ end }}
           <em>{{ len .Site.Taxonomies.series }} {{ if eq (len .Site.Taxonomies.series) 1 }}series{{ else }}series{{ end }}</em>
+          {{ if ne $seriesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $seriesExampleTitle }}</span></small>{{ end }}
         </a>
       </div>
     {{ else }}
