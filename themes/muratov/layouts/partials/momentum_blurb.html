@@ -9,8 +9,9 @@
   {{ $weeks := 8 }}
   {{ $chartW := 220 }}
   {{ $chartH := 54 }}
-  {{ $startOfWeek := now.AddDate 0 0 (mul -1 (sub now.Weekday 1)) }}
-  {{ if eq now.Weekday 0 }}
+  {{ $weekday := int now.Weekday }}
+  {{ $startOfWeek := now.AddDate 0 0 (mul -1 (sub $weekday 1)) }}
+  {{ if eq $weekday 0 }}
     {{ $startOfWeek = now.AddDate 0 0 -6 }}
   {{ end }}
   {{ $startOfWeek = time.AsTime ($startOfWeek.Format "2006-01-02") }}
