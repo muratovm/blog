@@ -12,11 +12,12 @@ It is set up for:
 - A machine-readable project status endpoint sourced from homepage front matter (`/status.json`)
 
 ## Recent Tweaks
-- Added global header corner activity grids (static seeded state, no live animation)
+- Added global header corner activity grids (static seeded state, no live animation), including mobile rendering
 - Added a homepage `Momentum` component with 7-day counters + 8-week sparkline
 - Reduced `Latest Feature` card height to keep top-of-home content visible with new status widgets
 - Improved small-screen related content cards to use full column width
 - Enabled per-article comments with Giscus (GitHub Discussions-backed)
+- Added duplicated top-of-article series navigation and a `Jump to Start` action in the series nav header
 - Ongoing custom palette and interaction tuning lives in:
   - `themes/muratov/assets/style.css`
   - `themes/muratov/assets/simple.css`
@@ -73,7 +74,7 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
   - Series index and term page rendering
 - `themes/muratov/layouts/_default/single.html`
 - `themes/muratov/layouts/_default/blog-post.html`
-  - Article templates, related-content fallback, and series next/previous nav
+  - Article templates, related-content fallback, and top/bottom series navigation with jump-to-start action
 - `themes/muratov/layouts/partials/breadcrumbs.html`
   - Breadcrumb navigation (rendered globally for non-home pages)
 - `themes/muratov/layouts/partials/nav.html`

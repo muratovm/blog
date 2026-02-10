@@ -44,6 +44,53 @@
           {{ end }}
         </div>
       {{ end }}
+      {{ if eq .Section "blog" }}
+        {{ $seriesTermsTop := .GetTerms "series" }}
+        {{ if gt (len $seriesTermsTop) 0 }}
+          {{ $seriesPageTop := index $seriesTermsTop 0 }}
+          {{ $seriesPagesRawTop := $seriesPageTop.Pages }}
+          {{ $seriesPagesTop := $seriesPagesRawTop.ByDate }}
+          {{ $withSeriesOrderTop := where $seriesPagesRawTop "Params.series_order" "ne" nil }}
+          {{ if gt (len $withSeriesOrderTop) 0 }}
+            {{ $seriesPagesTop = sort $seriesPagesRawTop "Params.series_order" "asc" }}
+          {{ end }}
+          {{ $prevInSeriesTop := false }}
+          {{ $nextInSeriesTop := false }}
+          {{ $seriesIndexTop := 0 }}
+          {{ range $i, $p := $seriesPagesTop }}
+            {{ if eq $p.Permalink $.Permalink }}
+              {{ $seriesIndexTop = add $i 1 }}
+              {{ if gt $i 0 }}
+                {{ $prevInSeriesTop = index $seriesPagesTop (sub $i 1) }}
+              {{ end }}
+              {{ if lt $i (sub (len $seriesPagesTop) 1) }}
+                {{ $nextInSeriesTop = index $seriesPagesTop (add $i 1) }}
+              {{ end }}
+            {{ end }}
+          {{ end }}
+          {{ if or $prevInSeriesTop $nextInSeriesTop }}
+            <section class="series-nav" aria-label="Series navigation">
+              <div class="series-nav-head">
+                <div>
+                  <p class="series-nav-title">Series: {{ $seriesPageTop.LinkTitle }}</p>
+                  <p class="series-nav-progress">Part {{ $seriesIndexTop }} of {{ len $seriesPagesTop }}</p>
+                </div>
+                {{ if gt $seriesIndexTop 1 }}
+                  <a class="series-nav-jump" href="{{ (index $seriesPagesTop 0).RelPermalink }}">↺ Jump to Start</a>
+                {{ end }}
+              </div>
+              <div class="series-nav-links">
+                {{ with $prevInSeriesTop }}
+                  <a class="series-nav-link" href="{{ .RelPermalink }}">← {{ .Title }}</a>
+                {{ end }}
+                {{ with $nextInSeriesTop }}
+                  <a class="series-nav-link" href="{{ .RelPermalink }}">{{ .Title }} →</a>
+                {{ end }}
+              </div>
+            </section>
+          {{ end }}
+        {{ end }}
+      {{ end }}
     {{ end }}
   {{ end }}
 
@@ -76,8 +123,15 @@
       {{ end }}
       {{ if or $prevInSeries $nextInSeries }}
         <section class="series-nav" aria-label="Series navigation">
-          <p class="series-nav-title">Series: {{ $seriesPage.LinkTitle }}</p>
-          <p class="series-nav-progress">Part {{ $seriesIndex }} of {{ len $seriesPages }}</p>
+          <div class="series-nav-head">
+            <div>
+              <p class="series-nav-title">Series: {{ $seriesPage.LinkTitle }}</p>
+              <p class="series-nav-progress">Part {{ $seriesIndex }} of {{ len $seriesPages }}</p>
+            </div>
+            {{ if gt $seriesIndex 1 }}
+              <a class="series-nav-jump" href="{{ (index $seriesPages 0).RelPermalink }}">↺ Jump to Start</a>
+            {{ end }}
+          </div>
           <div class="series-nav-links">
             {{ with $prevInSeries }}
               <a class="series-nav-link" href="{{ .RelPermalink }}">← {{ .Title }}</a>
