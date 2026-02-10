@@ -1,0 +1,158 @@
+{{ define "main" }}
+  <content>
+    {{ $isMainBlog := eq .RelPermalink (relURL "blog/") }}
+    {{ if .Data.Singular }}
+      <small class="list-filter-remove">
+        <a href="{{ relURL "blog" }}">Remove filter</a>
+      </small>
+      <p class="list-filter-label">Filtering for "{{ .Title }}"</p>
+    {{ end }}
+
+    {{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
+    {{ $total := len $publishedPages }}
+    {{ if gt $total 0 }}
+      <p class="list-total-posts">
+        <span>Total Posts</span>
+        <span class="list-total-posts-count">{{ $total }}</span>
+      </p>
+    {{ end }}
+
+    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
+
+    {{ if $isMainBlog }}
+      {{ $posts := where site.RegularPages "Section" "blog" }}
+      {{ $posts = where $posts "Draft" false }}
+      {{ $builds := slice }}
+      {{ $guides := slice }}
+      {{ $notes := slice }}
+      {{ $seriesPosts := slice }}
+      {{ range $posts }}
+        {{ $path := lower .File.Path }}
+        {{ if in $path "blog/[builds]/" }}
+          {{ $builds = $builds | append . }}
+        {{ else if in $path "blog/[guides]/" }}
+          {{ $guides = $guides | append . }}
+        {{ else if in $path "blog/[notes]/" }}
+          {{ $notes = $notes | append . }}
+        {{ end }}
+        {{ if and (isset .Params "series") (gt (len .Params.series) 0) }}
+          {{ $seriesPosts = $seriesPosts | append . }}
+        {{ end }}
+      {{ end }}
+      {{ $buildsLatest := "" }}
+      {{ $guidesLatest := "" }}
+      {{ $notesLatest := "" }}
+      {{ $seriesLatest := "" }}
+      {{ if gt (len $builds) 0 }}
+        {{ $buildsLatest = ((index (sort $builds "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+      {{ end }}
+      {{ if gt (len $guides) 0 }}
+        {{ $guidesLatest = ((index (sort $guides "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+      {{ end }}
+      {{ if gt (len $notes) 0 }}
+        {{ $notesLatest = ((index (sort $notes "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+      {{ end }}
+      {{ if gt (len $seriesPosts) 0 }}
+        {{ $seriesLatest = ((index (sort $seriesPosts "Date" "desc") 0).Date.Format "Jan 2, 2006") }}
+      {{ end }}
+      <div class="list-main-links">
+        <a class="list-main-card" href="{{ "blog/builds/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">▣</span> Builds</strong>
+          <span>Project logs, experiments, and implementations.</span>
+          {{ if ne $buildsLatest "" }}<small class="list-main-card-meta">Latest: {{ $buildsLatest }}</small>{{ end }}
+          <em>{{ len $builds }} posts</em>
+        </a>
+        <a class="list-main-card" href="{{ "blog/guides/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">◉</span> Guides</strong>
+          <span>Step-by-step walkthroughs and technical explainers.</span>
+          {{ if ne $guidesLatest "" }}<small class="list-main-card-meta">Latest: {{ $guidesLatest }}</small>{{ end }}
+          <em>{{ len $guides }} posts</em>
+        </a>
+        <a class="list-main-card" href="{{ "blog/notes/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">✎</span> Notes</strong>
+          <span>Short insights, references, and quick writeups.</span>
+          {{ if ne $notesLatest "" }}<small class="list-main-card-meta">Latest: {{ $notesLatest }}</small>{{ end }}
+          <em>{{ len $notes }} posts</em>
+        </a>
+        <a class="list-main-card" href="{{ "series/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">⋯</span> Series</strong>
+          <span>Multi-part article collections in reading order.</span>
+          {{ if ne $seriesLatest "" }}<small class="list-main-card-meta">Latest: {{ $seriesLatest }}</small>{{ end }}
+          <em>{{ len .Site.Taxonomies.series }} series</em>
+        </a>
+      </div>
+    {{ else }}
+      {{- $sections := where .Pages "IsSection" true -}}
+      {{- $sortedSections := sort $sections "Params.order" "asc" -}}
+      {{ if gt (len $sortedSections) 0 }}
+        <div class="list-link-buttons">
+          {{ range $sortedSections }}
+            {{ $sectionPublished := where .RegularPagesRecursive "Draft" false }}
+            <a class="list-link-button" href="{{ .RelPermalink }}">
+              <span class="list-link-button-title">➥ {{ .Title }}</span>
+              <span class="list-link-button-count">{{ len $sectionPublished }}</span>
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ end }}
+
+    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
+
+    {{ if not $isMainBlog }}
+      <ul class="blog-posts">
+        {{ range .Paginator.Pages }}
+          {{ if not .Draft }}
+            <li>
+              <span>
+                <i>
+                  <time datetime="{{ .Date.Format "01-02-2006" }}" pubdate>
+                    {{ .Date.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
+                  </time>
+                </i>
+              </span>
+              <div class="blog-separator"></div>
+              {{ if .Params.link }}
+                <a class="list-post-title list-post-title-external" href="{{ .Params.link }}" target="_blank" rel="noopener noreferrer">{{ .Title }} ↪</a>
+              {{ else }}
+                <div class="list-post-main">
+                  <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </div>
+                <div class="list_page_tags">
+                  {{ range .GetTerms "categories" }}
+                    <a class="list-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              {{ end }}
+            </li>
+          {{ end }}
+        {{ else }}
+          <li>No posts yet</li>
+        {{ end }}
+      </ul>
+
+      {{ if not .Data.Singular }}
+        <small>
+          <div class="list-all-taxonomies">
+            {{ range .Site.Taxonomies.categories }}
+              <a class="list-taxonomy-chip" href="{{ .Page.RelPermalink }}">#{{ lower .Page.LinkTitle }}</a>
+            {{ end }}
+          </div>
+        </small>
+      {{ end }}
+
+      {{ with .OutputFormats.Get "rss" }}
+        <div class="list-link-buttons" style="padding-top: 0.55rem;">
+          <a class="list-link-button" href="{{ .RelPermalink }}">
+            <span class="list-link-button-title">➥ RSS Feed</span>
+            <span class="list-link-button-count">XML</span>
+          </a>
+        </div>
+      {{ end }}
+    {{ end }}
+  </content>
+{{ end }}

@@ -12,6 +12,9 @@ tags:
   - nmap
   - privilege escalation
   - ssh authentication
+series:
+  - Network Services 2 Room
+series_order: 1
 draft: false
 image: nfs_exploitation.png
 layout: blog-post

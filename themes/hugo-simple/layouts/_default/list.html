@@ -1,17 +1,14 @@
 {{ define "main" }}
   <content>
     {{ if .Data.Singular }}
-      <h3>Filtering for "{{ .Title }}"</h3>
-      <small>
+      <small class="list-filter-remove">
         <a href="{{ relURL "blog" }}">Remove filter</a>
       </small>
+      <p class="list-filter-label">Filtering for "{{ .Title }}"</p>
     {{ end }}
-    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
-
-    <!-- Total pages count-->
-    {{ $total := len .RegularPagesRecursive }}
+    <!-- Total pages count (published only) -->
+    {{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
+    {{ $total := len $publishedPages }}
     {{ if eq $total 0 }}
     {{ else }}
       <p class="list-total-posts">
@@ -20,20 +17,31 @@
       </p>
     {{ end }}
 
+    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
+
     <!-- Child section quick links -->
     {{- $sections := where .Pages "IsSection" true -}}
     {{- $sortedSections := sort $sections "Params.order" "asc" -}}
     {{ if gt (len $sortedSections) 0 }}
       <div class="list-link-buttons">
         {{ range $sortedSections }}
+          {{ $sectionPublished := where .RegularPagesRecursive "Draft" false }}
           <a class="list-link-button" href="{{ .RelPermalink }}">
             <span class="list-link-button-title">➥ {{ .Title }}</span>
-            <span class="list-link-button-count">{{ len .RegularPagesRecursive }}</span>
+            <span class="list-link-button-count">{{ len $sectionPublished }}</span>
+          </a>
+        {{ end }}
+        {{ if and (eq .Section "blog") (gt (len .Site.Taxonomies.series) 0) }}
+          <a class="list-link-button" href="{{ relURL "series/" }}">
+            <span class="list-link-button-title">➥ Series</span>
+            <span class="list-link-button-count">{{ len .Site.Taxonomies.series }}</span>
           </a>
         {{ end }}
       </div>
     {{ end }}
-    
+
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
       {{- partial "pagination.html" . -}}
     {{ end }}
@@ -61,7 +69,7 @@
             <a class="list-post-title list-post-title-external" href="{{ .Params.link }}" target="_blank" rel="noopener noreferrer">{{ .Title }} ↪</a>
           {{ else }}
             <div class="list-post-main">
-            <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+              <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
 
             <!--Description
             <p class="description" style="margin:0px;">
@@ -98,6 +106,14 @@
           {{ end }}
         </div>
       </small>
+    {{ end }}
+    {{ with .OutputFormats.Get "rss" }}
+      <div class="list-link-buttons" style="padding-top: 0.55rem;">
+        <a class="list-link-button" href="{{ .RelPermalink }}">
+          <span class="list-link-button-title">➥ RSS Feed</span>
+          <span class="list-link-button-count">XML</span>
+        </a>
+      </div>
     {{ end }}
   </content>
 {{ end }}

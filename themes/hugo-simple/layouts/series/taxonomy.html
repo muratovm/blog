@@ -1,0 +1,19 @@
+{{ define "main" }}
+  <content>
+    <h3>{{ .Title }}</h3>
+    <p class="series-term-summary">Series posts in reading order.</p>
+    {{ $seriesPages := .Pages.ByDate }}
+    {{ $withSeriesOrder := where .Pages "Params.series_order" "ne" nil }}
+    {{ if gt (len $withSeriesOrder) 0 }}
+      {{ $seriesPages = sort .Pages "Params.series_order" "asc" }}
+    {{ end }}
+    <ol class="series-term-list">
+      {{ range $seriesPages }}
+        <li class="series-term-item">
+          <a class="series-term-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+          <span class="series-term-meta">{{ .Date.Format "Jan 2, 2006" }}</span>
+        </li>
+      {{ end }}
+    </ol>
+  </content>
+{{ end }}

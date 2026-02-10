@@ -9,6 +9,11 @@ home = ['HTML', 'RSS', 'JSON']
 section = ['HTML', 'RSS', 'JSON']
 taxonomy = ['HTML', 'RSS']
 
+[taxonomies]
+category = "categories"
+tag = "tags"
+series = "series"
+
 [markup]
   defaultMarkdownHandler = 'goldmark' 
   _merge = 'deep'
@@ -76,3 +81,7 @@ taxonomy = ['HTML', 'RSS']
     applyFilter = true
     name = 'tags'
     weight = 80
+  [[related.indices]]
+    applyFilter = true
+    name = 'series'
+    weight = 120

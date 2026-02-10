@@ -78,8 +78,11 @@
         {{ .TableOfContents }}
       </details>
     {{ end }}
-    
-    {{ block "main" . }}{{ end }}
+
+    <div class="page-main-shell">
+      {{ partial "breadcrumbs.html" . }}
+      {{ block "main" . }}{{ end }}
+    </div>
 
     <footer>
       {{ partial "footer.html" . }}

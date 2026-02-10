@@ -1,0 +1,14 @@
+{{ define "main" }}
+  <content>
+    <h3>Series</h3>
+    <p class="series-index-summary">Browse multi-part article collections.</p>
+    <ul class="series-index-list">
+      {{ range .Pages.ByTitle }}
+        <li class="series-index-item">
+          <a class="series-index-link" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+          <span class="series-index-count">{{ len .Pages }} posts</span>
+        </li>
+      {{ end }}
+    </ul>
+  </content>
+{{ end }}

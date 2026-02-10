@@ -1,7 +1,15 @@
 {{ define "main" }}
 {{ $posts := where site.RegularPages "Section" "blog" }}
+{{ $posts = where $posts "Draft" false }}
 {{ $postsByDate := $posts.ByDate.Reverse }}
 {{ $featured := first 1 $postsByDate }}
+{{ $updatedPosts := slice }}
+{{ range $posts }}
+{{ if gt .Lastmod .Date }}
+{{ $updatedPosts = $updatedPosts | append . }}
+{{ end }}
+{{ end }}
+{{ $updatedPosts = sort $updatedPosts "Lastmod" "desc" }}
 
 {{ $startSlugs := .Params.start_here }}
 {{ if not $startSlugs }}
@@ -147,6 +155,23 @@
       {{ end }}
     </ul>
   </section>
+
+  {{ if gt (len $updatedPosts) 0 }}
+  <section class="home-updated">
+    <div class="home-section-head">
+      <h3>Recently Updated</h3>
+    </div>
+    <ul class="home-updated-list">
+      {{ range first 4 $updatedPosts }}
+      <li>
+        <span>{{ .Lastmod.Format "Jan 2, 2006" }}</span>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <em>Originally {{ .Date.Format "Jan 2, 2006" }}</em>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
 
   <section class="home-archive-cta">
     <div class="home-section-head">

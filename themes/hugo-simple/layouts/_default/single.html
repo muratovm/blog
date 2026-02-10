@@ -1,19 +1,30 @@
 {{ define "main" }}
   {{ if eq .Type "blog" }}
-    {{ if not .Params.menu }}
-      <p class="article-meta-row">
+      {{ if not .Params.menu }}
+        <p class="article-meta-row">
         Last updated:
         <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
           {{ .Lastmod.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
         </time>
-      </p>
-      {{ $tags := .GetTerms "tags" }}
-      {{ $categories := .GetTerms "categories" }}
-      {{ if or (gt (len $categories) 0) (gt (len $tags) 0) }}
-        <div class="article-taxonomy-meta">
-          {{ if gt (len $categories) 0 }}
-            <div class="article-taxonomy-group">
-              <span class="article-taxonomy-label">Categories</span>
+        </p>
+        {{ $tags := .GetTerms "tags" }}
+        {{ $categories := .GetTerms "categories" }}
+        {{ $series := .GetTerms "series" }}
+        {{ if or (gt (len $categories) 0) (gt (len $tags) 0) (gt (len $series) 0) }}
+          <div class="article-taxonomy-meta">
+            {{ if gt (len $series) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Series</span>
+                <div class="article-taxonomy-items">
+                  {{ range $series }}
+                    <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              </div>
+            {{ end }}
+            {{ if gt (len $categories) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Categories</span>
               <div class="article-taxonomy-items">
                 {{ range $categories }}
                   <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
@@ -40,6 +51,45 @@
   {{ .Content }}
 
   {{ if eq .Section "blog" }}
+    {{ $seriesTerms := .GetTerms "series" }}
+    {{ if gt (len $seriesTerms) 0 }}
+      {{ $seriesPage := index $seriesTerms 0 }}
+      {{ $seriesPagesRaw := $seriesPage.Pages }}
+      {{ $seriesPages := $seriesPagesRaw.ByDate }}
+      {{ $withSeriesOrder := where $seriesPagesRaw "Params.series_order" "ne" nil }}
+      {{ if gt (len $withSeriesOrder) 0 }}
+        {{ $seriesPages = sort $seriesPagesRaw "Params.series_order" "asc" }}
+      {{ end }}
+      {{ $prevInSeries := false }}
+      {{ $nextInSeries := false }}
+      {{ $seriesIndex := 0 }}
+      {{ range $i, $p := $seriesPages }}
+        {{ if eq $p.Permalink $.Permalink }}
+          {{ $seriesIndex = add $i 1 }}
+          {{ if gt $i 0 }}
+            {{ $prevInSeries = index $seriesPages (sub $i 1) }}
+          {{ end }}
+          {{ if lt $i (sub (len $seriesPages) 1) }}
+            {{ $nextInSeries = index $seriesPages (add $i 1) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      {{ if or $prevInSeries $nextInSeries }}
+        <section class="series-nav" aria-label="Series navigation">
+          <p class="series-nav-title">Series: {{ $seriesPage.LinkTitle }}</p>
+          <p class="series-nav-progress">Part {{ $seriesIndex }} of {{ len $seriesPages }}</p>
+          <div class="series-nav-links">
+            {{ with $prevInSeries }}
+              <a class="series-nav-link" href="{{ .RelPermalink }}">← {{ .Title }}</a>
+            {{ end }}
+            {{ with $nextInSeries }}
+              <a class="series-nav-link" href="{{ .RelPermalink }}">{{ .Title }} →</a>
+            {{ end }}
+          </div>
+        </section>
+      {{ end }}
+    {{ end }}
+
     {{- $related := site.RegularPages.Related . | first 3 -}}
     {{- if lt (len $related) 1 -}}
       {{- $related = where site.RegularPages "Section" .Section -}}

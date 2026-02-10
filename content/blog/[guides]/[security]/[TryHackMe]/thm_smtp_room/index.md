@@ -11,6 +11,9 @@ tags:
   - brute force
   - mail
   - smtp
+series:
+  - Network Services 2 Room
+series_order: 2
 draft: false
 image: smtp_exploitation.png
 layout: blog-post

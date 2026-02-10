@@ -1,0 +1,16 @@
+{{ if not .IsHome }}
+  {{ $ancestors := .Ancestors.Reverse }}
+  {{ if or (gt (len $ancestors) 0) .IsPage .IsSection .IsTaxonomy .IsTerm }}
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ relURL "/" }}">Home</a>
+      {{ range $ancestors }}
+        {{ if not .IsHome }}
+          <span class="breadcrumbs-sep">/</span>
+          <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        {{ end }}
+      {{ end }}
+      <span class="breadcrumbs-sep">/</span>
+      <span aria-current="page">{{ .LinkTitle }}</span>
+    </nav>
+  {{ end }}
+{{ end }}

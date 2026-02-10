@@ -11,6 +11,9 @@ tags:
   - enumeration
   - hash cracking
   - mysql
+series:
+  - Network Services 2 Room
+series_order: 3
 draft: false
 image: mysql_exploitation.png
 layout: blog-post

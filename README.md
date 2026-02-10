@@ -6,7 +6,8 @@ This site is a Hugo blog (`hugo v0.155+`) using the local theme at `themes/hugo-
 It is set up for:
 - Weekly publishing from a draft-first workflow (`content/drafts` -> `content/blog`)
 - Structured track navigation (Builds, Guides, Notes)
-- A custom homepage layout with pinned posts and sectioned activity
+- A custom homepage layout with pinned posts, recent activity, and recently updated content
+- A custom `/blog/` hub page focused on 4 navigation cards (Builds, Guides, Notes, Series)
 - Machine-readable outputs for feeds and LLM ingestion (`index.json`, `llms.txt`)
 
 ## Stack
@@ -51,11 +52,18 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
 ## Theme/Layout Ownership
 - `themes/hugo-simple/layouts/index.html`
   - Home page layout structure
+- `themes/hugo-simple/layouts/blog/list.html`
+  - Custom main blog list page (`/blog/`) layout and card-based navigation
 - `themes/hugo-simple/layouts/archive/list.html`
   - Archive page rendering (grouped chronologically)
+- `themes/hugo-simple/layouts/series/terms.html`
+- `themes/hugo-simple/layouts/series/taxonomy.html`
+  - Series index and term page rendering
 - `themes/hugo-simple/layouts/_default/single.html`
 - `themes/hugo-simple/layouts/_default/blog-post.html`
-  - Article templates and related-content fallback
+  - Article templates, related-content fallback, and series next/previous nav
+- `themes/hugo-simple/layouts/partials/breadcrumbs.html`
+  - Breadcrumb navigation (rendered globally for non-home pages)
 - `themes/hugo-simple/layouts/partials/nav.html`
   - Global header nav
 - `themes/hugo-simple/layouts/partials/footer.html`
@@ -103,7 +111,10 @@ Notable settings:
 ## Quick Edit Map
 - Change homepage pinned posts: `content/_index.md` (`start_here`)
 - Change homepage layout/order: `themes/hugo-simple/layouts/index.html`
+- Change `/blog/` main hub card layout: `themes/hugo-simple/layouts/blog/list.html`
 - Change footer social links: `hugo.toml` -> `[[params.social]]`
+- Change breadcrumbs behavior: `themes/hugo-simple/layouts/partials/breadcrumbs.html`
+- Change series pages/layout: `themes/hugo-simple/layouts/series/`
 - Change archive behavior/style: `themes/hugo-simple/layouts/archive/list.html` and `themes/hugo-simple/assets/style.css`
 - Change global visual style: `themes/hugo-simple/assets/style.css`
 
