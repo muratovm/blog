@@ -36,10 +36,6 @@
         let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
 
         set_toggle_properties(body, themeToggle);
-        console.log('DOM fully loaded and parsed');
-        console.log("Likes Dark Theme: " + window.matchMedia('(prefers-color-scheme: dark)').matches);
-        console.log("Current Theme: " + current_mode);
-        console.log("Stored Theme: " + currentTheme);
     });
 
     window.addEventListener('pageshow', (event) => {
@@ -67,10 +63,6 @@
 
 
         let current_mode = body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode'
-        console.log('Page view event triggered');
-        console.log("Likes Dark Theme: " + window.matchMedia('(prefers-color-scheme: dark)').matches);
-        console.log("Current Theme: " + current_mode);
-        console.log("Stored Theme: " + currentTheme);
 
     });
 </script>

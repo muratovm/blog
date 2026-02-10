@@ -1,0 +1,12 @@
+{{ $title := .Params.now_title }}
+{{ $focus := .Params.now_focus }}
+{{ $target := .Params.now_eta }}
+{{ if and $focus $target }}
+  <section class="home-now">
+    <p class="home-now-label">{{ default "In Progress" $title }}</p>
+    <p class="home-now-focus">{{ $focus }}</p>
+    <div class="home-now-meta">
+      <span><strong>Target:</strong> {{ $target }}</span>
+    </div>
+  </section>
+{{ end }}

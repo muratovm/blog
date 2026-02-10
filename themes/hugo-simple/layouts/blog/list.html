@@ -62,25 +62,25 @@
           <strong><span class="list-main-icon" aria-hidden="true">▣</span> Builds</strong>
           <span>Project logs, experiments, and implementations.</span>
           {{ if ne $buildsLatest "" }}<small class="list-main-card-meta">Latest: {{ $buildsLatest }}</small>{{ end }}
-          <em>{{ len $builds }} posts</em>
+          <em>{{ len $builds }} {{ if eq (len $builds) 1 }}post{{ else }}posts{{ end }}</em>
         </a>
         <a class="list-main-card" href="{{ "blog/guides/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">◉</span> Guides</strong>
           <span>Step-by-step walkthroughs and technical explainers.</span>
           {{ if ne $guidesLatest "" }}<small class="list-main-card-meta">Latest: {{ $guidesLatest }}</small>{{ end }}
-          <em>{{ len $guides }} posts</em>
+          <em>{{ len $guides }} {{ if eq (len $guides) 1 }}post{{ else }}posts{{ end }}</em>
         </a>
         <a class="list-main-card" href="{{ "blog/notes/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">✎</span> Notes</strong>
           <span>Short insights, references, and quick writeups.</span>
           {{ if ne $notesLatest "" }}<small class="list-main-card-meta">Latest: {{ $notesLatest }}</small>{{ end }}
-          <em>{{ len $notes }} posts</em>
+          <em>{{ len $notes }} {{ if eq (len $notes) 1 }}post{{ else }}posts{{ end }}</em>
         </a>
         <a class="list-main-card" href="{{ "series/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">⋯</span> Series</strong>
           <span>Multi-part article collections in reading order.</span>
           {{ if ne $seriesLatest "" }}<small class="list-main-card-meta">Latest: {{ $seriesLatest }}</small>{{ end }}
-          <em>{{ len .Site.Taxonomies.series }} series</em>
+          <em>{{ len .Site.Taxonomies.series }} {{ if eq (len .Site.Taxonomies.series) 1 }}series{{ else }}series{{ end }}</em>
         </a>
       </div>
     {{ else }}

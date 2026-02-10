@@ -1,0 +1,22 @@
+{{- $projectLabel := default "In Progress" .Params.now_title -}}
+{{- $projectFocus := default "" .Params.now_focus -}}
+{{- $targetDate := default "" .Params.now_eta -}}
+{{- $state := "idle" -}}
+{{- if $projectFocus -}}
+  {{- $state = "in_progress" -}}
+{{- end -}}
+{{- dict
+  "state" $state
+  "project" (dict
+    "label" $projectLabel
+    "focus" $projectFocus
+    "target_date" $targetDate
+  )
+  "source" (dict
+    "site" .Site.Title
+    "status_page" (printf "%s%s" .Site.BaseURL "status.json")
+    "homepage" .Site.BaseURL
+  )
+  "updated_at" (now.Format "2006-01-02T15:04:05Z07:00")
+| jsonify (dict "indent" "  ")
+-}}

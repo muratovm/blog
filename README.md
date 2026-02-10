@@ -9,6 +9,7 @@ It is set up for:
 - A custom homepage layout with pinned posts, recent activity, and recently updated content
 - A custom `/blog/` hub page focused on 4 navigation cards (Builds, Guides, Notes, Series)
 - Machine-readable outputs for feeds and LLM ingestion (`index.json`, `llms.txt`)
+- A machine-readable project status endpoint sourced from homepage front matter (`/status.json`)
 
 ## Stack
 - Hugo (extended)
@@ -68,6 +69,10 @@ Track-style organization is kept in folder paths under `content/blog/` using bra
   - Global header nav
 - `themes/hugo-simple/layouts/partials/footer.html`
   - Footer + social links rendering
+- `themes/hugo-simple/layouts/partials/status_blurb.html`
+  - Reusable homepage status/in-progress component
+- `themes/hugo-simple/layouts/index.status.json`
+  - Dedicated machine-readable project status output
 - `themes/hugo-simple/assets/style.css`
   - Site-level custom styling
 
@@ -96,6 +101,7 @@ Important endpoints:
 - `/index.xml` (RSS)
 - `/index.json` (site JSON index)
 - `/blog/index.json` (blog section JSON index)
+- `/status.json` (current project status for external services)
 - `/llms.txt`
 - `/llms-full.txt`
 
@@ -110,6 +116,7 @@ Notable settings:
 
 ## Quick Edit Map
 - Change homepage pinned posts: `content/_index.md` (`start_here`)
+- Change homepage status component content: `content/_index.md` (`now_title`, `now_focus`, `now_eta`)
 - Change homepage layout/order: `themes/hugo-simple/layouts/index.html`
 - Change `/blog/` main hub card layout: `themes/hugo-simple/layouts/blog/list.html`
 - Change footer social links: `hugo.toml` -> `[[params.social]]`
