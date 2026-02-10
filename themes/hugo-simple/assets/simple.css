@@ -1,9 +1,11 @@
 /* Global variables. */
 :root {
   /* Set sans-serif & mono fonts */
-  --sans-font: -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
+  --sans-font: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
     "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica,
     "Helvetica Neue", sans-serif;
+  --heading-font: "Literata", "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
+    "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
   --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
   --standard-border-radius: 5px;
   --bg: #f2f6ff;
@@ -117,7 +119,7 @@ body {
   background-color: #f0f0f0;
   color: var(--text);
   background-color: var(--bg);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   line-height: 1.5;
   display: grid;
   grid-template-columns: 0.75fr min(50rem, 90%) 1fr;
@@ -134,7 +136,7 @@ body > * {
     grid-row: 3;
     /*follow the scrolling of the page */
     position: sticky;
-    top: 0;
+    top: var(--page-toc-top-offset, 0.9rem);
     z-index: 1;
     height: fit-content;
   }
@@ -231,12 +233,13 @@ h6 {
 
 p {
   margin: 0.5rem 0;
-  line-height: 2rem;
+  line-height: 1.85rem;
   color: var(--text);
 }
 
 /* Prevent long strings from overflowing container */
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heading-font);
   overflow-wrap: break-word;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -246,7 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 h1,
 h2,
 h3 {
-  line-height: 1.0;
+  line-height: 1.1;
 }
 
 /* Reduce header size on mobile */

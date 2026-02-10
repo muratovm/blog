@@ -43,8 +43,8 @@ nav a.current {
 .breadcrumbs {
   margin: 0.3rem 0 0.2rem;
   padding-top: 0.18rem;
-  font-size: 0.78rem;
-  line-height: 1.2;
+  font-size: 0.84rem;
+  line-height: 1.3;
   color: var(--text-light);
 }
 
@@ -99,7 +99,7 @@ ul.blog-posts>li span {
   display: inline-block;
   color: var(--text);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.35;
   letter-spacing: 0.01em;
 }
@@ -241,7 +241,7 @@ ul.blog-posts>li span {
 }
 
 .footer-social-text {
-  font-size: 0.84rem;
+  font-size: 0.88rem;
   color: inherit;
 }
 
@@ -274,7 +274,7 @@ ul.blog-posts>li span {
 }
 
 .article-taxonomy-label {
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-light);
@@ -361,7 +361,7 @@ ul.blog-posts>li span {
 .series-term-link {
   color: var(--text);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .series-index-link:hover,
@@ -470,13 +470,13 @@ ul.blog-posts>li span {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 1.9rem;
-  padding: 0.05rem 0.5rem;
-  border: 1px solid var(--border);
+  min-width: 0;
+  padding: 0;
+  border: 0;
   border-radius: 0;
-  background: var(--accent-bg);
+  background: transparent;
   color: var(--text);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .list-link-button {
@@ -548,6 +548,7 @@ ul.blog-posts>li span {
 }
 
 .page-toc {
+  --page-toc-top-offset: 0.9rem;
   background: var(--accent-bg);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -557,7 +558,12 @@ ul.blog-posts>li span {
   max-width: none;
   justify-self: stretch;
   margin-left: 0;
-  margin-top: 0.9rem;
+  margin-top: var(--page-toc-top-offset);
+}
+
+.page-toc[style*="position: absolute"] {
+  top: var(--page-toc-top-offset) !important;
+  margin-top: var(--page-toc-top-offset);
 }
 
 .page-toc summary {
