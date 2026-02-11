@@ -15,15 +15,15 @@ Discovery Endpoints
 - JSON index (blog): https://michaelmuratov.com/blog/index.json
 
 Primary Sections
-- Builds: https://michaelmuratov.com/blog/builds/
-- Guides: https://michaelmuratov.com/blog/guides/
-- Notes: https://michaelmuratov.com/blog/notes/
+- Builds: https://michaelmuratov.com/blog/artifacts/builds/
+- Guides: https://michaelmuratov.com/blog/artifacts/guides/
+- Notes: https://michaelmuratov.com/blog/artifacts/notes/
 
 Representative Articles
-- How this Blog Works: https://michaelmuratov.com/blog/how-this-blog-works/
-- Shaders in GLSL Canvas: https://michaelmuratov.com/blog/guides/shaders-glsl-canvas/
-- Solving for Recursive Complexity: https://michaelmuratov.com/blog/guides/solving-recursive-complexity/
-- Intro to Image Watermarking: https://michaelmuratov.com/blog/guides/security/intro-image-watermarking/
+- How this Blog Works: https://michaelmuratov.com/blog/artifacts/builds/how-this-blog-works/
+- Shaders in GLSL Canvas: https://michaelmuratov.com/blog/artifacts/guides/shaders-glsl-canvas/
+- Solving for Recursive Complexity: https://michaelmuratov.com/blog/artifacts/guides/solving-recursive-complexity/
+- Intro to Image Watermarking: https://michaelmuratov.com/blog/artifacts/guides/intro-image-watermarking/
 
 Extraction Guidance
 - Treat each article page as canonical content.

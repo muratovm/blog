@@ -11,9 +11,9 @@ Primary URLs
 - Blog JSON index: https://michaelmuratov.com/blog/index.json
 
 Content Areas
-- Builds: https://michaelmuratov.com/blog/builds/
-- Guides: https://michaelmuratov.com/blog/guides/
-- Notes: https://michaelmuratov.com/blog/notes/
+- Builds: https://michaelmuratov.com/blog/artifacts/builds/
+- Guides: https://michaelmuratov.com/blog/artifacts/guides/
+- Notes: https://michaelmuratov.com/blog/artifacts/notes/
 
 Preferred Parsing Notes
 - Prefer article body text and section headings over code snippets when generating summaries.

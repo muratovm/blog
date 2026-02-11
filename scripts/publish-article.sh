@@ -34,7 +34,7 @@ target="${1:-}"
 if [[ -z "$target" ]]; then
   echo "Usage: npm run publish:article -- <draft-slug-or-path>"
   echo "Example: npm run publish:article -- secure-api-logging"
-  echo "Example: npm run publish:article -- [guides]/[security]/thm_ftp_room"
+  echo "Example: npm run publish:article -- stories/incident-response-lessons"
   exit 1
 fi
 
@@ -75,12 +75,12 @@ if [[ ${#missing[@]} -gt 0 ]]; then
   exit 1
 fi
 
-if ! printf '%s\n' "$frontmatter" | grep -Eqi '^[[:space:]]*draft[[:space:]]*:[[:space:]]*true([[:space:]]|$)'; then
+if ! printf '%s\n' "$frontmatter" | grep -Eqi '^[[:space:]]*draft[[:space:]]*[:=][[:space:]]*true([[:space:]]|$)'; then
   echo "Error: ${src} must have draft: true before publishing."
   exit 1
 fi
 
-image_ref="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*image[[:space:]]*:[[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+image_ref="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*image[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
 if [[ -n "$image_ref" ]]; then
   if [[ "$image_ref" == /* ]]; then
     if [[ ! -f "static${image_ref}" ]]; then
@@ -133,8 +133,59 @@ while IFS= read -r line; do
   fi
 done < <(grep -E '\{\{< *img ' "$src" || true)
 
+publish_section="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*publish_section[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+kind="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*kind[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+
+if [[ -z "$publish_section" ]]; then
+  case "$kind" in
+    story) publish_section="stories" ;;
+    artifact) publish_section="artifacts" ;;
+    *) publish_section="stories" ;;
+  esac
+fi
+
+case "$publish_section" in
+  blog|stories|artifacts) ;;
+  *)
+    echo "Error: unsupported publish_section '${publish_section}' in ${src}."
+    echo "Allowed values: blog, stories, artifacts."
+    exit 1
+    ;;
+esac
+
 src_dir="$(dirname "$src")"
-dst_dir="${src_dir/content\/drafts/content\/blog}"
+rel_path="${src_dir#content/drafts/}"
+
+case "$publish_section" in
+  blog)
+    dst_root="content/blog"
+    case "$rel_path" in
+      blog/*) rel_path="${rel_path#blog/}" ;;
+    esac
+    ;;
+  stories)
+    dst_root="content/blog/stories"
+    case "$rel_path" in
+      blog/stories/*) rel_path="${rel_path#blog/stories/}" ;;
+      stories/*) rel_path="${rel_path#stories/}" ;;
+      story/*) rel_path="${rel_path#story/}" ;;
+      blog/story/*) rel_path="${rel_path#blog/story/}" ;;
+      blog/*) rel_path="${rel_path#blog/}" ;;
+    esac
+    ;;
+  artifacts)
+    dst_root="content/blog/artifacts"
+    case "$rel_path" in
+      blog/artifacts/*) rel_path="${rel_path#blog/artifacts/}" ;;
+      artifacts/*) rel_path="${rel_path#artifacts/}" ;;
+      artifact/*) rel_path="${rel_path#artifact/}" ;;
+      blog/artifact/*) rel_path="${rel_path#blog/artifact/}" ;;
+      blog/*) rel_path="${rel_path#blog/}" ;;
+    esac
+    ;;
+esac
+
+dst_dir="${dst_root}/${rel_path}"
 dst_index="${dst_dir}/index.md"
 
 if [[ -e "$dst_dir" ]]; then
@@ -146,16 +197,32 @@ mkdir -p "$(dirname "$dst_dir")"
 mv "$src_dir" "$dst_dir"
 
 tmp_file="$(mktemp)"
-awk '
-  /^draft:[[:space:]]*/ {
-    print "draft: false"
-    replaced = 1
+fm_delim="$(head -n 1 "$dst_index")"
+awk -v fm_delim="$fm_delim" '
+  BEGIN {
+    is_toml = (fm_delim == "+++")
+  }
+  /^draft[[:space:]]*[:=][[:space:]]*/ {
+    if ($0 ~ /=/) print "draft = false"
+    else print "draft: false"
+    draft_replaced = 1
+    next
+  }
+  /^status[[:space:]]*[:=][[:space:]]*/ {
+    if ($0 ~ /=/) print "status = \"published\""
+    else print "status: published"
+    status_replaced = 1
     next
   }
   { print }
   END {
-    if (replaced != 1) {
-      print "draft: false"
+    if (draft_replaced != 1) {
+      if (is_toml) print "draft = false"
+      else print "draft: false"
+    }
+    if (status_replaced != 1) {
+      if (is_toml) print "status = \"published\""
+      else print "status: published"
     }
   }
 ' "$dst_index" > "$tmp_file"

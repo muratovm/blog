@@ -612,6 +612,64 @@ function onScreenResize() {
     }
 })();
 
+(function initArtifactFilters() {
+    const FILTER_TO_PATH = {
+        all: '/blog/artifacts/',
+        build: '/blog/artifacts/builds/',
+        guide: '/blog/artifacts/guides/',
+        note: '/blog/artifacts/notes/'
+    };
+
+    function initOne(root) {
+        const alreadyInitialized = root.dataset.artifactFiltersReady === 'true';
+        const select = root.querySelector('[data-artifact-filter-select]');
+        if (!select) return;
+
+        function normalizePath(value) {
+            if (!value) return '/';
+            return value.endsWith('/') ? value : `${value}/`;
+        }
+
+        function setActiveFromLocation() {
+            const currentPath = normalizePath(window.location.pathname.toLowerCase());
+            const entries = Object.entries(FILTER_TO_PATH);
+            const match = entries.find(([, path]) => normalizePath(path.toLowerCase()) === currentPath);
+            select.value = match ? match[0] : 'all';
+        }
+
+        if (!alreadyInitialized) {
+            const navigateFromSelect = () => {
+                const next = FILTER_TO_PATH[(select.value || 'all').toLowerCase()] || FILTER_TO_PATH.all;
+                const target = normalizePath(next);
+                const current = normalizePath(window.location.pathname);
+                if (target !== current) {
+                    window.location.href = target;
+                }
+            };
+            select.addEventListener('change', navigateFromSelect);
+            select.addEventListener('input', navigateFromSelect);
+            select.addEventListener('click', () => {
+                window.setTimeout(setActiveFromLocation, 0);
+            });
+            root.dataset.artifactFiltersReady = 'true';
+        }
+
+        setActiveFromLocation();
+    }
+
+    function init() {
+        document.querySelectorAll('[data-artifact-filters]').forEach(initOne);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    window.addEventListener('pageshow', init);
+})();
+
 (function initAiAssistButtons() {
     async function copyText(text) {
         try {

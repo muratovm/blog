@@ -1,4 +1,5 @@
-{{- $pages := where .Site.RegularPages "Section" "blog" -}}
+{{- $searchSections := default (slice "blog") .Site.Params.contentModel.searchSections -}}
+{{- $pages := where .Site.RegularPages "Section" "in" $searchSections -}}
 {{- $pages = where $pages "Draft" false -}}
 {{- $pages = where $pages "WordCount" "gt" 0 -}}
 {{- $items := slice -}}

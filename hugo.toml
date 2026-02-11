@@ -59,6 +59,11 @@ series = "series"
 [params]
     description = "Personal log for writing and development"
     canonicalBaseURL = "https://michaelmuratov.com"
+    [params.contentModel]
+      storySections = ["blog"]
+      artifactSections = ["blog"]
+      searchSections = ["blog"]
+      defaultPublishSection = "stories"
     [params.comments]
       enabled = true
       provider = "giscus"

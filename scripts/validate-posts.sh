@@ -34,6 +34,9 @@ required_fields=(
 
 errors=0
 require_published=false
+published_dirs=(
+  content/blog
+)
 
 if [[ "${1:-}" == "--require-published" ]]; then
   require_published=true
@@ -70,9 +73,36 @@ while IFS= read -r file; do
   fi
 
   if [[ "$require_published" == "false" && "$has_draft_false" == "false" ]]; then
-    echo "ERROR ${file}: draft=true content is in content/blog; move it to content/drafts."
+    echo "ERROR ${file}: draft=true content is in a published section; move it to content/drafts."
     errors=$((errors + 1))
     continue
+  fi
+
+  kind_value="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*kind[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+  publish_section_value="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*publish_section[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+  if [[ "$file" == content/blog/stories/* ]]; then
+    if [[ "$kind_value" != "story" ]]; then
+      echo "ERROR ${file}: kind must be 'story' for content/blog/stories."
+      errors=$((errors + 1))
+    fi
+    if [[ -n "$publish_section_value" && "$publish_section_value" != "stories" ]]; then
+      echo "ERROR ${file}: publish_section must be 'stories' for content/blog/stories."
+      errors=$((errors + 1))
+    fi
+  elif [[ "$file" == content/blog/artifacts/* ]]; then
+    if [[ "$kind_value" != "artifact" ]]; then
+      echo "ERROR ${file}: kind must be 'artifact' for content/blog/artifacts."
+      errors=$((errors + 1))
+    fi
+    if [[ -n "$publish_section_value" && "$publish_section_value" != "artifacts" ]]; then
+      echo "ERROR ${file}: publish_section must be 'artifacts' for content/blog/artifacts."
+      errors=$((errors + 1))
+    fi
+  else
+    if [[ -n "$publish_section_value" && "$publish_section_value" != "blog" ]]; then
+      echo "ERROR ${file}: publish_section must be 'blog' for legacy content/blog paths."
+      errors=$((errors + 1))
+    fi
   fi
 
   missing=()
@@ -101,7 +131,12 @@ while IFS= read -r file; do
       fi
     fi
   fi
-done < <(find content/blog -type f -name "index.md" ! -name "_index.md" | sort)
+done < <(
+  for dir in "${published_dirs[@]}"; do
+    [[ -d "$dir" ]] || continue
+    find "$dir" -type f -name "index.md" ! -name "_index.md"
+  done | sort
+)
 
 if [[ $errors -gt 0 ]]; then
   echo
@@ -109,4 +144,4 @@ if [[ $errors -gt 0 ]]; then
   exit 1
 fi
 
-echo "All blog posts passed front matter and banner checks."
+echo "All published posts passed front matter and banner checks."

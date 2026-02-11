@@ -33,6 +33,8 @@
   "version": "0.1.0",
   "scripts": {
     "new:article": "./scripts/new-article.sh",
+    "new:story": "./scripts/new-article.sh --type story",
+    "new:artifact": "./scripts/new-article.sh --type artifact",
     "publish:article": "./scripts/publish-article.sh",
     "check:posts": "./scripts/validate-posts.sh",
     "check:drafts": "./scripts/validate-drafts.sh",

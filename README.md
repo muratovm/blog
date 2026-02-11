@@ -5,13 +5,23 @@ This site is a Hugo blog (`hugo v0.155+`) using the local theme at `themes/murat
 
 It is set up for:
 - Weekly publishing from a draft-first workflow (`content/drafts` -> `content/blog`)
-- Structured track navigation (Builds, Guides, Notes)
+- A story/artifact-first publishing model
+- A transition-ready content model for narrative `Stories` and raw `Artifacts`
+- Nested artifact lanes (`Builds`, `Guides`, `Notes`) under `Artifacts`
 - A custom homepage layout with pinned posts, recent activity, and recently updated content
-- A custom `/blog/` hub page focused on 4 navigation cards (Builds, Guides, Notes, Series)
+- A custom `/blog/` hub page focused on `Stories` and `Artifacts`
 - Machine-readable outputs for feeds and LLM ingestion (`index.json`, `llms.txt`)
 - A machine-readable project status endpoint sourced from homepage front matter (`/status.json`)
 
 ## Recent Tweaks
+- Moved `Builds`, `Guides`, and `Notes` content folders under `content/blog/artifacts/`
+- Updated artifact-type navigation to route to section pages instead of filtering inline:
+  - `/blog/artifacts/builds/`
+  - `/blog/artifacts/guides/`
+  - `/blog/artifacts/notes/`
+- Removed duplicate artifact UI controls on `/blog/artifacts/` (kept section-link buttons, removed redundant filter dropdown)
+- Added backward-compatible aliases for legacy URLs under `/blog/builds/`, `/blog/guides/`, and `/blog/notes/`
+- Updated TryHackMe article taxonomy to use `thm` labels
 - Added global header corner activity grids (static seeded state, no live animation), including mobile rendering
 - Added a homepage `Momentum` component with 7-day counters + 8-week sparkline
 - Reduced `Latest Feature` card height to keep top-of-home content visible with new status widgets
@@ -45,6 +55,8 @@ Local server is pinned to:
 
 ## Article Workflow
 - Create draft bundle: `npm run new:article -- <slug>`
+- Create story draft bundle: `npm run new:story -- <slug>`
+- Create artifact draft bundle: `npm run new:artifact -- <slug>`
 - Publish draft: `npm run publish:article -- <draft-slug-or-path>`
 - Validate published posts: `npm run check:posts`
 - Validate draft rules: `npm run check:drafts`
@@ -55,8 +67,13 @@ Local server is pinned to:
 ## Content Structure
 - `content/_index.md`
   - Home metadata + curated `start_here` slugs
-- `content/blog/`
-  - Published posts only
+- `content/blog/stories/`
+  - Published narrative stories (high-impact writing target)
+- `content/blog/artifacts/`
+  - Published raw notes/experiments/reference material
+  - `content/blog/artifacts/[builds]/` -> `/blog/artifacts/builds/`
+  - `content/blog/artifacts/[guides]/` -> `/blog/artifacts/guides/`
+  - `content/blog/artifacts/[notes]/` -> `/blog/artifacts/notes/`
 - `content/drafts/`
   - Draft posts only (`draft: true` before publish)
 - `content/archive/_index.md`
@@ -66,16 +83,20 @@ Local server is pinned to:
 - `content/about.md`, `content/activity.md`
   - Static top-level pages
 
-Track-style organization is kept in folder paths under `content/blog/` using bracketed folders (for author-side clarity), for example:
-- `content/blog/[builds]/...`
-- `content/blog/[guides]/...`
-- `content/blog/[notes]/...`
+Transition model:
+- `kind: story` drafts publish to `content/blog/stories/` by default
+- `kind: artifact` drafts publish to `content/blog/artifacts/`
+- `publish_section` front matter controls final destination (`stories`, `artifacts`, or legacy `blog`)
+- Legacy top-level section URLs still resolve via aliases:
+  - `/blog/builds/` -> `/blog/artifacts/builds/`
+  - `/blog/guides/` -> `/blog/artifacts/guides/`
+  - `/blog/notes/` -> `/blog/artifacts/notes/`
 
 ## Theme/Layout Ownership
 - `themes/muratov/layouts/index.html`
   - Home page layout structure
 - `themes/muratov/layouts/blog/list.html`
-  - Custom main blog list page (`/blog/`) layout and card-based navigation
+  - Custom main blog list page (`/blog/`) layout and card-based `Stories`/`Artifacts` navigation
 - `themes/muratov/layouts/archive/list.html`
   - Archive page rendering (grouped chronologically)
 - `themes/muratov/layouts/series/terms.html`

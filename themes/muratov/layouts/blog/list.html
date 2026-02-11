@@ -1,6 +1,25 @@
 {{ define "main" }}
   <content>
     {{ $isMainBlog := eq .RelPermalink (relURL "blog/") }}
+    {{ $isStoriesSection := eq .RelPermalink (relURL "blog/stories/") }}
+    {{ $isArtifactsSection := eq .RelPermalink (relURL "blog/artifacts/") }}
+    {{ $allBlogPosts := where site.RegularPages "Section" "blog" }}
+    {{ $allBlogPosts = where $allBlogPosts "Draft" false }}
+    {{ $stories := slice }}
+    {{ $artifacts := slice }}
+    {{ range $allBlogPosts }}
+      {{ $path := lower .File.Path }}
+      {{ $kind := lower (default "" .Params.kind) }}
+      {{ if or (eq $kind "story") (in $path "blog/stories/") }}
+        {{ $stories = $stories | append . }}
+      {{ else if or (eq $kind "artifact") (in $path "blog/artifacts/") }}
+        {{ $artifacts = $artifacts | append . }}
+      {{ else }}
+        {{ $artifacts = $artifacts | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $stories = sort $stories "Date" "desc" }}
+    {{ $artifacts = sort $artifacts "Date" "desc" }}
     {{ if .Data.Singular }}
       <small class="list-filter-remove">
         <a href="{{ relURL "blog" }}">Remove filter</a>
@@ -9,6 +28,13 @@
     {{ end }}
 
     {{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
+    {{ if $isMainBlog }}
+      {{ $publishedPages = $allBlogPosts }}
+    {{ else if $isStoriesSection }}
+      {{ $publishedPages = $stories }}
+    {{ else if $isArtifactsSection }}
+      {{ $publishedPages = $artifacts }}
+    {{ end }}
     {{ $total := len $publishedPages }}
     {{ if gt $total 0 }}
       <p class="list-total-posts">
@@ -22,113 +48,34 @@
     {{ end }}
 
     {{ if $isMainBlog }}
-      {{ $posts := where site.RegularPages "Section" "blog" }}
-      {{ $posts = where $posts "Draft" false }}
-      {{ $builds := slice }}
-      {{ $guides := slice }}
-      {{ $notes := slice }}
-      {{ $seriesPosts := slice }}
-      {{ range $posts }}
-        {{ $path := lower .File.Path }}
-        {{ if in $path "blog/[builds]/" }}
-          {{ $builds = $builds | append . }}
-        {{ else if in $path "blog/[guides]/" }}
-          {{ $guides = $guides | append . }}
-        {{ else if in $path "blog/[notes]/" }}
-          {{ $notes = $notes | append . }}
-        {{ end }}
-        {{ if and (isset .Params "series") (gt (len .Params.series) 0) }}
-          {{ $seriesPosts = $seriesPosts | append . }}
-        {{ end }}
+      {{ $storiesLatest := "" }}
+      {{ $artifactsLatest := "" }}
+      {{ $storiesExampleTitle := "" }}
+      {{ $artifactsExampleTitle := "" }}
+      {{ if gt (len $stories) 0 }}
+        {{ $storiesLatestPage := index (sort $stories "Date" "desc") 0 }}
+        {{ $storiesLatest = ($storiesLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $storiesExampleTitle = $storiesLatestPage.Title }}
       {{ end }}
-      {{ $buildsLatest := "" }}
-      {{ $guidesLatest := "" }}
-      {{ $notesLatest := "" }}
-      {{ $seriesLatest := "" }}
-      {{ $buildsExampleTitle := "" }}
-      {{ $guidesExampleTitle := "" }}
-      {{ $notesExampleTitle := "" }}
-      {{ $seriesExampleTitle := "" }}
-      {{ $buildsSection := site.GetPage "/blog/builds" }}
-      {{ $guidesSection := site.GetPage "/blog/guides" }}
-      {{ $notesSection := site.GetPage "/blog/notes" }}
-      {{ $seriesSection := site.GetPage "/series" }}
-      {{ if gt (len $builds) 0 }}
-        {{ $buildLatestPage := index (sort $builds "Date" "desc") 0 }}
-        {{ $buildsLatest = ($buildLatestPage.Date.Format "Jan 2, 2006") }}
-        {{ $buildsExampleTitle = $buildLatestPage.Title }}
-      {{ end }}
-      {{ if gt (len $guides) 0 }}
-        {{ $guidesLatestPage := index (sort $guides "Date" "desc") 0 }}
-        {{ $guidesLatest = ($guidesLatestPage.Date.Format "Jan 2, 2006") }}
-        {{ $guidesExampleTitle = $guidesLatestPage.Title }}
-      {{ end }}
-      {{ if gt (len $notes) 0 }}
-        {{ $notesLatestPage := index (sort $notes "Date" "desc") 0 }}
-        {{ $notesLatest = ($notesLatestPage.Date.Format "Jan 2, 2006") }}
-        {{ $notesExampleTitle = $notesLatestPage.Title }}
-      {{ end }}
-      {{ if gt (len $seriesPosts) 0 }}
-        {{ $seriesLatestPage := index (sort $seriesPosts "Date" "desc") 0 }}
-        {{ $seriesLatest = ($seriesLatestPage.Date.Format "Jan 2, 2006") }}
-      {{ end }}
-      {{ with $buildsSection }}
-        {{ $buildsFirst := where .RegularPagesRecursive "Draft" false }}
-        {{ if gt (len $buildsFirst) 0 }}
-          {{ $buildsExampleTitle = (index $buildsFirst 0).Title }}
-        {{ end }}
-      {{ end }}
-      {{ with $guidesSection }}
-        {{ $guidesFirst := where .RegularPagesRecursive "Draft" false }}
-        {{ if gt (len $guidesFirst) 0 }}
-          {{ $guidesExampleTitle = (index $guidesFirst 0).Title }}
-        {{ end }}
-      {{ end }}
-      {{ with $notesSection }}
-        {{ $notesFirst := where .RegularPagesRecursive "Draft" false }}
-        {{ if gt (len $notesFirst) 0 }}
-          {{ $notesExampleTitle = (index $notesFirst 0).Title }}
-        {{ end }}
-      {{ end }}
-      {{ with $seriesSection }}
-        {{ $seriesTerms := .Pages }}
-        {{ if gt (len $seriesTerms) 0 }}
-          {{ $firstSeriesTerm := index $seriesTerms 0 }}
-          {{ $firstSeriesPosts := where $firstSeriesTerm.Pages "IsSection" false }}
-          {{ $firstSeriesPosts = where $firstSeriesPosts "Draft" false }}
-          {{ if gt (len $firstSeriesPosts) 0 }}
-            {{ $seriesExampleTitle = (index $firstSeriesPosts 0).Title }}
-          {{ end }}
-        {{ end }}
+      {{ if gt (len $artifacts) 0 }}
+        {{ $artifactsLatestPage := index (sort $artifacts "Date" "desc") 0 }}
+        {{ $artifactsLatest = ($artifactsLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $artifactsExampleTitle = $artifactsLatestPage.Title }}
       {{ end }}
       <div class="list-main-links">
-        <a class="list-main-card" href="{{ "blog/builds/" | relURL }}">
-          <strong><span class="list-main-icon" aria-hidden="true">▣</span> Builds</strong>
-          <span>Project logs, experiments, and implementations.</span>
-          {{ if ne $buildsLatest "" }}<small class="list-main-card-meta">Latest: {{ $buildsLatest }}</small>{{ end }}
-          <em>{{ len $builds }} {{ if eq (len $builds) 1 }}post{{ else }}posts{{ end }}</em>
-          {{ if ne $buildsExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $buildsExampleTitle }}</span></small>{{ end }}
+        <a class="list-main-card" href="{{ "blog/stories/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">◉</span> Stories</strong>
+          <span>Opinionated narratives grounded in data and lived experience.</span>
+          {{ if ne $storiesLatest "" }}<small class="list-main-card-meta">Latest: {{ $storiesLatest }}</small>{{ end }}
+          <em>{{ len $stories }} {{ if eq (len $stories) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $storiesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $storiesExampleTitle }}</span></small>{{ end }}
         </a>
-        <a class="list-main-card" href="{{ "blog/guides/" | relURL }}">
-          <strong><span class="list-main-icon" aria-hidden="true">◉</span> Guides</strong>
-          <span>Step-by-step walkthroughs and technical explainers.</span>
-          {{ if ne $guidesLatest "" }}<small class="list-main-card-meta">Latest: {{ $guidesLatest }}</small>{{ end }}
-          <em>{{ len $guides }} {{ if eq (len $guides) 1 }}post{{ else }}posts{{ end }}</em>
-          {{ if ne $guidesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $guidesExampleTitle }}</span></small>{{ end }}
-        </a>
-        <a class="list-main-card" href="{{ "blog/notes/" | relURL }}">
-          <strong><span class="list-main-icon" aria-hidden="true">✎</span> Notes</strong>
-          <span>Short insights, references, and quick writeups.</span>
-          {{ if ne $notesLatest "" }}<small class="list-main-card-meta">Latest: {{ $notesLatest }}</small>{{ end }}
-          <em>{{ len $notes }} {{ if eq (len $notes) 1 }}post{{ else }}posts{{ end }}</em>
-          {{ if ne $notesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $notesExampleTitle }}</span></small>{{ end }}
-        </a>
-        <a class="list-main-card" href="{{ "series/" | relURL }}">
-          <strong><span class="list-main-icon" aria-hidden="true">⋯</span> Series</strong>
-          <span>Multi-part article collections in reading order.</span>
-          {{ if ne $seriesLatest "" }}<small class="list-main-card-meta">Latest: {{ $seriesLatest }}</small>{{ end }}
-          <em>{{ len .Site.Taxonomies.series }} {{ if eq (len .Site.Taxonomies.series) 1 }}series{{ else }}series{{ end }}</em>
-          {{ if ne $seriesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $seriesExampleTitle }}</span></small>{{ end }}
+        <a class="list-main-card" href="{{ "blog/artifacts/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">▣</span> Artifacts</strong>
+          <span>Raw notes, experiments, and supporting material for future synthesis.</span>
+          {{ if ne $artifactsLatest "" }}<small class="list-main-card-meta">Latest: {{ $artifactsLatest }}</small>{{ end }}
+          <em>{{ len $artifacts }} {{ if eq (len $artifacts) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $artifactsExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $artifactsExampleTitle }}</span></small>{{ end }}
         </a>
       </div>
     {{ else }}
@@ -152,10 +99,59 @@
     {{ end }}
 
     {{ if not $isMainBlog }}
+      {{ $listPages := .Paginator.Pages }}
+      {{ if $isStoriesSection }}
+        {{ $listPages = $stories }}
+      {{ else if $isArtifactsSection }}
+        {{ $listPages = $artifacts }}
+      {{ end }}
+      {{ if $isArtifactsSection }}
+        {{ $buildCount := 0 }}
+        {{ $guideCount := 0 }}
+        {{ $noteCount := 0 }}
+        {{ range $listPages }}
+          {{ $artifactType := lower (default "" .Params.artifact_type) }}
+          {{ if eq $artifactType "" }}
+            {{ $path := lower .File.Path }}
+            {{ if or (in $path "blog/artifacts/[builds]/") (in $path "blog/artifacts/builds/") (in $path "blog/[builds]/") (in $path "blog/builds/") }}
+              {{ $artifactType = "build" }}
+            {{ else if or (in $path "blog/artifacts/[guides]/") (in $path "blog/artifacts/guides/") (in $path "blog/[guides]/") (in $path "blog/guides/") }}
+              {{ $artifactType = "guide" }}
+            {{ else if or (in $path "blog/artifacts/[notes]/") (in $path "blog/artifacts/notes/") (in $path "blog/[notes]/") (in $path "blog/notes/") }}
+              {{ $artifactType = "note" }}
+            {{ else }}
+              {{ $artifactType = "other" }}
+            {{ end }}
+          {{ end }}
+          {{ if eq $artifactType "build" }}
+            {{ $buildCount = add $buildCount 1 }}
+          {{ else if eq $artifactType "guide" }}
+            {{ $guideCount = add $guideCount 1 }}
+          {{ else if eq $artifactType "note" }}
+            {{ $noteCount = add $noteCount 1 }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
       <ul class="blog-posts">
-        {{ range .Paginator.Pages }}
+        {{ range $listPages }}
           {{ if not .Draft }}
-            <li>
+            {{ $artifactType := "" }}
+            {{ if $isArtifactsSection }}
+              {{ $artifactType = lower (default "" .Params.artifact_type) }}
+              {{ if eq $artifactType "" }}
+                {{ $path := lower .File.Path }}
+                {{ if or (in $path "blog/artifacts/[builds]/") (in $path "blog/artifacts/builds/") (in $path "blog/[builds]/") (in $path "blog/builds/") }}
+                  {{ $artifactType = "build" }}
+                {{ else if or (in $path "blog/artifacts/[guides]/") (in $path "blog/artifacts/guides/") (in $path "blog/[guides]/") (in $path "blog/guides/") }}
+                  {{ $artifactType = "guide" }}
+                {{ else if or (in $path "blog/artifacts/[notes]/") (in $path "blog/artifacts/notes/") (in $path "blog/[notes]/") (in $path "blog/notes/") }}
+                  {{ $artifactType = "note" }}
+                {{ else }}
+                  {{ $artifactType = "other" }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            <li{{ if $isArtifactsSection }} data-artifact-type="{{ $artifactType }}"{{ end }}>
               <span>
                 <i>
                   <time datetime="{{ .Date.Format "01-02-2006" }}" pubdate>

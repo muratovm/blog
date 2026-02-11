@@ -1,5 +1,24 @@
-{{ $posts := where site.RegularPages "Section" "blog" }}
-{{ $posts = where $posts "Draft" false }}
+{{ $blogPosts := where site.RegularPages "Section" "blog" }}
+{{ $blogPosts = where $blogPosts "Draft" false }}
+{{ $storyPosts := slice }}
+{{ $artifactPosts := slice }}
+{{ range $blogPosts }}
+  {{ $path := lower .File.Path }}
+  {{ $kind := lower (default "" .Params.kind) }}
+  {{ if or (eq $kind "story") (in $path "blog/stories/") }}
+    {{ $storyPosts = $storyPosts | append . }}
+  {{ else if or (eq $kind "artifact") (in $path "blog/artifacts/") }}
+    {{ $artifactPosts = $artifactPosts | append . }}
+  {{ else }}
+    {{ $artifactPosts = $artifactPosts | append . }}
+  {{ end }}
+{{ end }}
+{{ $storyPosts = sort $storyPosts "Date" "desc" }}
+{{ $artifactPosts = sort $artifactPosts "Date" "desc" }}
+{{ $posts := $storyPosts }}
+{{ if eq (len $posts) 0 }}
+  {{ $posts = $artifactPosts }}
+{{ end }}
 {{ if gt (len $posts) 0 }}
   {{ $weekStart := now.AddDate 0 0 -7 }}
   {{ $publishedWeek := where $posts "Date" "ge" $weekStart }}
