@@ -70,7 +70,7 @@
   {{- partial "custom_head.html" . -}}
 </head>
 
-<body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }}">
+<body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }} {{ if .IsHome }}has-home-stream{{ end }}">
   {{ if .IsPage }}
   <div id="reading-progress" aria-hidden="true"></div>
   {{ end }}
@@ -93,6 +93,9 @@
     {{ partial "breadcrumbs.html" . }}
     {{ block "main" . }}{{ end }}
   </div>
+  {{ if .IsHome }}
+  {{ partial "home_stream_column.html" . }}
+  {{ end }}
 
   <footer>
     {{ partial "footer.html" . }}

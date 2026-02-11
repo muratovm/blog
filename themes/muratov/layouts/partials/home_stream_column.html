@@ -1,0 +1,20 @@
+{{ $posts := where site.RegularPages "Section" "blog" }}
+{{ $posts = where $posts "Draft" false }}
+{{ $olderPosts := after 1 ($posts.ByDate.Reverse) }}
+{{ if gt (len $olderPosts) 0 }}
+<aside class="home-stream-column" aria-label="Previous posts">
+  <section class="home-stream">
+    <div class="home-section-head">
+      <h3>Previous Posts</h3>
+    </div>
+    <ul class="home-stream-list">
+      {{ range $olderPosts }}
+      <li>
+        <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+</aside>
+{{ end }}
