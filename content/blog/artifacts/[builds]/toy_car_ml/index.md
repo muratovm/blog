@@ -17,6 +17,8 @@ draft: false
 image: toycar.webp
 layout: blog-post
 toc: true
+kind: artifact
+publish_section: artifacts
 ---
 
 ### Introduction

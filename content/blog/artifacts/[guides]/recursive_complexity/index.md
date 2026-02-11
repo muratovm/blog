@@ -18,6 +18,8 @@ layout: blog-post
 toc: true
 params:
   math: true
+kind: artifact
+publish_section: artifacts
 ---
 
 A few days ago I bumped into a question on [LeetCode](https://leetcode.com/) where I saw a bunch of people scratching their heads. It was question number 10 titled Regular Expression Matching with the difficulty label Hard. The solution to the exercise itself was not intuitive, requiring effective use of previously solved subproblems, but that wasn’t what everyone in the comments were interested in. After all the solution was available for everyone to see.

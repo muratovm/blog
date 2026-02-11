@@ -16,6 +16,8 @@ draft: false
 image: binary_search.webp
 layout: blog-post
 toc: true
+kind: artifact
+publish_section: artifacts
 ---
 
 I always get anxious when I see a problem that involves a sorted list because I know that it’ll inevitably involve using binary search.

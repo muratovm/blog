@@ -15,6 +15,8 @@ draft: false
 image: blog_structure.png
 layout: blog-post
 toc: true
+kind: artifact
+publish_section: artifacts
 ---
 
 The structure of this site is simple.
