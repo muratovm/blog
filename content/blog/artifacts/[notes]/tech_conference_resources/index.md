@@ -12,6 +12,9 @@ draft: false
 image: conferences.png
 layout: blog-post
 toc: true
+lastmod: 2026-03-28
+description: "A curated index of tech conference video archives organized by track."
+slug: tech-conference-resources
 ---
 
 A curated index of conference video archives by track. Channel links go to the full playlists page; year links go directly to a specific event.
