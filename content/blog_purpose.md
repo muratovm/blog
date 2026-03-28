@@ -1,5 +1,6 @@
 ---
 title: Why This Website Exists
+slug: purpose
 date: 2025-04-20
 lastmod: 2025-04-20
 tags:
@@ -26,6 +27,6 @@ If I could go back and change **one** thing, I would go back and shake enough se
 
 These articles could be created, reworded, moved around, or deleted at any moment. This isn't a website anymore it's my personal ***dumping ground***. The more life it has, the better.
 
-Of course there's a reason why almost nobody does this. It would take up a lot of time and it would make no money. Probably lose money in the long run. Counter to what they might say, people like having a recommendation algorithm that serves them the best content of the day. They won't find that here.
+Of course there's a reason why almost nobody does this. It would take up a lot of time and it would make no money. Probably lose money in the long run. Counter to what they might say, people like having a recommendation algorithm that serves them the best content of the day.
 
-I guess it’s a good thing I’m not making this site for people.
+Good thing I'm not making this site for people.

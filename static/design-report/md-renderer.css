@@ -1,0 +1,183 @@
+/* ── TELOS Markdown Renderer Styles ─────────────────────────────── */
+/* Shared CSS for pages that render markdown via md-renderer.js     */
+
+.md-content {
+    max-width: 100%;
+    line-height: 1.7;
+}
+
+.md-content h1 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.md-content h2 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-top: 32px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.md-content h3 {
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    color: var(--accent);
+}
+
+.md-content p {
+    margin-bottom: 16px;
+}
+
+.md-content strong {
+    color: var(--code);
+    font-weight: 700;
+}
+
+.md-content em {
+    font-style: italic;
+}
+
+.md-content hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+}
+
+.md-content ul,
+.md-content ol {
+    padding-left: 24px;
+    margin-bottom: 16px;
+}
+
+.md-content li {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.md-content code {
+    font-family: var(--mono-font);
+    color: var(--code);
+    background: var(--accent-bg);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 15px;
+}
+
+.md-content pre {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--small-radius);
+    padding: 16px;
+    overflow-x: auto;
+    margin-bottom: 16px;
+}
+
+.md-content pre code {
+    background: var(--bg);
+    padding: 0;
+    color: var(--preformatted);
+}
+
+.md-content a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.md-content a:hover {
+    color: var(--accent-hover);
+}
+
+/* Checkbox lists */
+.md-content ul.checklist {
+    list-style: none;
+    padding-left: 4px;
+}
+
+.md-content ul.checklist li {
+    position: relative;
+    padding-left: 28px;
+}
+
+.md-content ul.checklist li::before {
+    position: absolute;
+    left: 0;
+    font-size: 16px;
+}
+
+.md-content ul.checklist li.checked::before {
+    content: "☑";
+    color: var(--accent);
+}
+
+.md-content ul.checklist li.unchecked::before {
+    content: "☐";
+    color: var(--text-light);
+}
+
+/* Tables */
+.md-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 16px;
+}
+
+.md-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.md-content th,
+.md-content td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.md-content th {
+    font-weight: 700;
+    color: var(--text);
+    background: var(--bg);
+    border-bottom: 2px solid var(--border);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.md-content td {
+    color: var(--text-light);
+}
+
+.md-content tr:last-child td {
+    border-bottom: none;
+}
+
+/* Section cards */
+.md-section-card {
+    background: var(--accent-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.md-section-card h2 {
+    margin-top: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.md-section-card h3 {
+    margin-top: 16px;
+}
+
+.md-section-card h3:first-of-type {
+    margin-top: 8px;
+}

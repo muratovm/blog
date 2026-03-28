@@ -13,7 +13,7 @@ tags:
   - trees
   - recursion
 draft: false
-image: binary_search.webp
+image: binary_search.png
 layout: blog-post
 toc: true
 kind: artifact

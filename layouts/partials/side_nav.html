@@ -1,0 +1,52 @@
+<nav class="side-nav header-quick-nav" aria-label="Section navigation">
+  {{- $isHomeActive := .IsHome -}}
+  {{- $isContentContext := or
+    (hasPrefix .RelPermalink "/blog/")
+    (and (eq .Kind "taxonomy") (or (eq .Data.Plural "categories") (eq .Data.Plural "tags")))
+  -}}
+  {{- $isAllPostsActive := and (not .IsHome) $isContentContext -}}
+  {{- $isSearchActive := hasPrefix .RelPermalink "/search/" -}}
+  <ul class="side-nav-list" role="list">
+    <li>
+      <a href="{{ relURL "/" }}" title="Home" aria-label="Home" {{ if $isHomeActive }}class="current" aria-current="page"{{ end }}>
+        <span aria-hidden="true">⌂</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ relURL "blog/" }}" title="All Posts" aria-label="All Posts" {{ if $isAllPostsActive }}class="current" aria-current="page"{{ end }}>
+        <span aria-hidden="true">≡</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{ relURL "search/" }}" title="Search" aria-label="Search" {{ if $isSearchActive }}class="current" aria-current="page"{{ end }}>
+        <span aria-hidden="true">⌕</span>
+      </a>
+    </li>
+    {{- $upLink := relURL "blog/" -}}
+    {{- $upDisabled := false -}}
+    {{ if .IsHome }}
+      {{ $upLink = "#" }}
+      {{ $upDisabled = true }}
+    {{ end }}
+    {{ if .IsPage }}
+      {{ with .CurrentSection }}
+        {{ $upLink = .RelPermalink }}
+      {{ end }}
+    {{ else if .IsSection }}
+      {{ with .Parent }}
+        {{ $upLink = .RelPermalink }}
+      {{ else }}
+        {{ $upLink = relURL "blog/" }}
+      {{ end }}
+    {{ else if and (eq .Kind "taxonomy") (eq .Data.Plural "categories") }}
+      {{ $upLink = relURL "blog/" }}
+    {{ else if and (eq .Kind "taxonomy") (eq .Data.Plural "tags") }}
+      {{ $upLink = relURL "blog/" }}
+    {{ end }}
+    <li>
+      <a href="{{ $upLink }}" title="Up one level" aria-label="Up one level" {{ if $upDisabled }}aria-disabled="true" tabindex="-1"{{ end }}>
+        <span aria-hidden="true">↖</span>
+      </a>
+    </li>
+  </ul>
+</nav>

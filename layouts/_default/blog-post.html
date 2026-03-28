@@ -1,0 +1,172 @@
+{{ define "main" }}
+  <main class="article-main">
+    <!-- Show banner image-->  
+    {{ partial "banner.html" . }}
+
+    {{ if eq .Type "blog" }}
+      {{ if not .Params.menu }}
+        <p class="article-meta-row">
+          Last updated:
+          <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+            {{ .Lastmod.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
+          </time>
+        </p>
+        {{ $tags := .GetTerms "tags" }}
+        {{ $categories := .GetTerms "categories" }}
+        {{ $series := .GetTerms "series" }}
+        {{ if or (gt (len $categories) 0) (gt (len $tags) 0) (gt (len $series) 0) }}
+          <div class="article-taxonomy-meta">
+            {{ if gt (len $series) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Series</span>
+                <div class="article-taxonomy-items">
+                  {{ range $series }}
+                    <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              </div>
+            {{ end }}
+            {{ if gt (len $categories) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Categories</span>
+                <div class="article-taxonomy-items">
+                  {{ range $categories }}
+                    <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              </div>
+            {{ end }}
+            {{ if gt (len $tags) 0 }}
+              <div class="article-taxonomy-group">
+                <span class="article-taxonomy-label">Tags</span>
+                <div class="article-taxonomy-items">
+                  {{ range $tags }}
+                    <a class="article-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              </div>
+            {{ end }}
+          </div>
+        {{ end }}
+        {{ if eq .Section "blog" }}
+          {{ $seriesTermsTop := .GetTerms "series" }}
+          {{ if gt (len $seriesTermsTop) 0 }}
+            {{ $seriesPageTop := index $seriesTermsTop 0 }}
+            {{ $seriesPagesRawTop := $seriesPageTop.Pages }}
+            {{ $seriesPagesTop := $seriesPagesRawTop.ByDate }}
+            {{ $withSeriesOrderTop := where $seriesPagesRawTop "Params.series_order" "ne" nil }}
+            {{ if gt (len $withSeriesOrderTop) 0 }}
+              {{ $seriesPagesTop = sort $seriesPagesRawTop "Params.series_order" "asc" }}
+            {{ end }}
+            {{ $prevInSeriesTop := false }}
+            {{ $nextInSeriesTop := false }}
+            {{ $seriesIndexTop := 0 }}
+            {{ range $i, $p := $seriesPagesTop }}
+              {{ if eq $p.Permalink $.Permalink }}
+                {{ $seriesIndexTop = add $i 1 }}
+                {{ if gt $i 0 }}
+                  {{ $prevInSeriesTop = index $seriesPagesTop (sub $i 1) }}
+                {{ end }}
+                {{ if lt $i (sub (len $seriesPagesTop) 1) }}
+                  {{ $nextInSeriesTop = index $seriesPagesTop (add $i 1) }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            {{ if or $prevInSeriesTop $nextInSeriesTop }}
+              <section class="series-nav" aria-label="Series navigation">
+                <div class="series-nav-head">
+                  <div>
+                    <p class="series-nav-title">Series: {{ $seriesPageTop.LinkTitle }}</p>
+                    <p class="series-nav-progress">Part {{ $seriesIndexTop }} of {{ len $seriesPagesTop }}</p>
+                  </div>
+                  {{ if gt $seriesIndexTop 1 }}
+                    <a class="series-nav-jump" href="{{ (index $seriesPagesTop 0).RelPermalink }}">↺ Jump to Start</a>
+                  {{ end }}
+                </div>
+                <div class="series-nav-links">
+                  {{ with $prevInSeriesTop }}
+                    <a class="series-nav-link" href="{{ .RelPermalink }}">← {{ .Title }}</a>
+                  {{ end }}
+                  {{ with $nextInSeriesTop }}
+                    <a class="series-nav-link" href="{{ .RelPermalink }}">{{ .Title }} →</a>
+                  {{ end }}
+                </div>
+              </section>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+    
+    <content>
+      {{ .Content }}
+    </content>
+
+    {{ if eq .Section "blog" }}
+      {{ $seriesTerms := .GetTerms "series" }}
+      {{ if gt (len $seriesTerms) 0 }}
+        {{ $seriesPage := index $seriesTerms 0 }}
+        {{ $seriesPagesRaw := $seriesPage.Pages }}
+        {{ $seriesPages := $seriesPagesRaw.ByDate }}
+        {{ $withSeriesOrder := where $seriesPagesRaw "Params.series_order" "ne" nil }}
+        {{ if gt (len $withSeriesOrder) 0 }}
+          {{ $seriesPages = sort $seriesPagesRaw "Params.series_order" "asc" }}
+        {{ end }}
+        {{ $prevInSeries := false }}
+        {{ $nextInSeries := false }}
+        {{ $seriesIndex := 0 }}
+        {{ range $i, $p := $seriesPages }}
+          {{ if eq $p.Permalink $.Permalink }}
+            {{ $seriesIndex = add $i 1 }}
+            {{ if gt $i 0 }}
+              {{ $prevInSeries = index $seriesPages (sub $i 1) }}
+            {{ end }}
+            {{ if lt $i (sub (len $seriesPages) 1) }}
+              {{ $nextInSeries = index $seriesPages (add $i 1) }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+        {{ if or $prevInSeries $nextInSeries }}
+          <section class="series-nav" aria-label="Series navigation">
+            <div class="series-nav-head">
+              <div>
+                <p class="series-nav-title">Series: {{ $seriesPage.LinkTitle }}</p>
+                <p class="series-nav-progress">Part {{ $seriesIndex }} of {{ len $seriesPages }}</p>
+              </div>
+              {{ if gt $seriesIndex 1 }}
+                <a class="series-nav-jump" href="{{ (index $seriesPages 0).RelPermalink }}">↺ Jump to Start</a>
+              {{ end }}
+            </div>
+            <div class="series-nav-links">
+              {{ with $prevInSeries }}
+                <a class="series-nav-link" href="{{ .RelPermalink }}">← {{ .Title }}</a>
+              {{ end }}
+              {{ with $nextInSeries }}
+                <a class="series-nav-link" href="{{ .RelPermalink }}">{{ .Title }} →</a>
+              {{ end }}
+            </div>
+          </section>
+        {{ end }}
+      {{ end }}
+
+      {{- $related := where (site.RegularPages.Related .) "Draft" false | first 3 -}}
+      {{- if lt (len $related) 1 -}}
+        {{- $related = where site.RegularPages "Section" .Section -}}
+        {{- $related = where $related "Draft" false -}}
+        {{- $related = where $related "Permalink" "ne" .Permalink -}}
+        {{- $related = first 3 ($related.ByDate.Reverse) -}}
+      {{- end -}}
+      {{ with $related }}
+        <!--Divider-->
+        <h5 style="margin: 1rem 0rem;">Related content:</h5>
+        <div class="card-grid">
+          {{ range . }}
+            {{ partial "page_card.html" . }}
+          {{ end }}
+        </div>
+      {{ end }}
+
+      {{ partial "comments.html" . }}
+    {{ end }}
+  </main>
+{{ end }}

@@ -1,0 +1,198 @@
+{{ define "main" }}
+{{ $blogPosts := where site.RegularPages "Section" "blog" }}
+{{ $blogPosts = where $blogPosts "Draft" false }}
+{{ $storyPosts := slice }}
+{{ $artifactPosts := slice }}
+{{ range $blogPosts }}
+{{ $path := lower .File.Path }}
+{{ $kind := lower (default "" .Params.kind) }}
+{{ if or (eq $kind "story") (in $path "blog/stories/") }}
+{{ $storyPosts = $storyPosts | append . }}
+{{ else if or (eq $kind "artifact") (in $path "blog/artifacts/") }}
+{{ $artifactPosts = $artifactPosts | append . }}
+{{ else }}
+{{ $artifactPosts = $artifactPosts | append . }}
+{{ end }}
+{{ end }}
+{{ $storyPosts = sort $storyPosts "Date" "desc" }}
+{{ $artifactPosts = sort $artifactPosts "Date" "desc" }}
+{{ $isMainBlog := eq .RelPermalink (relURL "blog/") }}
+{{ $isStoriesSection := eq .RelPermalink (relURL "blog/stories/") }}
+{{ $isArtifactsSection := eq .RelPermalink (relURL "blog/artifacts/") }}
+
+{{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
+{{ $paginator := .Paginate $publishedPages }}
+
+  <content>
+    {{ if .Data.Singular }}
+      <small class="list-filter-remove">
+        <a href="{{ relURL "blog" }}">Remove filter</a>
+      </small>
+      <p class="list-filter-label">Filtering for "{{ .Title }}"</p>
+    {{ end }}
+
+    {{ $total := len $publishedPages }}
+    {{ if gt $total 0 }}
+      <p class="list-total-posts">
+        <span>Total Posts</span>
+        <span class="list-total-posts-count">{{ $total }}</span>
+      </p>
+    {{ end }}
+
+    {{ if or $paginator.HasPrev $paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
+
+    {{ if $isMainBlog }}
+      {{ $storiesLatest := "" }}
+      {{ $artifactsLatest := "" }}
+      {{ $storiesExampleTitle := "" }}
+      {{ $artifactsExampleTitle := "" }}
+      {{ if gt (len $storyPosts) 0 }}
+        {{ $storiesLatestPage := index (sort $storyPosts "Date" "desc") 0 }}
+        {{ $storiesLatest = ($storiesLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $storiesExampleTitle = $storiesLatestPage.Title }}
+      {{ end }}
+      {{ if gt (len $artifactPosts) 0 }}
+        {{ $artifactsLatestPage := index (sort $artifactPosts "Date" "desc") 0 }}
+        {{ $artifactsLatest = ($artifactsLatestPage.Date.Format "Jan 2, 2006") }}
+        {{ $artifactsExampleTitle = $artifactsLatestPage.Title }}
+      {{ end }}
+      <div class="list-main-links">
+        <a class="list-main-card" href="{{ "blog/stories/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">◉</span> Stories</strong>
+          <span>Opinionated narratives grounded in data and lived experience.</span>
+          {{ if ne $storiesLatest "" }}<small class="list-main-card-meta">Latest: {{ $storiesLatest }}</small>{{ end }}
+          <em>{{ len $storyPosts }} {{ if eq (len $storyPosts) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $storiesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $storiesExampleTitle }}</span></small>{{ end }}
+        </a>
+        <a class="list-main-card" href="{{ "blog/artifacts/" | relURL }}">
+          <strong><span class="list-main-icon" aria-hidden="true">▣</span> Artifacts</strong>
+          <span>Raw notes, experiments, and supporting material for future synthesis.</span>
+          {{ if ne $artifactsLatest "" }}<small class="list-main-card-meta">Latest: {{ $artifactsLatest }}</small>{{ end }}
+          <em>{{ len $artifactPosts }} {{ if eq (len $artifactPosts) 1 }}post{{ else }}posts{{ end }}</em>
+          {{ if ne $artifactsExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $artifactsExampleTitle }}</span></small>{{ end }}
+        </a>
+      </div>
+    {{ else }}
+      {{- $sections := where .Pages "IsSection" true -}}
+      {{- $sortedSections := sort $sections "Params.order" "asc" -}}
+      {{ if gt (len $sortedSections) 0 }}
+        <div class="list-link-buttons">
+          {{ range $sortedSections }}
+            {{ $sectionPublished := where .RegularPagesRecursive "Draft" false }}
+            <a class="list-link-button" href="{{ .RelPermalink }}">
+              <span class="list-link-button-title">➥ {{ .Title }}</span>
+              <span class="list-link-button-count">{{ len $sectionPublished }}</span>
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ end }}
+
+    {{ if or $paginator.HasPrev $paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
+
+    {{ if not $isMainBlog }}
+      {{ $listPages := $paginator.Pages }}
+      {{ if $isStoriesSection }}
+        {{ $listPages = $storyPosts }}
+      {{ else if $isArtifactsSection }}
+        {{ $listPages = $artifactPosts }}
+      {{ end }}
+      {{ if $isArtifactsSection }}
+        {{ $buildCount := 0 }}
+        {{ $guideCount := 0 }}
+        {{ $noteCount := 0 }}
+        {{ range $listPages }}
+          {{ $artifactType := lower (default "" .Params.artifact_type) }}
+          {{ if eq $artifactType "" }}
+            {{ $path := lower .File.Path }}
+            {{ if or (in $path "blog/artifacts/[builds]/") (in $path "blog/artifacts/builds/") (in $path "blog/[builds]/") (in $path "blog/builds/") }}
+              {{ $artifactType = "build" }}
+            {{ else if or (in $path "blog/artifacts/[guides]/") (in $path "blog/artifacts/guides/") (in $path "blog/[guides]/") (in $path "blog/guides/") }}
+              {{ $artifactType = "guide" }}
+            {{ else if or (in $path "blog/artifacts/[notes]/") (in $path "blog/artifacts/notes/") (in $path "blog/[notes]/") (in $path "blog/notes/") }}
+              {{ $artifactType = "note" }}
+            {{ else }}
+              {{ $artifactType = "other" }}
+            {{ end }}
+          {{ end }}
+          {{ if eq $artifactType "build" }}
+            {{ $buildCount = add $buildCount 1 }}
+          {{ else if eq $artifactType "guide" }}
+            {{ $guideCount = add $guideCount 1 }}
+          {{ else if eq $artifactType "note" }}
+            {{ $noteCount = add $noteCount 1 }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      <ul class="blog-posts">
+        {{ range $listPages }}
+          {{ if not .Draft }}
+            {{ $artifactType := "" }}
+            {{ if $isArtifactsSection }}
+              {{ $artifactType = lower (default "" .Params.artifact_type) }}
+              {{ if eq $artifactType "" }}
+                {{ $path := lower .File.Path }}
+                {{ if or (in $path "blog/artifacts/[builds]/") (in $path "blog/artifacts/builds/") (in $path "blog/[builds]/") (in $path "blog/builds/") }}
+                  {{ $artifactType = "build" }}
+                {{ else if or (in $path "blog/artifacts/[guides]/") (in $path "blog/artifacts/guides/") (in $path "blog/[guides]/") (in $path "blog/guides/") }}
+                  {{ $artifactType = "guide" }}
+                {{ else if or (in $path "blog/artifacts/[notes]/") (in $path "blog/artifacts/notes/") (in $path "blog/[notes]/") (in $path "blog/notes/") }}
+                  {{ $artifactType = "note" }}
+                {{ else }}
+                  {{ $artifactType = "other" }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            <li{{ if $isArtifactsSection }} data-artifact-type="{{ $artifactType }}"{{ end }}>
+              <span>
+                <i>
+                  <time datetime="{{ .Date.Format "01-02-2006" }}" pubdate>
+                    {{ .Date.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
+                  </time>
+                </i>
+              </span>
+              <div class="blog-separator"></div>
+              {{ if .Params.link }}
+                <a class="list-post-title list-post-title-external" href="{{ .Params.link }}" target="_blank" rel="noopener noreferrer">{{ .Title }} ↪</a>
+              {{ else }}
+                <div class="list-post-main">
+                  <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                </div>
+                <div class="list_page_tags">
+                  {{ range .GetTerms "categories" }}
+                    <a class="list-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+                  {{ end }}
+                </div>
+              {{ end }}
+            </li>
+          {{ end }}
+        {{ else }}
+          <li>No posts yet</li>
+        {{ end }}
+      </ul>
+
+      {{ if not .Data.Singular }}
+        <small>
+          <div class="list-all-taxonomies">
+            {{ range .Site.Taxonomies.categories }}
+              <a class="list-taxonomy-chip" href="{{ .Page.RelPermalink }}">#{{ lower .Page.LinkTitle }}</a>
+            {{ end }}
+          </div>
+        </small>
+      {{ end }}
+
+      {{ with .OutputFormats.Get "rss" }}
+        <div class="list-link-buttons" style="padding-top: 0.55rem;">
+          <a class="list-link-button" href="{{ .RelPermalink }}">
+            <span class="list-link-button-title">➥ RSS Feed</span>
+            <span class="list-link-button-count">XML</span>
+          </a>
+        </div>
+      {{ end }}
+    {{ end }}
+  </content>
+{{ end }}

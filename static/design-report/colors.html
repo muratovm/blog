@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color System — Michael Muratov</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:wght@400;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .swatch {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .swatch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .swatch-color {
+            height: 100px;
+            display: flex;
+            align-items: flex-end;
+            padding: 8px 12px;
+        }
+
+        .swatch-info {
+            padding: 12px;
+            background: var(--accent-bg);
+        }
+
+        .swatch-name {
+            font-family: var(--heading-font);
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .swatch-token {
+            font-family: var(--mono-font);
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 4px;
+        }
+
+        .swatch-hex {
+            font-family: var(--mono-font);
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .section-label {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text);
+            margin-top: 32px;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-desc {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        /* Contrast strip */
+        .contrast-strip-wrapper {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            height: 64px;
+            margin-bottom: 32px;
+            border: 1px solid var(--border);
+            display: flex;
+            position: relative;
+        }
+
+        .contrast-strip {
+            display: flex;
+            height: 100%;
+            width: max-content;
+            animation: scrollStrip 20s linear infinite;
+        }
+
+        .contrast-strip:hover {
+            animation-play-state: paused;
+        }
+
+        .contrast-strip div {
+            flex: 0 0 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--mono-font);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes scrollStrip {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Pair demo */
+        .pair-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .pair-card {
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .pair-card p {
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .pair-label {
+            font-family: var(--mono-font);
+            font-size: 11px;
+            opacity: 0.6;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="/" title="Home">⌂ Home</a>
+        <a href="./index.html" title="Design Report">← Design Report</a>
+        <button onclick="toggleTheme()" title="Toggle theme" id="theme-toggle" class="theme-toggle">🌙</button>
+    </nav>
+
+    <header>
+        <h1>Color System</h1>
+        <p>The complete color palette. Toggle dark mode to see both palettes.</p>
+    </header>
+
+    <main>
+
+        <!-- Full spectrum strip -->
+        <h2 class="section-label">Core Spectrum</h2>
+        <p class="section-desc">Backgrounds, text, and structural colors.</p>
+        <div class="contrast-strip-wrapper">
+            <div class="contrast-strip" id="core-spectrum-strip"></div>
+        </div>
+
+        <h2 class="section-label">Accent Spectrum</h2>
+        <p class="section-desc">Interactive elements, cards, and states.</p>
+        <div class="contrast-strip-wrapper">
+            <div class="contrast-strip" id="accent-spectrum-strip"></div>
+        </div>
+
+        <!-- Core colors -->
+        <h2 class="section-label">Core Palette</h2>
+        <p class="section-desc">Foundation colors for backgrounds, text, and borders.</p>
+        <div class="palette-grid" id="core-grid"></div>
+
+        <!-- Usage pairings -->
+        <h2 class="section-label">Usage Pairings</h2>
+        <p class="section-desc">How colors work together in context.</p>
+        <div class="pair-grid" id="pair-grid"></div>
+
+        <!-- Accent & Interactive -->
+        <h2 class="section-label">Accent & Interactive</h2>
+        <p class="section-desc">Links, buttons, highlights, and interactive elements.</p>
+        <div class="palette-grid" id="accent-grid"></div>
+
+        <!-- Code & Syntax -->
+        <h2 class="section-label">Code & Syntax</h2>
+        <p class="section-desc">Inline code, preformatted blocks, and highlights.</p>
+        <div class="palette-grid" id="code-grid"></div>
+
+        <!-- Card Accents -->
+        <h2 class="section-label">Card Accents</h2>
+        <p class="section-desc">Per-module hover accents for dashboard cards.</p>
+        <div class="palette-grid" id="card-grid"></div>
+
+        <!-- Status & Feedback -->
+        <h2 class="section-label">Status & Feedback</h2>
+        <p class="section-desc">Semantic colors for success and error states.</p>
+        <div class="palette-grid" id="status-grid"></div>
+
+    </main>
+
+    <footer>
+        <p>Michael Muratov</p>
+    </footer>
+
+    <script>
+        // Theme toggle
+        const stored = localStorage.getItem("theme");
+        const toggleBtn = document.getElementById("theme-toggle");
+        if (stored === "dark-mode" || (!stored && matchMedia("(prefers-color-scheme: dark)").matches)) {
+            document.body.classList.add("dark-mode");
+            toggleBtn.textContent = '☀️';
+        }
+        function toggleTheme() {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark-mode" : "light-mode");
+            toggleBtn.textContent = isDark ? '☀️' : '🌙';
+            renderAll();
+        }
+
+        // Color definitions
+        const colors = {
+            core: [
+                { name: 'Background', token: '--bg', light: '#ffffff', dark: '#0e1718' },
+                { name: 'Opposite', token: '--opposite', light: '#000000', dark: '#ffffff' },
+                { name: 'Accent BG', token: '--accent-bg', light: '#f6f4ef', dark: '#182627' },
+                { name: 'Text', token: '--text', light: '#1f2d2c', dark: '#d9e5e3' },
+                { name: 'Text Light', token: '--text-light', light: '#4c5f5d', dark: '#9fb4b1' },
+                { name: 'Border', token: '--border', light: '#8f9d8a', dark: '#4a605d' },
+                { name: 'Disabled', token: '--disabled', light: '#ededec', dark: '#1c2628' },
+                { name: 'Disabled Text', token: '--disabled-text', light: '#96a1a0', dark: '#546664' },
+            ],
+            accent: [
+                { name: 'Accent', token: '--accent', light: '#176b63', dark: '#79d2c2' },
+                { name: 'Accent Hover', token: '--accent-hover', light: '#229181', dark: '#9be5d9' },
+                { name: 'Marked', token: '--marked', light: '#b47828', dark: '#ffd76a' },
+            ],
+            code: [
+                { name: 'Code', token: '--code', light: '#9d2e5d', dark: '#ff9ec3' },
+                { name: 'Preformatted', token: '--preformatted', light: '#324443', dark: '#c3d4d2' },
+            ],
+            card: [
+                { name: 'Card Accent 1', token: '--card-accent-1', light: '#6b4c9a', dark: '#b4a2f8' },
+                { name: 'Card Accent 2', token: '--card-accent-2', light: '#b24b2b', dark: '#f8b4a2' },
+            ],
+            status: [
+                { name: 'Error', token: '--error', light: '#b22b2b', dark: '#f88b8b' },
+                { name: 'Success', token: '--success', light: '#2b8a4b', dark: '#85d6a3' },
+                { name: 'Warning', token: '--warning', light: '#d68910', dark: '#f39c12' },
+                { name: 'Critical', token: '--critical', light: '#d35400', dark: '#e74c3c' },
+            ],
+        };
+
+        function isDark() {
+            return document.body.classList.contains('dark-mode');
+        }
+
+        function getHex(c) {
+            return isDark() ? c.dark : c.light;
+        }
+
+        function contrastText(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+            return lum > 0.5 ? '#1f2d2c' : '#ffffff';
+        }
+
+        function createSwatch(c) {
+            const hex = getHex(c);
+            return `
+                <div class="swatch">
+                    <div class="swatch-color" style="background: ${hex};">
+                        <span style="color: ${contrastText(hex)}; font-family: var(--mono-font); font-size: 12px;">${hex}</span>
+                    </div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">${c.name}</div>
+                        <div class="swatch-token">${c.token}</div>
+                        <div class="swatch-hex">Light: ${c.light} · Dark: ${c.dark}</div>
+                    </div>
+                </div>`;
+        }
+
+        function renderAll() {
+            document.getElementById('core-grid').innerHTML = colors.core.map(createSwatch).join('');
+            document.getElementById('accent-grid').innerHTML = colors.accent.map(createSwatch).join('');
+            document.getElementById('code-grid').innerHTML = colors.code.map(createSwatch).join('');
+            document.getElementById('card-grid').innerHTML = colors.card.map(createSwatch).join('');
+            document.getElementById('status-grid').innerHTML = colors.status.map(createSwatch).join('');
+
+            const coreDoubled = [...colors.core, ...colors.core];
+            document.getElementById('core-spectrum-strip').innerHTML = coreDoubled.map(c => {
+                const hex = getHex(c);
+                return `<div style="background: ${hex}; color: ${contrastText(hex)};">${c.name.slice(0, 3)}</div>`;
+            }).join('');
+
+            const accents = [...colors.accent, ...colors.code, ...colors.card, ...(colors.status || [])];
+            const accentsDoubled = [...accents, ...accents];
+            document.getElementById('accent-spectrum-strip').innerHTML = accentsDoubled.map(c => {
+                const hex = getHex(c);
+                return `<div style="background: ${hex}; color: ${contrastText(hex)};">${c.name.slice(0, 3)}</div>`;
+            }).join('');
+
+            const pairs = [
+                { bg: '--bg', fg: '--text', label: 'Body text on page' },
+                { bg: '--accent-bg', fg: '--text', label: 'Card content' },
+                { bg: '--accent', fg: '--bg', label: 'Button / active state' },
+                { bg: '--bg', fg: '--accent', label: 'Link on page' },
+                { bg: '--accent-bg', fg: '--code', label: 'Inline code on card' },
+                { bg: '--bg', fg: '--text-light', label: 'Secondary text' },
+                { bg: '--disabled', fg: '--disabled-text', label: 'Disabled component' },
+            ];
+
+            document.getElementById('pair-grid').innerHTML = pairs.map(p => {
+                const bgToken = colors.core.concat(colors.accent).find(c => c.token === p.bg) || colors.core[0];
+                const fgToken = colors.core.concat(colors.accent, colors.code).find(c => c.token === p.fg) || colors.core[3];
+                const bg = getHex(bgToken);
+                const fg = getHex(fgToken);
+                return `
+                    <div class="pair-card" style="background: ${bg};">
+                        <div class="pair-label" style="color: ${fg};">${p.label}</div>
+                        <p style="color: ${fg};">The quick brown fox jumps over the lazy dog.</p>
+                    </div>`;
+            }).join('');
+        }
+
+        renderAll();
+    </script>
+</body>
+
+</html>

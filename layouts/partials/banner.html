@@ -1,0 +1,19 @@
+{{/* banner.html – expects . to be a Page object */}}
+
+{{- $imgName := .Params.image | default "default.png" -}}
+{{- $img     := resources.Get (printf "banners/%s" $imgName) -}}
+{{- if not $img -}}
+  {{- warnf "Banner %q not found in assets/banners/" $imgName -}}
+{{- else -}}
+  {{- $banner := $img -}}
+  {{- if eq $img.ResourceType "image" -}}
+    {{- $banner = $img.Resize "2000x webp q82" -}}
+  {{- end -}}
+  <div class="post-banner">
+    <img class="post-banner-image"
+         src="{{ $banner.RelPermalink }}"
+         width="{{ $banner.Width }}" height="{{ $banner.Height }}"
+         loading="lazy"
+         alt="{{ .Title }}">
+  </div>
+{{- end -}}
