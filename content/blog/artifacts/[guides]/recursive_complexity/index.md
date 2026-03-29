@@ -1,4 +1,5 @@
 ---
+artifact_type: guide
 title: Solving for Recursive Complexity
 description: Analyzing a difficult Leetcode problem
 date: 2020-05-19

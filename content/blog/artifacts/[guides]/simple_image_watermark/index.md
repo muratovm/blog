@@ -1,4 +1,5 @@
 ---
+artifact_type: guide
 title: Intro to Image Watermarking
 description: The first step to signing your images
 date: 2025-05-25

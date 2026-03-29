@@ -1,4 +1,5 @@
 ---
+artifact_type: guide
 title: Binary Search in Python
 description: And you don’t need to memorize how binary search works
 date: 2021-06-27

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+
 if ! command -v hugo >/dev/null 2>&1; then
   echo "Error: hugo is not installed or not in PATH."
   exit 1
@@ -8,11 +11,16 @@ fi
 
 lane="story"
 slug=""
+artifact_type=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     -t|--type|--lane)
       lane="${2:-}"
+      shift 2
+      ;;
+    -a|--artifact-type)
+      artifact_type="${2:-}"
       shift 2
       ;;
     *)
@@ -28,9 +36,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [[ -z "$slug" ]]; then
-  echo "Usage: npm run new:article -- [--type blog|story|artifact] <slug>"
-  echo "Example: npm run new:article -- secure-api-logging"
-  echo "Example: npm run new:article -- --type story incident-response-lessons"
+  echo "Usage: npm run new:article -- [--type story|artifact] [--artifact-type build|guide|note] <slug>"
+  echo "Example: npm run new:article -- my-story-slug"
+  echo "Example: npm run new:article -- --type artifact --artifact-type build my-build-slug"
   exit 1
 fi
 
@@ -40,28 +48,35 @@ if [[ ! "$slug" =~ ^[a-z0-9][a-z0-9-]*$ ]]; then
 fi
 
 case "$lane" in
-  blog)
-    publish_section="blog"
-    kind="story"
-    archetype_kind="default"
-    target="content/drafts/blog/${slug}/index.md"
-    ;;
   story|stories)
     lane="story"
     publish_section="stories"
     kind="story"
     archetype_kind="story"
-    target="content/drafts/blog/stories/${slug}/index.md"
+    target="content/blog/stories/${slug}/index.md"
     ;;
   artifact|artifacts)
     lane="artifact"
     publish_section="artifacts"
     kind="artifact"
     archetype_kind="artifact"
-    target="content/drafts/blog/artifacts/${slug}/index.md"
+    case "$artifact_type" in
+      build|builds) artifact_type="build"; subdir="[builds]" ;;
+      guide|guides) artifact_type="guide"; subdir="[guides]" ;;
+      note|notes)   artifact_type="note";  subdir="[notes]"  ;;
+      "")
+        echo "Error: --artifact-type is required for artifact posts. Use build, guide, or note."
+        exit 1
+        ;;
+      *)
+        echo "Error: unsupported artifact-type '${artifact_type}'. Use build, guide, or note."
+        exit 1
+        ;;
+    esac
+    target="content/blog/artifacts/${subdir}/${slug}/index.md"
     ;;
   *)
-    echo "Error: unsupported type '${lane}'. Use blog, story, or artifact."
+    echo "Error: unsupported type '${lane}'. Use story or artifact."
     exit 1
     ;;
 esac
@@ -73,14 +88,15 @@ fi
 
 hugo new --kind "$archetype_kind" "$target"
 
-# Inject migration-era metadata. Works for YAML and TOML front matter.
+# Inject metadata. Works for YAML and TOML front matter.
 tmp_file="$(mktemp)"
-awk -v kind="$kind" -v publish_section="$publish_section" '
+awk -v kind="$kind" -v publish_section="$publish_section" -v artifact_type="$artifact_type" '
   BEGIN {
     in_frontmatter = 0
     saw_kind = 0
     saw_status = 0
     saw_publish_section = 0
+    saw_artifact_type = 0
   }
   NR == 1 {
     delim = $0
@@ -95,10 +111,12 @@ awk -v kind="$kind" -v publish_section="$publish_section" '
       if (!saw_kind) print "kind: " kind
       if (!saw_status) print "status: draft"
       if (!saw_publish_section) print "publish_section: " publish_section
+      if (artifact_type != "" && !saw_artifact_type) print "artifact_type: " artifact_type
     } else {
       if (!saw_kind) print "kind = \"" kind "\""
       if (!saw_status) print "status = \"draft\""
       if (!saw_publish_section) print "publish_section = \"" publish_section "\""
+      if (artifact_type != "" && !saw_artifact_type) print "artifact_type = \"" artifact_type "\""
     }
     print
     in_frontmatter = 0
@@ -123,12 +141,18 @@ awk -v kind="$kind" -v publish_section="$publish_section" '
       saw_publish_section = 1
       next
     }
+    if (artifact_type != "" && $0 ~ /^[[:space:]]*artifact_type[[:space:]]*[:=]/) {
+      if (delim == "---") print "artifact_type: " artifact_type
+      else print "artifact_type = \"" artifact_type "\""
+      saw_artifact_type = 1
+      next
+    }
   }
   { print }
 ' "$target" > "$tmp_file"
 mv "$tmp_file" "$target"
 
 echo "Created ${target}"
-echo "Type: ${lane}"
-echo "Next: fill in description/tags/image and refine thesis/impact if this is a story."
+echo "Type: ${lane}${artifact_type:+ (${artifact_type})}"
+echo "Next: fill in title, description, tags, image, and write content."
 echo "When ready to publish, run: npm run publish:article -- ${slug}"

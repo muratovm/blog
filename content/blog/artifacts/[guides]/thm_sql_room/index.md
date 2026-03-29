@@ -1,4 +1,5 @@
 ---
+artifact_type: guide
 title: TryHackMe - SQL
 description: Network Services 2 Room
 date: 2024-10-20

@@ -33,34 +33,41 @@ get_frontmatter() {
 target="${1:-}"
 if [[ -z "$target" ]]; then
   echo "Usage: npm run publish:article -- <draft-slug-or-path>"
-  echo "Example: npm run publish:article -- secure-api-logging"
-  echo "Example: npm run publish:article -- stories/incident-response-lessons"
+  echo "Example: npm run publish:article -- my-story-slug"
+  echo "Example: npm run publish:article -- stories/my-story-slug"
   exit 1
 fi
 
+# Find the draft under content/blog/ (drafts now live at their final destination)
 src=""
-if [[ -f "content/drafts/${target}/index.md" ]]; then
-  src="content/drafts/${target}/index.md"
+if [[ -f "content/blog/${target}/index.md" ]]; then
+  src="content/blog/${target}/index.md"
 else
-  mapfile -t matches < <(find content/drafts -type f -path "*/${target}/index.md" | sort)
+  mapfile -t matches < <(find content/blog -type f -path "*/${target}/index.md" | sort)
   if [[ ${#matches[@]} -eq 1 ]]; then
     src="${matches[0]}"
   elif [[ ${#matches[@]} -gt 1 ]]; then
-    echo "Error: multiple draft matches found for '${target}':"
+    echo "Error: multiple matches found for '${target}':"
     printf '  - %s\n' "${matches[@]}"
-    echo "Use a more specific path under content/drafts."
+    echo "Use a more specific path under content/blog."
     exit 1
   fi
 fi
 
 if [[ -z "$src" ]]; then
-  echo "Error: draft not found under content/drafts for '${target}'."
+  echo "Error: post not found under content/blog for '${target}'."
   exit 1
 fi
 
 frontmatter="$(get_frontmatter "$src")"
 if [[ -z "$frontmatter" ]]; then
   echo "Error: ${src} is missing a valid front matter block."
+  exit 1
+fi
+
+# Must currently be a draft
+if ! printf '%s\n' "$frontmatter" | grep -Eqi '^[[:space:]]*draft[[:space:]]*[:=][[:space:]]*true([[:space:]]|$)'; then
+  echo "Error: ${src} must have draft: true before publishing."
   exit 1
 fi
 
@@ -72,11 +79,6 @@ for field in "${required_fields[@]}"; do
 done
 if [[ ${#missing[@]} -gt 0 ]]; then
   echo "Error: ${src} is missing required fields -> ${missing[*]}"
-  exit 1
-fi
-
-if ! printf '%s\n' "$frontmatter" | grep -Eqi '^[[:space:]]*draft[[:space:]]*[:=][[:space:]]*true([[:space:]]|$)'; then
-  echo "Error: ${src} must have draft: true before publishing."
   exit 1
 fi
 
@@ -95,7 +97,7 @@ if [[ -n "$image_ref" ]]; then
   fi
 fi
 
-# Validate all image references in this draft file before publishing.
+# Validate all markdown image references before publishing.
 while IFS= read -r ref; do
   rel="$(printf '%s' "$ref" | sed -E 's/^!\[[^]]*\]\(([^)]+)\)$/\1/' | tr -d '"' | tr -d "'")"
   if [[ "$rel" =~ ^https?:// ]] || [[ "$rel" =~ ^mailto: ]] || [[ "$rel" =~ ^data: ]] || [[ "$rel" =~ ^# ]]; then
@@ -133,82 +135,22 @@ while IFS= read -r line; do
   fi
 done < <(grep -E '\{\{< *img ' "$src" || true)
 
-publish_section="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*publish_section[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
-kind="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*kind[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
-
-if [[ -z "$publish_section" ]]; then
-  case "$kind" in
-    story) publish_section="stories" ;;
-    artifact) publish_section="artifacts" ;;
-    *) publish_section="stories" ;;
-  esac
-fi
-
-case "$publish_section" in
-  blog|stories|artifacts) ;;
-  *)
-    echo "Error: unsupported publish_section '${publish_section}' in ${src}."
-    echo "Allowed values: blog, stories, artifacts."
-    exit 1
-    ;;
-esac
-
-src_dir="$(dirname "$src")"
-rel_path="${src_dir#content/drafts/}"
-
-case "$publish_section" in
-  blog)
-    dst_root="content/blog"
-    case "$rel_path" in
-      blog/*) rel_path="${rel_path#blog/}" ;;
-    esac
-    ;;
-  stories)
-    dst_root="content/blog/stories"
-    case "$rel_path" in
-      blog/stories/*) rel_path="${rel_path#blog/stories/}" ;;
-      stories/*) rel_path="${rel_path#stories/}" ;;
-      story/*) rel_path="${rel_path#story/}" ;;
-      blog/story/*) rel_path="${rel_path#blog/story/}" ;;
-      blog/*) rel_path="${rel_path#blog/}" ;;
-    esac
-    ;;
-  artifacts)
-    dst_root="content/blog/artifacts"
-    case "$rel_path" in
-      blog/artifacts/*) rel_path="${rel_path#blog/artifacts/}" ;;
-      artifacts/*) rel_path="${rel_path#artifacts/}" ;;
-      artifact/*) rel_path="${rel_path#artifact/}" ;;
-      blog/artifact/*) rel_path="${rel_path#blog/artifact/}" ;;
-      blog/*) rel_path="${rel_path#blog/}" ;;
-    esac
-    ;;
-esac
-
-dst_dir="${dst_root}/${rel_path}"
-dst_index="${dst_dir}/index.md"
-
-if [[ -e "$dst_dir" ]]; then
-  echo "Error: destination already exists -> ${dst_dir}"
-  exit 1
-fi
-
-mkdir -p "$(dirname "$dst_dir")"
-mv "$src_dir" "$dst_dir"
-
+# Set draft: false and status: published in-place (no file move needed).
 tmp_file="$(mktemp)"
-fm_delim="$(head -n 1 "$dst_index")"
+fm_delim="$(head -n 1 "$src")"
 awk -v fm_delim="$fm_delim" '
   BEGIN {
     is_toml = (fm_delim == "+++")
+    draft_replaced = 0
+    status_replaced = 0
   }
-  /^draft[[:space:]]*[:=][[:space:]]*/ {
+  /^[[:space:]]*draft[[:space:]]*[:=][[:space:]]*/ {
     if ($0 ~ /=/) print "draft = false"
     else print "draft: false"
     draft_replaced = 1
     next
   }
-  /^status[[:space:]]*[:=][[:space:]]*/ {
+  /^[[:space:]]*status[[:space:]]*[:=][[:space:]]*/ {
     if ($0 ~ /=/) print "status = \"published\""
     else print "status: published"
     status_replaced = 1
@@ -225,7 +167,7 @@ awk -v fm_delim="$fm_delim" '
       else print "status: published"
     }
   }
-' "$dst_index" > "$tmp_file"
-mv "$tmp_file" "$dst_index"
+' "$src" > "$tmp_file"
+mv "$tmp_file" "$src"
 
-echo "Published ${dst_index}"
+echo "Published ${src}"

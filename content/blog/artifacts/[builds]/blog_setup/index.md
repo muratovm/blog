@@ -1,4 +1,5 @@
 ---
+artifact_type: build
 title: How this Blog Works
 description: Setup notes for this Hugo blog, including tooling, deployment, and workflow.
 date: 2025-04-22

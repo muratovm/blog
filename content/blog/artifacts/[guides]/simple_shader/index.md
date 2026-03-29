@@ -1,4 +1,5 @@
 ---
+artifact_type: guide
 title: Shaders in GLSL Canvas
 date: 2025-06-01
 lastmod: 2025-06-01
