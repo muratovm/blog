@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: Intro to Image Watermarking
 description: The first step to signing your images

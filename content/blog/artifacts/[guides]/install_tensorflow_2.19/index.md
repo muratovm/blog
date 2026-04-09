@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: Installing Tensorflow 2.19
 date: 2025-05-07

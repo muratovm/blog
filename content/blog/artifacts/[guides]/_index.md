@@ -1,4 +1,5 @@
 ---
+type: artifact
 title: "Guides"
 description: "Collection of Guides, Setups and Instructions"
 aliases:

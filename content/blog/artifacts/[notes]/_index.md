@@ -1,4 +1,5 @@
 ---
+type: artifact
 title: "Notes"
 description: "Latest articles and thoughts"
 aliases:

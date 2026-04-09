@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: note
 title: AI Tools I'm Using Right Now
 description: Practical notes on the AI tools I use most for writing and coding.

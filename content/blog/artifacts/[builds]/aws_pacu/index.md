@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: build
 title: Testing AWS Infra with PACU
 date: 2024-10-26

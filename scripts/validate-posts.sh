@@ -37,7 +37,7 @@ required_fields_published=(
 required_fields_draft=(
   title
   date
-  kind
+  type
   draft
 )
 
@@ -82,13 +82,13 @@ while IFS= read -r file; do
     continue
   fi
 
-  # kind check — must match path for both draft and published posts
-  kind_value="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*kind[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+  # type check — must match path for both draft and published posts
+  type_value="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*type[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
   publish_section_value="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*publish_section[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
 
   if [[ "$file" == content/blog/stories/* ]]; then
-    if [[ "$kind_value" != "story" ]]; then
-      echo "ERROR ${file}: kind must be 'story' for content/blog/stories."
+    if [[ "$type_value" != "story" ]]; then
+      echo "ERROR ${file}: type must be 'story' for content/blog/stories."
       errors=$((errors + 1))
     fi
     if [[ -n "$publish_section_value" && "$publish_section_value" != "stories" ]]; then
@@ -96,8 +96,8 @@ while IFS= read -r file; do
       errors=$((errors + 1))
     fi
   elif [[ "$file" == content/blog/artifacts/* ]]; then
-    if [[ "$kind_value" != "artifact" ]]; then
-      echo "ERROR ${file}: kind must be 'artifact' for content/blog/artifacts."
+    if [[ "$type_value" != "artifact" ]]; then
+      echo "ERROR ${file}: type must be 'artifact' for content/blog/artifacts."
       errors=$((errors + 1))
     fi
     if [[ -n "$publish_section_value" && "$publish_section_value" != "artifacts" ]]; then

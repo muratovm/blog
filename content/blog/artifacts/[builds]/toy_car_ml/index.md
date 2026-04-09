@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: build
 title: Toy Car Reinforcement Learning
 description: Undergraduate introduction to machine learning on human generated data

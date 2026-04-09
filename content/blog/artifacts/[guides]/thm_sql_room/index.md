@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: TryHackMe - SQL
 description: Network Services 2 Room
