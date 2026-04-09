@@ -19,7 +19,6 @@ layout: blog-post
 toc: true
 params:
   math: true
-kind: artifact
 publish_section: artifacts
 ---
 

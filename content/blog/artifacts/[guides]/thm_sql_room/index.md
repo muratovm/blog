@@ -22,7 +22,6 @@ draft: false
 image: mysql_exploitation.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

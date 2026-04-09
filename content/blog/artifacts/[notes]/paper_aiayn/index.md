@@ -1,5 +1,4 @@
 ---
-kind: artifact
 artifact_type: note
 title: Paper Notes - Attention is All You Need
 date: 2025-07-27

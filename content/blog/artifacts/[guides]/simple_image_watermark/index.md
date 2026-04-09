@@ -17,7 +17,6 @@ draft: false
 image: watermark_intro.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

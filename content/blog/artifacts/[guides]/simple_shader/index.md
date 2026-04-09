@@ -14,7 +14,6 @@ draft: false
 image: simple_shader.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

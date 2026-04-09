@@ -1,5 +1,4 @@
 ---
-kind: artifact
 artifact_type: guide
 title: The Anatomy of a Good Prompt
 description: A guide to writing effective prompts for text based models.

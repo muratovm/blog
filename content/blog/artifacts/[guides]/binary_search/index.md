@@ -17,7 +17,6 @@ draft: false
 image: binary_search.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 
