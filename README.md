@@ -1,5 +1,7 @@
 # Blog
 
+![Architecture Visual Diagram](architecture_visual.png)
+
 ## Current State
 This site is a Hugo blog (`hugo v0.155+`) using the local theme at `themes/muratov`.
 
