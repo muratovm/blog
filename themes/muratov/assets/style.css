@@ -30,8 +30,8 @@ content {
 body>header {
   padding: 0.6rem 0.5rem 1.3rem !important;
   position: relative;
-  overflow-x: hidden;
-  overflow-y: visible;
+  isolation: isolate;
+  overflow: hidden;
 }
 
 body>header>:not(.header-activity-grid-wrap) {
@@ -50,11 +50,6 @@ header>nav {
 
 #theme-toggle {
   z-index: 6;
-}
-
-nav a.current {
-  color: var(--accent) !important;
-  border-color: var(--accent) !important;
 }
 
 .sr-only {
@@ -1126,9 +1121,23 @@ div.highlight {
   width: auto;
 }
 
-.header-quick-nav {
-  margin: 0.35rem auto 0;
+body>header>.header-quick-nav {
+  position: absolute;
+  top: 4rem;
+  right: 0.75rem;
+  margin: 0;
   width: fit-content;
+  z-index: 50;
+}
+
+@media (max-width: 700px) {
+  body>header>.header-quick-nav {
+    position: relative;
+    top: auto;
+    right: auto;
+    margin: 0.35rem auto 0;
+    z-index: 50;
+  }
 }
 
 .side-nav-list {
@@ -1139,6 +1148,20 @@ div.highlight {
   gap: 0.55rem;
 }
 
+.header-quick-nav .side-nav-list {
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+@media (max-width: 700px) {
+  .header-quick-nav .side-nav-list {
+    align-items: center;
+    flex-direction: row;
+    gap: 0.55rem;
+  }
+}
+
 .side-nav-list li {
   margin: 0;
 }
@@ -1147,23 +1170,35 @@ div.highlight {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
   text-decoration: none;
   border: 0;
   border-radius: 999px;
-  width: 2rem;
-  height: 2rem;
+  min-height: 2rem;
+  padding: 0 0.7rem;
   color: var(--text-light);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1;
+  white-space: nowrap;
+  flex: 0 0 auto;
 }
 
-.side-nav-list a:hover {
+.side-nav-list a.current,
+.side-nav-list a[aria-current="page"] {
   color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  background: transparent;
+  text-decoration-line: underline;
+  text-underline-offset: 0.18em;
 }
 
-.side-nav-list a.current {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
+header .side-nav-list a:hover,
+header .side-nav-list a.current:hover,
+header .side-nav-list a[aria-current="page"]:hover {
+  color: var(--text-light) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  text-decoration-line: underline !important;
+  text-underline-offset: 0.18em;
 }
 
 .side-nav-list a[aria-disabled="true"] {

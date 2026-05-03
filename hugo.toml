@@ -22,7 +22,7 @@ tag = "tags"
 series = "series"
 
 [frontmatter]
-  lastmod = [":git", "lastmod", "date", "publishDate"]
+  lastmod = ["lastmod", ":git", "date", "publishDate"]
 
 [markup]
   defaultMarkdownHandler = 'goldmark' 

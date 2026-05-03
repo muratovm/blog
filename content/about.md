@@ -3,7 +3,6 @@ title: "About Me"
 description: "Security analyst, systems thinker, and builder of things that make data legible."
 layout: "about"
 ---
-
 By day I work on creating and improving cyber threat intelligence workflows.
 
 ---
