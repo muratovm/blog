@@ -42,6 +42,9 @@
   {{ $style := resources.Get "style.css" | minify }}
   <link href="{{ $style.RelPermalink }}" rel="stylesheet" />
 
+  {{ $syntax := resources.Get "syntax.css" | minify }}
+  <link href="{{ $syntax.RelPermalink }}" rel="stylesheet" />
+
   {{ with .Params.style }}
   {{ $extra := resources.Get . | minify }}
   <link href="{{ $extra.RelPermalink }}" rel="stylesheet" />

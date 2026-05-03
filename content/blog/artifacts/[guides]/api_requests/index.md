@@ -1,5 +1,5 @@
 ---
-kind: artifact
+type: artifact
 artifact_type: guide
 title: API Request Cookbook
 date: 2025-04-25

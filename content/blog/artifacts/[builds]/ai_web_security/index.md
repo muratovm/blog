@@ -1,5 +1,5 @@
 ---
-kind: artifact
+type: artifact
 artifact_type: build
 title: AI Web Security Lab
 description: Launching my AI Web Security Lab — Here’s Why I’m Building It

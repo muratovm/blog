@@ -1,5 +1,5 @@
 ---
-kind: artifact
+type: artifact
 artifact_type: guide
 title: Password Hardness
 date: 2025-05-16

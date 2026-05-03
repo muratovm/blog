@@ -39,10 +39,10 @@ series = "series"
       codeFences = "true"
       lineNos = true
       lineNumbersInTable = false
-      noClasses = true
+      noClasses = false
 
       #style = "monokai"
-      style = "catppuccin-mocha"
+      #style = "catppuccin-mocha"
   [markup.goldmark]
     [markup.goldmark.parser]
       [markup.goldmark.parser.attribute]

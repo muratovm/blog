@@ -51,14 +51,14 @@ case "$lane" in
   story|stories)
     lane="story"
     publish_section="stories"
-    kind="story"
+    ptype="story"
     archetype_kind="story"
     target="content/blog/stories/${slug}/index.md"
     ;;
   artifact|artifacts)
     lane="artifact"
     publish_section="artifacts"
-    kind="artifact"
+    ptype="artifact"
     archetype_kind="artifact"
     case "$artifact_type" in
       build|builds) artifact_type="build"; subdir="[builds]" ;;
@@ -90,10 +90,10 @@ hugo new --kind "$archetype_kind" "$target"
 
 # Inject metadata. Works for YAML and TOML front matter.
 tmp_file="$(mktemp)"
-awk -v kind="$kind" -v publish_section="$publish_section" -v artifact_type="$artifact_type" '
+awk -v ptype="$ptype" -v publish_section="$publish_section" -v artifact_type="$artifact_type" '
   BEGIN {
     in_frontmatter = 0
-    saw_kind = 0
+    saw_type = 0
     saw_status = 0
     saw_publish_section = 0
     saw_artifact_type = 0
@@ -108,12 +108,12 @@ awk -v kind="$kind" -v publish_section="$publish_section" -v artifact_type="$art
   }
   in_frontmatter && $0 == delim {
     if (delim == "---") {
-      if (!saw_kind) print "kind: " kind
+      if (!saw_type) print "type: " ptype
       if (!saw_status) print "status: draft"
       if (!saw_publish_section) print "publish_section: " publish_section
       if (artifact_type != "" && !saw_artifact_type) print "artifact_type: " artifact_type
     } else {
-      if (!saw_kind) print "kind = \"" kind "\""
+      if (!saw_type) print "type = \"" ptype "\""
       if (!saw_status) print "status = \"draft\""
       if (!saw_publish_section) print "publish_section = \"" publish_section "\""
       if (artifact_type != "" && !saw_artifact_type) print "artifact_type = \"" artifact_type "\""
@@ -123,10 +123,10 @@ awk -v kind="$kind" -v publish_section="$publish_section" -v artifact_type="$art
     next
   }
   in_frontmatter {
-    if ($0 ~ /^[[:space:]]*kind[[:space:]]*[:=]/) {
-      if (delim == "---") print "kind: " kind
-      else print "kind = \"" kind "\""
-      saw_kind = 1
+    if ($0 ~ /^[[:space:]]*type[[:space:]]*[:=]/) {
+      if (delim == "---") print "type: " ptype
+      else print "type = \"" ptype "\""
+      saw_type = 1
       next
     }
     if ($0 ~ /^[[:space:]]*status[[:space:]]*[:=]/) {

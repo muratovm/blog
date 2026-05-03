@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: Intro to Image Watermarking
 description: The first step to signing your images
@@ -17,7 +18,6 @@ draft: false
 image: watermark_intro.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

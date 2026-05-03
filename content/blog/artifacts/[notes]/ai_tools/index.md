@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: note
 title: AI Tools I'm Using Right Now
 description: Practical notes on the AI tools I use most for writing and coding.
@@ -16,7 +17,6 @@ draft: false
 image: tools.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 ### ChatGPT

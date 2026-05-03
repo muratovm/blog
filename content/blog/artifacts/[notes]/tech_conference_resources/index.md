@@ -1,5 +1,5 @@
 ---
-kind: artifact
+type: artifact
 artifact_type: note
 title: Tech Conference Resources
 date: 2025-09-18

@@ -1,5 +1,5 @@
 ---
-kind: artifact
+type: artifact
 artifact_type: guide
 title: Curve Fitting Univariate Data
 date: 2024-11-01

@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: Binary Search in Python
 description: And you don’t need to memorize how binary search works
@@ -17,7 +18,6 @@ draft: false
 image: binary_search.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

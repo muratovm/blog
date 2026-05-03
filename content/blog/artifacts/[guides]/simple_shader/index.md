@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: Shaders in GLSL Canvas
 date: 2025-06-01
@@ -14,7 +15,6 @@ draft: false
 image: simple_shader.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

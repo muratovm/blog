@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: build
 title: How this Blog Works
 description: Setup notes for this Hugo blog, including tooling, deployment, and workflow.
@@ -16,7 +17,6 @@ draft: false
 image: blog_structure.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 

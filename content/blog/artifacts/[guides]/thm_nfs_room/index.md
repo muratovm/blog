@@ -1,4 +1,5 @@
 ---
+type: artifact
 artifact_type: guide
 title: TryHackMe - NFS
 description: Network Services 2 Room
@@ -23,7 +24,6 @@ draft: false
 image: nfs_exploitation.png
 layout: blog-post
 toc: true
-kind: artifact
 publish_section: artifacts
 ---
 
@@ -46,7 +46,7 @@ root@ip-10-10-71-105:~# nmap -sS -T4 -F -oN output.txt $IP
 PORT      STATE SERVICE  VERSION
 22/tcp    open  ssh      OpenSSH 7.6p1 Ubuntu 4ubuntu0.3 (Ubuntu Linux; protocol 2.0)
 111/tcp   open  rpcbind  2-4 (RPC #100000)
-2049/tcp  open  nfs_acl  3 (RPC #100227)
+2049/tcp  open  nfs_acl  3   (RPC #100227)
 32969/tcp open  mountd   1-3 (RPC #100005)
 33463/tcp open  mountd   1-3 (RPC #100005)
 38233/tcp open  nlockmgr 1-4 (RPC #100021)

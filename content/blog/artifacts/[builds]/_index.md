@@ -1,4 +1,5 @@
 ---
+type: artifact
 title: "Builds"
 description: "Completed and in-progress Projects"
 aliases:
