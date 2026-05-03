@@ -64,7 +64,7 @@
       {{ $featureImg = resources.Get (printf "banners/%s" .Params.image) }}
       {{ end }}
       {{ if and $featureImg (eq $featureImg.ResourceType "image") }}
-      {{ $featureImg = $featureImg.Fill "1200x675 smart webp q82" }}
+      {{ $featureImg = $featureImg.Fill "1200x675 Center webp q82" }}
       {{ end }}
       {{ with $featureImg }}
       <a href="{{ $page.RelPermalink }}">

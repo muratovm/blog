@@ -1,5 +1,6 @@
 <nav class="side-nav header-quick-nav" aria-label="Section navigation">
   {{- $isHomeActive := .IsHome -}}
+  {{- $isAboutActive := hasPrefix .RelPermalink "/about/" -}}
   {{- $isStoriesActive := hasPrefix .RelPermalink "/blog/stories/" -}}
   {{- $isArtifactsActive := hasPrefix .RelPermalink "/blog/artifacts/" -}}
   {{- $isSearchActive := hasPrefix .RelPermalink "/search/" -}}
@@ -7,6 +8,11 @@
     <li>
       <a href="{{ relURL "/" }}" title="Home" aria-label="Home" {{ if $isHomeActive }}class="current" aria-current="page"{{ end }}>
         Home
+      </a>
+    </li>
+    <li>
+      <a href="{{ relURL "about/" }}" title="About me" aria-label="About me" {{ if $isAboutActive }}class="current" aria-current="page"{{ end }}>
+        About
       </a>
     </li>
     <li>

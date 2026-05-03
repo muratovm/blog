@@ -39,7 +39,7 @@
       </p>
     {{ end }}
 
-    {{ if or $paginator.HasPrev $paginator.HasNext }}
+    {{ if and (not $isMainBlog) (or $paginator.HasPrev $paginator.HasNext) }}
       {{- partial "pagination.html" . -}}
     {{ end }}
 

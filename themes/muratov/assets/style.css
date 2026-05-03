@@ -28,7 +28,7 @@ content {
 }
 
 body>header {
-  padding: 0.6rem 0.5rem 1.3rem !important;
+  padding: 0.8rem 0.5rem 1.8rem !important;
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -1742,10 +1742,19 @@ header .side-nav-list a[aria-current="page"]:hover {
   animation: home-featured-glow 6.8s ease-in-out infinite;
 }
 
+.home-featured-card>a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
 .home-featured-card img {
   width: 100%;
-  aspect-ratio: 16 / 7.2;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
   margin: 0;
 }
 
