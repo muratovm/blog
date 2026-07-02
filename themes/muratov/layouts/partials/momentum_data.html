@@ -1,0 +1,100 @@
+{{- $blogPosts := where site.RegularPages "Section" "blog" -}}
+{{- $blogPosts = where $blogPosts "Draft" false -}}
+{{- $storyPosts := slice -}}
+{{- $artifactPosts := slice -}}
+{{- range $blogPosts -}}
+  {{- $path := lower .File.Path -}}
+  {{- $kind := lower (default "" .Params.type) -}}
+  {{- if or (eq $kind "story") (in $path "blog/stories/") -}}
+    {{- $storyPosts = $storyPosts | append . -}}
+  {{- else if or (eq $kind "artifact") (in $path "blog/artifacts/") -}}
+    {{- $artifactPosts = $artifactPosts | append . -}}
+  {{- else -}}
+    {{- $artifactPosts = $artifactPosts | append . -}}
+  {{- end -}}
+{{- end -}}
+{{- $storyPosts = sort $storyPosts "Date" "desc" -}}
+{{- $artifactPosts = sort $artifactPosts "Date" "desc" -}}
+{{- $allPosts := $storyPosts | append $artifactPosts -}}
+{{- $allPosts = sort $allPosts "Date" "desc" -}}
+{{- $weeks := int 8 -}}
+{{- $daysPerBucket := int 7 -}}
+{{- $weekStart := now.AddDate 0 0 (mul -1 $daysPerBucket) -}}
+{{- $windowStart := time.AsTime ((now.AddDate 0 0 (add 1 (mul -1 (mul $weeks $daysPerBucket)))).Format "2006-01-02") -}}
+{{- $publishedWeek := where $allPosts "Date" "ge" $weekStart -}}
+{{- $editedWeek := where $allPosts "Lastmod" "ge" $weekStart -}}
+{{- $daysSince := int 0 -}}
+{{- $latestUpdate := dict -}}
+{{- if gt (len $allPosts) 0 -}}
+  {{- $latest := index (sort $allPosts "Lastmod" "desc") 0 -}}
+  {{- $daysSinceRaw := div (sub (int now.Unix) (int $latest.Lastmod.Unix)) 86400 -}}
+  {{- if gt $daysSinceRaw 0 -}}
+    {{- $daysSince = $daysSinceRaw -}}
+  {{- end -}}
+  {{- $latestUpdate = dict
+    "title" $latest.Title
+    "url" $latest.Permalink
+    "date" ($latest.Date.Format "2006-01-02")
+    "lastmod" ($latest.Lastmod.Format "2006-01-02")
+  -}}
+{{- end -}}
+{{- $trendInputs := slice
+  (dict "key" "stories" "label" "Stories" "class" "story" "posts" $storyPosts)
+  (dict "key" "artifacts" "label" "Artifacts" "class" "artifact" "posts" $artifactPosts)
+-}}
+{{- $trends := slice -}}
+{{- range $trendInputs -}}
+  {{- $trendPosts := index . "posts" -}}
+  {{- $counts := slice -}}
+  {{- $buckets := slice -}}
+  {{- $maxCount := int 1 -}}
+  {{- $windowTotal := int 0 -}}
+  {{- range seq 0 (sub $weeks 1) -}}
+    {{- $i := . -}}
+    {{- $offsetDays := int (mul (int $i) $daysPerBucket) -}}
+    {{- $bucketStart := $windowStart.AddDate 0 0 $offsetDays -}}
+    {{- $bucketEnd := $bucketStart.AddDate 0 0 $daysPerBucket -}}
+    {{- $count := int 0 -}}
+    {{- range $trendPosts -}}
+      {{- if and (ge .Date $bucketStart) (lt .Date $bucketEnd) -}}
+        {{- $count = add $count 1 -}}
+      {{- end -}}
+    {{- end -}}
+    {{- $counts = $counts | append $count -}}
+    {{- $buckets = $buckets | append (dict
+      "start" ($bucketStart.Format "2006-01-02")
+      "end" (($bucketEnd.AddDate 0 0 -1).Format "2006-01-02")
+      "count" $count
+    ) -}}
+    {{- $windowTotal = add $windowTotal $count -}}
+    {{- if gt $count $maxCount -}}
+      {{- $maxCount = $count -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $trends = $trends | append (dict
+    "key" (index . "key")
+    "label" (index . "label")
+    "class" (index . "class")
+    "total_posts" (len $trendPosts)
+    "window_total" $windowTotal
+    "weekly_counts" $counts
+    "buckets" $buckets
+    "max_count" $maxCount
+  ) -}}
+{{- end -}}
+{{- return (dict
+  "total_posts" (len $allPosts)
+  "story_posts" (len $storyPosts)
+  "artifact_posts" (len $artifactPosts)
+  "days_since_last_update" $daysSince
+  "touched_7d" (len $editedWeek)
+  "published_7d" (len $publishedWeek)
+  "latest_update" $latestUpdate
+  "window" (dict
+    "weeks" $weeks
+    "days_per_bucket" $daysPerBucket
+    "start" ($windowStart.Format "2006-01-02")
+    "end" (now.Format "2006-01-02")
+  )
+  "trends" $trends
+) -}}

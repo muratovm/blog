@@ -5,6 +5,7 @@
 {{- if $projectFocus -}}
   {{- $state = "in_progress" -}}
 {{- end -}}
+{{- $momentum := partial "momentum_data.html" . -}}
 {{- dict
   "state" $state
   "project" (dict
@@ -12,6 +13,7 @@
     "focus" $projectFocus
     "target_date" $targetDate
   )
+  "momentum" $momentum
   "source" (dict
     "site" .Site.Title
     "status_page" (printf "%s%s" .Site.BaseURL "status.json")

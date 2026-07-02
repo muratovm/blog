@@ -43,7 +43,10 @@ src=""
 if [[ -f "content/blog/${target}/index.md" ]]; then
   src="content/blog/${target}/index.md"
 else
-  mapfile -t matches < <(find content/blog -type f -path "*/${target}/index.md" | sort)
+  matches=()
+  while IFS= read -r match; do
+    matches+=("$match")
+  done < <(find content/blog -type f -path "*/${target}/index.md" | sort)
   if [[ ${#matches[@]} -eq 1 ]]; then
     src="${matches[0]}"
   elif [[ ${#matches[@]} -gt 1 ]]; then
