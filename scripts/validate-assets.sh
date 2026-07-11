@@ -40,6 +40,35 @@ check_path_ref() {
   fi
 }
 
+check_front_matter_banner() {
+  local file="$1"
+  local image_ref="$2"
+  local file_dir
+  local local_banner
+  local shared_banner
+
+  file_dir="$(dirname "$file")"
+  local_banner="${file_dir}/${image_ref}"
+  shared_banner="assets/banners/${image_ref}"
+
+  if [[ -f "$local_banner" || -f "$shared_banner" ]]; then
+    return
+  fi
+
+  echo "ERROR ${file}: missing front matter banner"
+  echo "  checked local folder: ${local_banner}"
+  echo "  checked shared banner: ${shared_banner}"
+
+  if [[ "$image_ref" != */* ]]; then
+    while IFS= read -r match; do
+      [[ "$match" == "$local_banner" ]] && continue
+      echo "  note: found same filename elsewhere, but Hugo page resources are local to their own bundle: ${match}"
+    done < <(find content -type f -name "$image_ref" | sort)
+  fi
+
+  errors=$((errors + 1))
+}
+
 while IFS= read -r file; do
   # Markdown image references: ![...](...)
   while IFS= read -r match; do
@@ -72,11 +101,7 @@ while IFS= read -r file; do
       if [[ "$image_ref" == /* ]]; then
         check_path_ref "$file" "$image_ref" "front matter image"
       else
-        file_dir="$(dirname "$file")"
-        if [[ ! -f "${file_dir}/${image_ref}" && ! -f "assets/banners/${image_ref}" ]]; then
-          echo "ERROR ${file}: missing front matter banner -> ${file_dir}/${image_ref} or assets/banners/${image_ref}"
-          errors=$((errors + 1))
-        fi
+        check_front_matter_banner "$file" "$image_ref"
       fi
     fi
   fi
