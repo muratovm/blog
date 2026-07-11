@@ -67,14 +67,14 @@ while IFS= read -r file; do
   )"
 
   if [[ -n "$frontmatter" ]]; then
-    image_ref="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*image[[:space:]]*:[[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
+    image_ref="$(printf '%s\n' "$frontmatter" | sed -En 's/^[[:space:]]*image[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/p' | head -n 1 | tr -d "'" | xargs)"
     if [[ -n "$image_ref" ]]; then
       if [[ "$image_ref" == /* ]]; then
         check_path_ref "$file" "$image_ref" "front matter image"
       else
-        # Banner images are expected in the shared library.
-        if [[ ! -f "assets/banners/${image_ref}" ]]; then
-          echo "ERROR ${file}: missing front matter banner -> assets/banners/${image_ref}"
+        file_dir="$(dirname "$file")"
+        if [[ ! -f "${file_dir}/${image_ref}" && ! -f "assets/banners/${image_ref}" ]]; then
+          echo "ERROR ${file}: missing front matter banner -> ${file_dir}/${image_ref} or assets/banners/${image_ref}"
           errors=$((errors + 1))
         fi
       fi

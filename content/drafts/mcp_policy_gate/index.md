@@ -2,11 +2,11 @@
 type: artifact
 artifact_type: note
 title: Setting up and MCP Policy Gate
-date: 2025-09-18
+date: 
 categories:
   - ai
 tags:
-draft: false
+draft: true
 image: default.png
 layout: blog-post
 toc: true

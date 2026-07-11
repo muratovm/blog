@@ -59,9 +59,13 @@
     {{ range $featured }}
     {{ $page := . }}
     <article class="home-featured-card">
-      {{ $featureImg := .Resources.GetMatch .Params.image }}
+      {{ $featureImgName := .Params.image | default "default.png" }}
+      {{ $featureImg := .Resources.GetMatch $featureImgName }}
       {{ if not $featureImg }}
-      {{ $featureImg = resources.Get (printf "banners/%s" .Params.image) }}
+      {{ $featureImg = resources.Get (printf "banners/%s" $featureImgName) }}
+      {{ end }}
+      {{ if not $featureImg }}
+      {{ $featureImg = resources.Get "banners/default.png" }}
       {{ end }}
       {{ if and $featureImg (eq $featureImg.ResourceType "image") }}
       {{ $featureImg = $featureImg.Fill "1200x675 smart webp q82" }}
@@ -89,9 +93,13 @@
       {{ range $startPages }}
       {{ $page := . }}
       <article class="home-card">
-        {{ $cardImg := .Resources.GetMatch .Params.image }}
+        {{ $cardImgName := .Params.image | default "default.png" }}
+        {{ $cardImg := .Resources.GetMatch $cardImgName }}
         {{ if not $cardImg }}
-        {{ $cardImg = resources.Get (printf "banners/%s" .Params.image) }}
+        {{ $cardImg = resources.Get (printf "banners/%s" $cardImgName) }}
+        {{ end }}
+        {{ if not $cardImg }}
+        {{ $cardImg = resources.Get "banners/default.png" }}
         {{ end }}
         {{ if and $cardImg (eq $cardImg.ResourceType "image") }}
         {{ $cardImg = $cardImg.Fill "720x405 smart webp q80" }}

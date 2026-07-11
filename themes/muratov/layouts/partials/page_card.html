@@ -1,17 +1,22 @@
 {{/* page-card.html */}}
 {{- $page := . -}}
+{{- $imgName := $page.Params.image | default "default.png" -}}
 
 {{/* 1. Try to grab a page-local banner first (leaf bundle) */}}
-{{ $img := $page.Resources.GetMatch $page.Params.image }}
+{{ $img := $page.Resources.GetMatch $imgName }}
 
 {{/* 2. Fall back to the shared library in assets/banners/ */}}
 {{ if not $img }}
-  {{ $img = resources.Get (printf "banners/%s" $page.Params.image) }}
+  {{ $img = resources.Get (printf "banners/%s" $imgName) }}
 {{ end }}
 
-{{/* 3. Optional: fail-fast if the image wasn’t found */}}
+{{/* 3. Fall back to the shared default banner */}}
 {{ if not $img }}
-  {{ errorf "Banner %q not found for %q" $page.Params.image $page.File.Path }}
+  {{ $img = resources.Get "banners/default.png" }}
+{{ end }}
+
+{{ if not $img }}
+  {{ errorf "Banner %q not found for %q as a page resource, shared banner, or default banner" $imgName $page.File.Path }}
 {{ end }}
 
 {{ $cardImage := $img }}

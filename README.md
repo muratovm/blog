@@ -134,7 +134,11 @@ Transition model:
 
 ## Assets
 - `assets/banners/`
-  - Banner images used by front matter `image`
+  - Shared banner image library used as a fallback for front matter `image`
+- `content/blog/**/post-slug/`
+  - Preferred location for post-specific banner images in leaf bundles
+  - Example: `content/blog/stories/my-story/index.md` with `image = "banner.webp"` and `content/blog/stories/my-story/banner.webp`
+  - Banner lookup order is page-local image, shared `assets/banners/` image, then `assets/banners/default.png`
 - `static/img/`
   - Static image files copied as-is
 - `static/js/script.js`

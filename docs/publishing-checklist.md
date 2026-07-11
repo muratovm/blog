@@ -15,7 +15,8 @@ Use this checklist before setting `draft = false` and publishing a post.
 - `lastmod` matches the latest meaningful edit date.
 
 ## Media and UX
-- `image` exists in `assets/banners/`.
+- `image` exists beside the post's `index.md`, or in `assets/banners/` for shared banners.
+- New post-specific banners should live in the post folder; keep `assets/banners/` for shared or legacy images.
 - Images in content have clear alt text where appropriate.
 - Code blocks render correctly and are readable.
 

@@ -93,8 +93,8 @@ if [[ -n "$image_ref" ]]; then
       exit 1
     fi
   else
-    if [[ ! -f "assets/banners/${image_ref}" ]]; then
-      echo "Error: front matter banner not found -> assets/banners/${image_ref}"
+    if [[ ! -f "$(dirname "$src")/${image_ref}" && ! -f "assets/banners/${image_ref}" ]]; then
+      echo "Error: front matter banner not found -> $(dirname "$src")/${image_ref} or assets/banners/${image_ref}"
       exit 1
     fi
   fi

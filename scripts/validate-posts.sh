@@ -148,12 +148,13 @@ while IFS= read -r file; do
   if [[ -n "$image_line" ]]; then
     image_file="$(printf '%s\n' "$image_line" | sed -E 's/^[[:space:]]*image[[:space:]]*[:=][[:space:]]*"?([^"#]+)"?.*$/\1/' | tr -d "'" | xargs)"
     if [[ -n "$image_file" && "$image_file" != "default.png" ]]; then
-      if [[ ! -f "assets/banners/${image_file}" ]]; then
+      file_dir="$(dirname "$file")"
+      if [[ ! -f "${file_dir}/${image_file}" && ! -f "assets/banners/${image_file}" ]]; then
         if [[ "$is_draft" == "false" ]]; then
-          echo "ERROR ${file}: banner not found -> assets/banners/${image_file}"
+          echo "ERROR ${file}: banner not found -> ${file_dir}/${image_file} or assets/banners/${image_file}"
           errors=$((errors + 1))
         else
-          echo "WARN  ${file}: banner not found -> assets/banners/${image_file}"
+          echo "WARN  ${file}: banner not found -> ${file_dir}/${image_file} or assets/banners/${image_file}"
         fi
       fi
     fi

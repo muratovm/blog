@@ -1,9 +1,15 @@
 {{/* banner.html – expects . to be a Page object */}}
 
 {{- $imgName := .Params.image | default "default.png" -}}
-{{- $img     := resources.Get (printf "banners/%s" $imgName) -}}
+{{- $img := .Resources.GetMatch $imgName -}}
+{{- if not $img -}}
+  {{- $img = resources.Get (printf "banners/%s" $imgName) -}}
+{{- end -}}
+{{- if not $img -}}
+  {{- $img = resources.Get "banners/default.png" -}}
+{{- end -}}
 {{- if not $img }}
-  {{ errorf "Banner %q not found in assets/banners/" $imgName }}
+  {{ errorf "Banner %q not found as a page resource, in assets/banners/, or as assets/banners/default.png" $imgName }}
 {{- end }}
 
 {{- $banner := $img -}}

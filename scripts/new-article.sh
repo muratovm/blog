@@ -154,5 +154,6 @@ mv "$tmp_file" "$target"
 
 echo "Created ${target}"
 echo "Type: ${lane}${artifact_type:+ (${artifact_type})}"
-echo "Next: fill in title, description, tags, image, and write content."
+echo "Next: fill in title, description, tags, and write content."
+echo "Banner: place a post-specific image beside index.md and set image to its filename, or use a shared assets/banners image."
 echo "When ready to publish, run: npm run publish:article -- ${slug}"

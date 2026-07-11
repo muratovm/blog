@@ -579,6 +579,19 @@ ul.blog-posts>li span {
   font-weight: 600;
 }
 
+.article-date-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+}
+
+.article-date-meta span {
+  display: inline-flex;
+  gap: 0.25rem;
+  align-items: baseline;
+  white-space: nowrap;
+}
+
 .article-taxonomy-group {
   display: flex;
   align-items: center;
