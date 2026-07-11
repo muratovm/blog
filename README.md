@@ -6,7 +6,7 @@
 This site is a Hugo blog (`hugo v0.155+`) using the local theme at `themes/muratov`.
 
 It is set up for:
-- Weekly publishing from a draft-first workflow (`content/drafts` -> `content/blog`)
+- Weekly publishing from final-location drafts (`content/blog/**/index.md` with `draft: true`)
 - A story/artifact-first publishing model
 - A transition-ready content model for narrative `Stories` and raw `Artifacts`
 - Nested artifact lanes (`Builds`, `Guides`, `Notes`) under `Artifacts`
@@ -77,7 +77,9 @@ Local server is pinned to:
   - `content/blog/artifacts/[guides]/` -> `/blog/artifacts/guides/`
   - `content/blog/artifacts/[notes]/` -> `/blog/artifacts/notes/`
 - `content/drafts/`
-  - Draft posts only (`draft: true` before publish)
+  - Scratch or parked draft bundles only
+  - Any `index.md` in this section must explicitly set `draft: true`
+  - Move a bundle under `content/blog/` before publishing with `npm run publish:article`
 - `content/archive/_index.md`
   - Archive landing content
 - `content/search/_index.md`
