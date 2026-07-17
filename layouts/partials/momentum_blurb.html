@@ -7,7 +7,7 @@
     <p class="home-momentum-label">Momentum</p>
     <div class="home-momentum-content">
       <div class="home-momentum-grid">
-        <span><strong>{{ index $momentum "days_since_last_update" }}</strong> days since last update</span>
+        <span class="home-momentum-days"{{ with index $momentum "latest_update" }} data-relative-days data-lastmod="{{ index . "lastmod" }}"{{ end }}><strong data-relative-days-value>{{ index $momentum "days_since_last_update" }}</strong> days since last update</span>
         <span><strong>{{ index $momentum "touched_7d" }}</strong> touched (7d)</span>
         <span><strong>{{ index $momentum "published_7d" }}</strong> published (7d)</span>
       </div>

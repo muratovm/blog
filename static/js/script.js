@@ -52,6 +52,52 @@ function onScreenResize() {
     window.addEventListener('pageshow', setPaletteClass);
 })();
 
+(function initRelativeDayCounters() {
+    const dayMs = 24 * 60 * 60 * 1000;
+
+    function parseDateOnly(value) {
+        const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || '');
+        if (!match) return null;
+
+        const year = Number.parseInt(match[1], 10);
+        const month = Number.parseInt(match[2], 10) - 1;
+        const day = Number.parseInt(match[3], 10);
+        const date = new Date(year, month, day);
+
+        if (
+            date.getFullYear() !== year ||
+            date.getMonth() !== month ||
+            date.getDate() !== day
+        ) {
+            return null;
+        }
+
+        return date;
+    }
+
+    function updateCounters() {
+        const today = new Date();
+        const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+        document.querySelectorAll('[data-relative-days][data-lastmod]').forEach((el) => {
+            const lastmod = parseDateOnly(el.dataset.lastmod);
+            if (!lastmod) return;
+
+            const value = Math.max(0, Math.floor((todayStart - lastmod) / dayMs));
+            const target = el.querySelector('[data-relative-days-value]') || el;
+            target.textContent = String(value);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateCounters);
+    } else {
+        updateCounters();
+    }
+
+    window.addEventListener('pageshow', updateCounters);
+})();
+
 (function initCopyHelpers() {
     async function copyText(text) {
         try {
