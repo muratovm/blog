@@ -1538,6 +1538,11 @@ header .side-nav-list a[aria-current="page"]:hover {
   .home-momentum-trends {
     margin-top: 0.1rem;
   }
+
+  .home-momentum-sparkline {
+    aspect-ratio: 220 / 54;
+    height: auto;
+  }
 }
 
 @media (max-width: 420px) {
