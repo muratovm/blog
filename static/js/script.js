@@ -144,29 +144,83 @@ function onScreenResize() {
         });
     }
 
-    function addCodeCopyButtons() {
+    function getCodeActions(block) {
+        let actions = block.querySelector('.code-actions');
+        if (!actions) {
+            actions = document.createElement('div');
+            actions.className = 'code-actions';
+            block.appendChild(actions);
+        }
+        return actions;
+    }
+
+    function addCodeCopyButton(block, code) {
+        const actions = getCodeActions(block);
+        if (actions.querySelector('.code-copy-btn')) return;
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-copy-btn';
+        btn.dataset.label = 'Copy';
+        btn.textContent = 'Copy';
+        btn.setAttribute('aria-label', 'Copy code block');
+        btn.addEventListener('click', async () => {
+            const ok = await copyText(code.innerText);
+            if (ok) setButtonState(btn, 'Copied');
+        });
+        actions.appendChild(btn);
+    }
+
+    function getCollapsedHeight(block) {
+        const raw = window.getComputedStyle(block).getPropertyValue('--code-collapsed-height');
+        const value = Number.parseFloat(raw);
+        return Number.isFinite(value) && value > 0 ? value : 360;
+    }
+
+    function addCodeCollapseButton(block) {
+        const actions = getCodeActions(block);
+        if (actions.querySelector('.code-toggle-btn')) return;
+
+        const collapsedHeight = getCollapsedHeight(block);
+        if (block.scrollHeight <= collapsedHeight + 48) return;
+
+        block.classList.add('code-collapsible');
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'code-toggle-btn';
+        btn.dataset.expandLabel = 'Show full code';
+        btn.dataset.collapseLabel = 'Collapse code';
+        btn.setAttribute('aria-label', 'Toggle full code block');
+
+        const setCollapsed = (collapsed) => {
+            block.classList.toggle('is-collapsed', collapsed);
+            btn.textContent = collapsed ? btn.dataset.expandLabel : btn.dataset.collapseLabel;
+            btn.setAttribute('aria-expanded', String(!collapsed));
+        };
+
+        btn.addEventListener('click', () => {
+            setCollapsed(!block.classList.contains('is-collapsed'));
+        });
+
+        actions.appendChild(btn);
+        setCollapsed(true);
+    }
+
+    function addCodeBlockControls() {
         const blocks = document.querySelectorAll('div.highlight');
         blocks.forEach((block) => {
-            if (block.querySelector('.code-copy-btn')) return;
             const code = block.querySelector('pre > code');
             if (!code) return;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'code-copy-btn';
-            btn.dataset.label = 'Copy';
-            btn.textContent = 'Copy';
-            btn.setAttribute('aria-label', 'Copy code block');
-            btn.addEventListener('click', async () => {
-                const ok = await copyText(code.innerText);
-                if (ok) setButtonState(btn, 'Copied');
-            });
-            block.appendChild(btn);
+
+            addCodeCopyButton(block, code);
+            addCodeCollapseButton(block);
         });
     }
 
     function init() {
         addHeadingCopyButtons();
-        addCodeCopyButtons();
+        addCodeBlockControls();
     }
 
     if (document.readyState === 'loading') {

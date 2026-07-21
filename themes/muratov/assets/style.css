@@ -1092,12 +1092,58 @@ main h4[id]:focus-within .heading-copy-link {
 
 div.highlight {
   position: relative;
+  --code-collapsed-height: 360px;
+  margin: 1rem 0;
 }
 
-.code-copy-btn {
+div.highlight pre {
+  margin: 0;
+}
+
+div.highlight pre,
+.shader-code-editor {
+  scrollbar-color:
+    color-mix(in srgb, var(--accent) 42%, var(--border))
+    color-mix(in srgb, var(--accent-bg) 86%, var(--bg));
+  scrollbar-width: thin;
+}
+
+div.highlight pre::-webkit-scrollbar,
+.shader-code-editor::-webkit-scrollbar {
+  height: 0.72rem;
+  width: 0.72rem;
+}
+
+div.highlight pre::-webkit-scrollbar-track,
+.shader-code-editor::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--accent-bg) 86%, var(--bg));
+}
+
+div.highlight pre::-webkit-scrollbar-thumb,
+.shader-code-editor::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 42%, var(--border));
+  border: 2px solid color-mix(in srgb, var(--accent-bg) 86%, var(--bg));
+}
+
+div.highlight pre::-webkit-scrollbar-thumb:hover,
+.shader-code-editor::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 64%, var(--border));
+}
+
+.code-actions {
   position: absolute;
   top: 0.55rem;
   right: 0.55rem;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  max-width: calc(100% - 1.1rem);
+}
+
+.code-copy-btn,
+.code-toggle-btn {
   border: 1px solid var(--border);
   background: color-mix(in srgb, var(--accent-bg) 85%, transparent);
   color: var(--text-light);
@@ -1106,9 +1152,39 @@ div.highlight {
   cursor: pointer;
 }
 
-.code-copy-btn:hover {
-  color: var(--accent);
+.code-copy-btn:hover,
+.code-toggle-btn:hover,
+.code-copy-btn:focus-visible,
+.code-toggle-btn:focus-visible {
+  background: var(--accent);
+  color: var(--accent-text);
   border-color: var(--accent);
+}
+
+.code-copy-btn:focus-visible,
+.code-toggle-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent) 32%, transparent);
+  outline-offset: 2px;
+}
+
+div.highlight.code-collapsible.is-collapsed {
+  max-height: var(--code-collapsed-height);
+  overflow: hidden;
+}
+
+div.highlight.code-collapsible.is-collapsed::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 1;
+  height: 4.6rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--accent-bg) 84%, transparent) 56%,
+    var(--accent-bg)
+  );
 }
 
 .back-nav {
