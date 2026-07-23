@@ -155,6 +155,7 @@ Located in `themes/muratov/layouts/shortcodes/`:
 - `canvas.html`
 - `mermaid.html`
 - `chart.html`
+- `download.html`
 
 Image shortcodes support size presets:
 - `xs`, `sm`, `md`, `lg`, `xl`, `full`
@@ -163,6 +164,17 @@ Visual shortcode notes:
 - `mermaid.html` renders native Mermaid diagrams from shortcode body content
 - `chart.html` renders Chart.js charts from inline JSON config (`config` param or shortcode body)
 - `figure.html` supports optional `source` and `sourceLink` metadata for scientific/technical references
+- `download.html` renders a fixed-width file download button for PDFs and large source files
+
+Download buttons:
+```md
+{{< download src="reference.pdf" >}}
+{{< download src="large-example.py" label="Download source code" >}}
+```
+
+The shortcode resolves page-bundle resources automatically. Use `filename` to
+override the displayed/downloaded filename and `type` to override the inferred
+file extension label.
 
 ### Diagrams and Charts
 - Mermaid diagrams:

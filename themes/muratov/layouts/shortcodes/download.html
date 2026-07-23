@@ -1,0 +1,32 @@
+{{- $src := .Get "src" -}}
+{{- if not $src -}}
+  {{- errorf "The download shortcode requires a src: %s" .Position -}}
+{{- end -}}
+
+{{- $href := $src -}}
+{{- with .Page.Resources.GetMatch $src -}}
+  {{- $href = .RelPermalink -}}
+{{- end -}}
+
+{{- $filename := .Get "filename" | default (path.Base $src) -}}
+{{- $extension := strings.TrimPrefix "." (path.Ext $filename) | upper -}}
+{{- $fileType := .Get "type" | default $extension | default "FILE" -}}
+{{- $label := .Get "label" | default (printf "Download %s" $fileType) -}}
+
+<a
+  class="file-download"
+  href="{{ $href | safeURL }}"
+  download="{{ $filename }}"
+  aria-label="{{ $label }}: {{ $filename }}"
+>
+  <span class="file-download-icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" focusable="false">
+      <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 18v2h14v-2" />
+    </svg>
+  </span>
+  <span class="file-download-copy">
+    <span class="file-download-label">{{ $label }}</span>
+    <span class="file-download-name">{{ $filename }}</span>
+  </span>
+  <span class="file-download-action" aria-hidden="true">Click to download</span>
+</a>
