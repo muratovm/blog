@@ -2,7 +2,8 @@
 type: artifact
 artifact_type: note
 title: Setting up and MCP Policy Gate
-date: 
+date: 2026-03-01
+lastmod: 2026-03-01
 categories:
   - ai
 tags:
@@ -10,7 +11,6 @@ draft: true
 image: default.png
 layout: blog-post
 toc: true
-lastmod: 2026-03-29
 description: Thinking through security boundaries in MCP
 slug: mcp-policy-gate
 ---

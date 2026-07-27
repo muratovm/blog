@@ -1,4 +1,3 @@
-{{ $cols := .Get "cols" | default "3" }}
 {{ $gap := .Get "gap" | default "1rem" }}
 {{ $minWidth := .Get "minWidth" | default "200px" }}
 
@@ -10,6 +9,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax({{ $minWidth }}, 1fr));
   gap: {{ $gap }};
+  row-gap: 0px;
   align-items: start;
 ">
  {{ .Inner }}

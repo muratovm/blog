@@ -490,9 +490,9 @@ ul.blog-posts>li span {
   grid-template-columns: 2.25rem minmax(0, 1fr);
   gap: 0.65rem 0.75rem;
   align-items: center;
-  width: 20rem;
+  width: 15rem;
   max-width: 100%;
-  margin: 1.25rem 0;
+  margin: 0.25rem 0;
   padding: 0.8rem 0.9rem;
   border: 1px solid var(--accent);
   border-radius: var(--standard-border-radius);
