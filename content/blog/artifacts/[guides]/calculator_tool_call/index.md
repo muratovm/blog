@@ -3,6 +3,8 @@ type: artifact
 artifact_type: guide
 title: LLM Tool Calling
 description: Simple and effective tool call example
+feature_subtitle: A practical, end-to-end example
+feature_summary: A hands-on walkthrough of how to give language models access to external tools. We build a simple calculator tool, wire it up with function calling, and explore how to use it to solve math problems.
 date: 2026-07-11
 lastmod: 2026-07-11
 slug: calculator-tool-call

@@ -1,14 +1,24 @@
 {{ define "main" }}
   <content>
-    <h3>Series</h3>
-    <p class="series-index-summary">Browse multi-part article collections.</p>
-    <ul class="series-index-list">
-      {{ range .Pages.ByTitle }}
-        <li class="series-index-item">
-          <a class="series-index-link" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
-          <span class="series-index-count">{{ len .Pages }} posts</span>
-        </li>
-      {{ end }}
-    </ul>
+    {{ $series := .Pages.ByTitle }}
+    {{ $total := len $series }}
+    {{ if gt $total 0 }}
+      <p class="list-total-posts">
+        <span>Total Series</span>
+        <span class="list-total-posts-count">{{ $total }}</span>
+      </p>
+    {{ end }}
+
+    {{ if gt (len $series) 0 }}
+      <div class="list-link-buttons">
+        {{ range $series }}
+          {{ $seriesPublished := where .Pages "Draft" false }}
+          <a class="list-link-button" href="{{ .RelPermalink }}">
+            <span class="list-link-button-title">➥ {{ .LinkTitle }}</span>
+            <span class="list-link-button-count">{{ len $seriesPublished }}</span>
+          </a>
+        {{ end }}
+      </div>
+    {{ end }}
   </content>
 {{ end }}

@@ -1,29 +1,23 @@
 {{ define "main" }}
-{{ $blogPosts := where site.RegularPages "Section" "blog" }}
-{{ $blogPosts = where $blogPosts "Draft" false }}
-{{ $storyPosts := slice }}
-{{ $artifactPosts := slice }}
-{{ range $blogPosts }}
-{{ $path := lower .File.Path }}
-{{ $kind := lower (default "" .Params.kind) }}
-{{ if or (eq $kind "story") (in $path "blog/stories/") }}
-{{ $storyPosts = $storyPosts | append . }}
-{{ else if or (eq $kind "artifact") (in $path "blog/artifacts/") }}
-{{ $artifactPosts = $artifactPosts | append . }}
-{{ else }}
-{{ $artifactPosts = $artifactPosts | append . }}
-{{ end }}
-{{ end }}
-{{ $storyPosts = sort $storyPosts "Date" "desc" }}
-{{ $artifactPosts = sort $artifactPosts "Date" "desc" }}
-{{ $isMainBlog := eq .RelPermalink (relURL "blog/") }}
-{{ $isStoriesSection := eq .RelPermalink (relURL "blog/stories/") }}
-{{ $isArtifactsSection := eq .RelPermalink (relURL "blog/artifacts/") }}
-
-{{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
-{{ $paginator := .Paginate $publishedPages }}
-
   <content>
+    {{ $isMainBlog := eq .RelPermalink (relURL "blog/") }}
+    {{ $isStoriesSection := eq .RelPermalink (relURL "blog/stories/") }}
+    {{ $isArtifactsSection := eq .RelPermalink (relURL "blog/artifacts/") }}
+    {{ $allBlogPosts := where site.RegularPages "Section" "blog" }}
+    {{ $allBlogPosts = where $allBlogPosts "Draft" false }}
+    {{ $stories := slice }}
+    {{ $artifacts := slice }}
+    {{ range $allBlogPosts }}
+      {{ $path := lower .File.Path }}
+      {{ $kind := lower (default "" .Params.kind) }}
+      {{ if or (eq $kind "story") (in $path "blog/stories/") }}
+        {{ $stories = $stories | append . }}
+      {{ else }}
+        {{ $artifacts = $artifacts | append . }}
+      {{ end }}
+    {{ end }}
+    {{ $stories = sort $stories "Date" "desc" }}
+    {{ $artifacts = sort $artifacts "Date" "desc" }}
     {{ if .Data.Singular }}
       <small class="list-filter-remove">
         <a href="{{ relURL "blog" }}">Remove filter</a>
@@ -31,6 +25,15 @@
       <p class="list-filter-label">Filtering for "{{ .Title }}"</p>
     {{ end }}
 
+    {{ $publishedPages := .RegularPagesRecursive }}
+    {{ $publishedPages = where $publishedPages "Draft" false }}
+    {{ if $isMainBlog }}
+      {{ $publishedPages = $allBlogPosts }}
+    {{ else if $isStoriesSection }}
+      {{ $publishedPages = $stories }}
+    {{ else if $isArtifactsSection }}
+      {{ $publishedPages = $artifacts }}
+    {{ end }}
     {{ $total := len $publishedPages }}
     {{ if gt $total 0 }}
       <p class="list-total-posts">
@@ -39,22 +42,21 @@
       </p>
     {{ end }}
 
-    {{ if and (not $isMainBlog) (or $paginator.HasPrev $paginator.HasNext) }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
+    {{ $paginator := .Paginate $publishedPages 10 }}
+
 
     {{ if $isMainBlog }}
       {{ $storiesLatest := "" }}
       {{ $artifactsLatest := "" }}
       {{ $storiesExampleTitle := "" }}
       {{ $artifactsExampleTitle := "" }}
-      {{ if gt (len $storyPosts) 0 }}
-        {{ $storiesLatestPage := index (sort $storyPosts "Date" "desc") 0 }}
+      {{ if gt (len $stories) 0 }}
+        {{ $storiesLatestPage := index (sort $stories "Date" "desc") 0 }}
         {{ $storiesLatest = ($storiesLatestPage.Date.Format "Jan 2, 2006") }}
         {{ $storiesExampleTitle = $storiesLatestPage.Title }}
       {{ end }}
-      {{ if gt (len $artifactPosts) 0 }}
-        {{ $artifactsLatestPage := index (sort $artifactPosts "Date" "desc") 0 }}
+      {{ if gt (len $artifacts) 0 }}
+        {{ $artifactsLatestPage := index (sort $artifacts "Date" "desc") 0 }}
         {{ $artifactsLatest = ($artifactsLatestPage.Date.Format "Jan 2, 2006") }}
         {{ $artifactsExampleTitle = $artifactsLatestPage.Title }}
       {{ end }}
@@ -63,14 +65,14 @@
           <strong><span class="list-main-icon" aria-hidden="true">◉</span> Stories</strong>
           <span>Opinionated narratives grounded in data and lived experience.</span>
           {{ if ne $storiesLatest "" }}<small class="list-main-card-meta">Latest: {{ $storiesLatest }}</small>{{ end }}
-          <em>{{ len $storyPosts }} {{ if eq (len $storyPosts) 1 }}post{{ else }}posts{{ end }}</em>
+          <em>{{ len $stories }} {{ if eq (len $stories) 1 }}post{{ else }}posts{{ end }}</em>
           {{ if ne $storiesExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $storiesExampleTitle }}</span></small>{{ end }}
         </a>
         <a class="list-main-card" href="{{ "blog/artifacts/" | relURL }}">
           <strong><span class="list-main-icon" aria-hidden="true">▣</span> Artifacts</strong>
           <span>Raw notes, experiments, and supporting material for future synthesis.</span>
           {{ if ne $artifactsLatest "" }}<small class="list-main-card-meta">Latest: {{ $artifactsLatest }}</small>{{ end }}
-          <em>{{ len $artifactPosts }} {{ if eq (len $artifactPosts) 1 }}post{{ else }}posts{{ end }}</em>
+          <em>{{ len $artifacts }} {{ if eq (len $artifacts) 1 }}post{{ else }}posts{{ end }}</em>
           {{ if ne $artifactsExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $artifactsExampleTitle }}</span></small>{{ end }}
         </a>
       </div>
@@ -90,16 +92,14 @@
       {{ end }}
     {{ end }}
 
-    {{ if or $paginator.HasPrev $paginator.HasNext }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
+
 
     {{ if not $isMainBlog }}
       {{ $listPages := $paginator.Pages }}
       {{ if $isStoriesSection }}
-        {{ $listPages = $storyPosts }}
+        {{ $listPages = $stories }}
       {{ else if $isArtifactsSection }}
-        {{ $listPages = $artifactPosts }}
+        {{ $listPages = $artifacts }}
       {{ end }}
       {{ if $isArtifactsSection }}
         {{ $buildCount := 0 }}
@@ -130,7 +130,6 @@
       {{ end }}
       <ul class="blog-posts">
         {{ range $listPages }}
-          {{ if not .Draft }}
             {{ $artifactType := "" }}
             {{ if $isArtifactsSection }}
               {{ $artifactType = lower (default "" .Params.artifact_type) }}
@@ -169,11 +168,13 @@
                 </div>
               {{ end }}
             </li>
-          {{ end }}
         {{ else }}
           <li>No posts yet</li>
         {{ end }}
       </ul>
+      {{ if or $paginator.HasPrev $paginator.HasNext }}
+        {{- partial "pagination.html" . -}}
+      {{ end }}
 
       {{ if not .Data.Singular }}
         <small>

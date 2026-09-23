@@ -7,7 +7,8 @@
       <p class="list-filter-label">Filtering for "{{ .Title }}"</p>
     {{ end }}
     <!-- Total pages count (published only) -->
-    {{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
+    {{ $publishedPages := .RegularPages }}
+    {{ $publishedPages = where $publishedPages "Draft" false }}
     {{ $total := len $publishedPages }}
     {{ if eq $total 0 }}
     {{ else }}
@@ -17,9 +18,8 @@
       </p>
     {{ end }}
 
-    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
+    {{ $paginator := .Paginate $publishedPages 10 }}
+
 
     <!-- Child section quick links -->
     {{- $sections := where .Pages "IsSection" true -}}
@@ -42,13 +42,10 @@
       </div>
     {{ end }}
 
-    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
 
+    {{ if gt $total 0 }}
     <ul class="blog-posts">
-      {{ range .Paginator.Pages }}
-        {{ if not .Draft }}
+      {{ range $paginator.Pages }}
         <li>
           <span>
             <i>
@@ -93,11 +90,12 @@
             -->
           {{ end }}
         </li>
-        {{ end }}
-      {{ else }}
-        <li>No posts yet</li>
       {{ end }}
     </ul>
+    {{ end }}
+    {{ if or $paginator.HasPrev $paginator.HasNext }}
+      {{- partial "pagination.html" . -}}
+    {{ end }}
     {{ if not .Data.Singular }}
       <small>
         <div class="list-all-taxonomies">

@@ -1,8 +1,5 @@
 {{ $momentum := partial "momentum_data.html" . }}
 {{ if gt (index $momentum "total_posts") 0 }}
-  {{ $weeks := int 8 }}
-  {{ $chartW := int 220 }}
-  {{ $chartH := int 54 }}
   <section class="home-momentum">
     <p class="home-momentum-label">Momentum</p>
     <div class="home-momentum-content">
@@ -10,38 +7,6 @@
         <span class="home-momentum-days"{{ with index $momentum "latest_update" }} data-relative-days data-lastmod="{{ index . "lastmod" }}"{{ end }}><strong data-relative-days-value>{{ index $momentum "days_since_last_update" }}</strong> days since last update</span>
         <span><strong>{{ index $momentum "touched_7d" }}</strong> touched (7d)</span>
         <span><strong>{{ index $momentum "published_7d" }}</strong> published (7d)</span>
-      </div>
-      <div class="home-momentum-trends">
-        {{ range index $momentum "trends" }}
-          {{ $counts := index . "weekly_counts" }}
-          {{ $maxCount := index . "max_count" }}
-          {{ $stepX := div (sub $chartW 1) (sub $weeks 1) }}
-          {{ $points := slice }}
-          {{ $areaPoints := slice (printf "0,%d" (sub $chartH 5)) }}
-          {{ $lastPoint := "" }}
-          {{ range $i, $count := $counts }}
-            {{ $x := mul $i $stepX }}
-            {{ $scaled := div (mul $count (sub $chartH 10)) $maxCount }}
-            {{ $y := sub (sub $chartH 5) $scaled }}
-            {{ $pt := printf "%d,%d" $x $y }}
-            {{ $points = $points | append $pt }}
-            {{ $areaPoints = $areaPoints | append $pt }}
-            {{ $lastPoint = $pt }}
-          {{ end }}
-          {{ $areaPoints = $areaPoints | append (printf "%d,%d" (sub $chartW 1) (sub $chartH 5)) }}
-          {{ $lastParts := split $lastPoint "," }}
-          {{ $lastX := index $lastParts 0 }}
-          {{ $lastY := index $lastParts 1 }}
-          <div class="home-momentum-trend home-momentum-trend-{{ index . "class" }}">
-            <p class="home-momentum-trend-label"><span>{{ index . "label" }}</span><strong>{{ index . "window_total" }}</strong></p>
-            <svg class="home-momentum-sparkline" viewBox="0 0 {{ $chartW }} {{ $chartH }}" preserveAspectRatio="xMinYMid meet" role="img" aria-label="{{ index . "label" }} published posts over the last 8 weeks">
-              <line class="home-momentum-sparkline-baseline" x1="0" y1="{{ sub $chartH 5 }}" x2="{{ sub $chartW 1 }}" y2="{{ sub $chartH 5 }}" />
-              <polygon class="home-momentum-sparkline-area" points="{{ delimit $areaPoints " " }}" />
-              <polyline class="home-momentum-sparkline-line" points="{{ delimit $points " " }}" />
-              <circle class="home-momentum-sparkline-dot" cx="{{ $lastX }}" cy="{{ $lastY }}" r="2.6" />
-            </svg>
-          </div>
-        {{ end }}
       </div>
     </div>
   </section>

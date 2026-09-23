@@ -1,29 +1,35 @@
+{{ $hasCompactHeader := partial "has_compact_header.html" . }}
+{{ if $hasCompactHeader }}
+<div class="editorial-header">
+  <div class="editorial-heading">
+    {{ if .IsHome }}
+      <a class="editorial-wordmark" href="{{ "/" | relURL }}">{{ .Site.Title }}</a>
+    {{ else }}
+      <h1 class="editorial-wordmark">{{ .Title }}</h1>
+    {{ end }}
+  </div>
+  {{ partial "side_nav.html" . }}
+  {{ partial "dark_mode_toggle.html" . }}
+</div>
+{{ else }}
 <nav>{{- partial "nav.html" . -}}</nav>
-
 <div class="header-activity-grid-wrap header-activity-grid-left" aria-label="Activity chart prototype">
   <div class="activity-grid" data-rows="12" data-cols="12" data-interval="2600" aria-hidden="true"></div>
 </div>
 <div class="header-activity-grid-wrap header-activity-grid-right" aria-label="Activity chart prototype">
   <div class="activity-grid" data-rows="12" data-cols="12" data-interval="2600" aria-hidden="true"></div>
 </div>
-
-{{- $heading := .Title -}}
-{{- if .IsHome -}}
-  {{- $heading = .Site.Title -}}
-{{- end -}}
+{{ $heading := .Title }}
+{{ if .IsHome }}{{ $heading = .Site.Title }}{{ end }}
 <h1 class="site-title" data-text="{{ $heading }}">
-  {{- if .IsHome -}}
+  {{ if .IsHome }}
     <a class="site-title-link" href="{{ "about/" | relURL }}">{{ $heading }}</a>
-  {{- else -}}
-    {{ $heading }}
-  {{- end -}}
+  {{ else }}{{ $heading }}{{ end }}
 </h1>
 {{ with .Description }}
-  {{- if $.IsHome -}}
+  {{ if $.IsHome }}
     <p><a href="/design-report/" style="color: inherit; text-decoration: none;">{{ . }}</a></p>
-  {{- else -}}
-    <p>{{ . }}</p>
-  {{- end -}}
+  {{ else }}<p>{{ . }}</p>{{ end }}
 {{ end }}
-
 {{ partial "side_nav.html" . }}
+{{ end }}

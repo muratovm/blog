@@ -14,6 +14,7 @@ categories:
 tags:
   - hugo
 draft: false
+pinned: true
 image: blog_structure.png
 layout: blog-post
 toc: true
@@ -63,7 +64,7 @@ Because most of the files on this site are written in Markdown, they can be view
 
 {{< img 
     src="obsidian_editor.png"
-    class="png"
+    class="image-plain"
 >}}
 ### AWS Integration
 
@@ -109,7 +110,7 @@ The front page is organized into:
 Two status-oriented UI components near the top:
 
 - **In Progress**: the current focus and target date
-- **Momentum**: weekly publishing/edit counts and an 8-week sparkline trend
+- **Momentum**: weekly publishing/edit counts
 
 Giscus comments were added to make it easier for readers to engage with the content.
 

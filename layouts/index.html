@@ -1,196 +1,65 @@
 {{ define "main" }}
-{{ $blogPosts := where site.RegularPages "Section" "blog" }}
-{{ $blogPosts = where $blogPosts "Draft" false }}
-{{ $storyPosts := slice }}
-{{ $artifactPosts := slice }}
-{{ range $blogPosts }}
-{{ $path := lower .File.Path }}
-{{ $kind := lower (default "" .Params.kind) }}
-{{ if or (eq $kind "story") (in $path "blog/stories/") }}
-{{ $storyPosts = $storyPosts | append . }}
-{{ else if or (eq $kind "artifact") (in $path "blog/artifacts/") }}
-{{ $artifactPosts = $artifactPosts | append . }}
-{{ else }}
-{{ $artifactPosts = $artifactPosts | append . }}
+{{ $posts := sort (where (where site.RegularPages "Section" "blog") "Draft" false) "Date" "desc" }}
+<main class="editorial-home">
+{{ with .Params.hero_summary }}
+<p class="editorial-intro">{{ . }}</p>
 {{ end }}
+{{ range first 1 $posts }}
+{{ $page := . }}
+<article class="editorial-feature">
+  <div class="editorial-copy">
+    <p class="editorial-kicker">Latest feature</p>
+    <h1><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+    <p class="editorial-subtitle">{{ .Params.feature_subtitle | default .Description }}</p>
+    {{ with .Params.feature_summary }}<p class="editorial-summary">{{ . }}</p>{{ end }}
+    <p class="editorial-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
+    <a class="editorial-read" href="{{ .RelPermalink }}">Read the full post →</a>
+  </div>
+  {{ $name := .Params.image | default "default.png" }}
+  {{ $img := .Resources.GetMatch $name }}
+  {{ if not $img }}{{ $img = resources.Get (printf "banners/%s" $name) }}{{ end }}
+  {{ if not $img }}{{ $img = resources.Get "banners/default.png" }}{{ end }}
+  {{ with $img }}
+  {{ $img = .Fit "1280x900 webp q85" }}
+  <a class="editorial-image" href="{{ $page.RelPermalink }}" aria-label="Read {{ $page.Title }}">
+    <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="{{ $page.Title }}" fetchpriority="high">
+  </a>
+  {{ end }}
+</article>
 {{ end }}
-{{ $storyPosts = sort $storyPosts "Date" "desc" }}
-{{ $artifactPosts = sort $artifactPosts "Date" "desc" }}
-{{ $allPosts := $storyPosts | append $artifactPosts }}
-{{ $allPosts = sort $allPosts "Date" "desc" }}
-{{ $posts := $storyPosts }}
-{{ if eq (len $posts) 0 }}
-{{ $posts = $artifactPosts }}
-{{ end }}
-{{ $postsByDate := $posts }}
-{{ $featured := first 1 $postsByDate }}
-{{ $updatedPosts := slice }}
-{{ range $allPosts }}
-{{ if gt .Lastmod .Date }}
-{{ $updatedPosts = $updatedPosts | append . }}
-{{ end }}
-{{ end }}
-{{ $updatedPosts = sort $updatedPosts "Lastmod" "desc" }}
-
-{{ $startSlugs := .Params.start_here }}
-{{ if not $startSlugs }}
-{{ $startSlugs = slice "how-this-blog-works" "binary-search-python" "toy-car-ml" }}
-{{ end }}
-{{ $startPages := slice }}
-{{ range $startSlugs }}
-{{ $matches := where $allPosts "Params.slug" . }}
-{{ if gt (len $matches) 0 }}
-{{ $startPages = $startPages | append (index $matches 0) }}
-{{ end }}
-{{ end }}
-
-{{ $stories := $storyPosts }}
-{{ $artifacts := $artifactPosts }}
-
-<main class="home-layout">
-  {{ partial "status_blurb.html" . }}
-  {{ partial "momentum_blurb.html" . }}
-
-  <section class="home-featured">
-    <div class="home-section-head">
-      <h3>Latest Feature</h3>
-      <span><a href="{{ "about/" | relURL }}" style="color: inherit; opacity: 0.5; text-decoration: none; font-size: 0.85em;">About</a> · <a href="{{ "blog/" | relURL }}">Browse all posts</a></span>
-    </div>
-    {{ range $featured }}
-    {{ $page := . }}
-    <article class="home-featured-card">
-      {{ $featureImgName := .Params.image | default "default.png" }}
-      {{ $featureImg := .Resources.GetMatch $featureImgName }}
-      {{ if not $featureImg }}
-      {{ $featureImg = resources.Get (printf "banners/%s" $featureImgName) }}
-      {{ end }}
-      {{ if not $featureImg }}
-      {{ $featureImg = resources.Get "banners/default.png" }}
-      {{ end }}
-      {{ if and $featureImg (eq $featureImg.ResourceType "image") }}
-      {{ $featureImg = $featureImg.Fill "1200x675 Center webp q82" }}
-      {{ end }}
-      {{ with $featureImg }}
-      <a href="{{ $page.RelPermalink }}">
-        <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" loading="lazy"
-          alt="{{ $page.Title }}">
-      </a>
-      {{ end }}
-      <div class="home-featured-body">
-        <p class="home-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
-        <h4><a href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
+{{ $pinned := where $posts ".Params.pinned" true }}
+{{ if gt (len $pinned) 0 }}
+<div class="editorial-pinned" aria-labelledby="pinned-heading">
+  <div class="editorial-section-heading"><h2 id="pinned-heading">Pinned Posts</h2></div>
+  <div class="pinned-ribbon">
+  {{ range first 3 $pinned }}
+    <a class="pinned-card" href="{{ .RelPermalink }}">
+      <div class="pinned-card-image">
+        {{ $name := .Params.image | default "default.png" }}
+        {{ $img := .Resources.GetMatch $name }}
+        {{ if not $img }}{{ $img = resources.Get (printf "banners/%s" $name) }}{{ end }}
+        {{ if not $img }}{{ $img = resources.Get "banners/default.png" }}{{ end }}
+        {{ with $img }}
+        {{ $img = .Fill "400x250 webp q85" }}
+        <img src="{{ $img.RelPermalink }}" alt="{{ $.Title }}" width="{{ $img.Width }}" height="{{ $img.Height }}" loading="lazy">
+        {{ end }}
+      </div>
+      <div class="pinned-card-content">
+        <h3>{{ .Title }}</h3>
         <p>{{ .Description }}</p>
       </div>
-    </article>
-    {{ end }}
-  </section>
-
-  <section class="home-start-here">
-    <div class="home-section-head">
-      <h3>⌖ Pinned</h3>
-    </div>
-    <div class="home-grid home-grid-3">
-      {{ range $startPages }}
-      {{ $page := . }}
-      <article class="home-card">
-        {{ $cardImgName := .Params.image | default "default.png" }}
-        {{ $cardImg := .Resources.GetMatch $cardImgName }}
-        {{ if not $cardImg }}
-        {{ $cardImg = resources.Get (printf "banners/%s" $cardImgName) }}
-        {{ end }}
-        {{ if not $cardImg }}
-        {{ $cardImg = resources.Get "banners/default.png" }}
-        {{ end }}
-        {{ if and $cardImg (eq $cardImg.ResourceType "image") }}
-        {{ $cardImg = $cardImg.Fill "720x405 smart webp q80" }}
-        {{ end }}
-        {{ with $cardImg }}
-        <a href="{{ $page.RelPermalink }}">
-          <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" loading="lazy"
-            alt="{{ $page.Title }}">
-        </a>
-        {{ end }}
-        <h4><a href="{{ .RelPermalink }}">{{ .Title }}</a></h4>
-        <p>{{ .Description }}</p>
-      </article>
-      {{ end }}
-    </div>
-  </section>
-
-  <section class="home-tracks">
-    <div class="home-section-head">
-      <h3>Explore by Type</h3>
-    </div>
-    <div class="home-grid home-grid-1">
-      <article class="home-track">
-        <div class="home-track-head">
-          <h4>Stories</h4>
-          <a href="{{ "blog/stories/" | relURL }}">View all</a>
-        </div>
-        <ul>
-          {{ range first 3 $stories }}
-          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "Jan 2" }}</span></li>
-          {{ else }}
-          <li><span>No stories yet</span><span>—</span></li>
-          {{ end }}
-        </ul>
-      </article>
-
-      <article class="home-track">
-        <div class="home-track-head">
-          <h4>Artifacts</h4>
-          <a href="{{ "blog/artifacts/" | relURL }}">View all</a>
-        </div>
-        <ul>
-          {{ range first 3 $artifacts }}
-          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a><span>{{ .Date.Format "Jan 2" }}</span></li>
-          {{ else }}
-          <li><span>No artifacts yet</span><span>—</span></li>
-          {{ end }}
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="home-recent">
-    <div class="home-section-head">
-      <h3>Recent Activity</h3>
-    </div>
-    <ul class="home-recent-list">
-      {{ range first 6 $allPosts }}
-      <li>
-        <span>{{ .Date.Format "Jan 2, 2006" }}</span>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        <em>{{ .ReadingTime }} min read</em>
-      </li>
-      {{ end }}
-    </ul>
-  </section>
-
-  {{ if gt (len $updatedPosts) 0 }}
-  <section class="home-updated">
-    <div class="home-section-head">
-      <h3>Recently Updated</h3>
-    </div>
-    <ul class="home-updated-list">
-      {{ range first 4 $updatedPosts }}
-      <li>
-        <span>{{ .Lastmod.Format "Jan 2, 2006" }}</span>
-        <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-        <em>Originally {{ .Date.Format "Jan 2, 2006" }}</em>
-      </li>
-      {{ end }}
-    </ul>
-  </section>
+    </a>
   {{ end }}
-
-  <section class="home-archive-cta">
-    <div class="home-section-head">
-      <h3>Archive</h3>
-      <a href="{{ "archive/" | relURL }}">Open archive</a>
-    </div>
-    <p>Browse all posts in a chronological index by year and month.</p>
-  </section>
-
+  </div>
+</div>
+{{ end }}
+<section class="editorial-recent" aria-labelledby="recent-heading">
+  <div class="editorial-section-heading"><h2 id="recent-heading">Recent Posts</h2><a href="{{ "blog/" | relURL }}">View all posts →</a></div>
+  <ul class="editorial-posts">
+  {{ range first 10 (after 1 $posts) }}
+    <li><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time><a href="{{ .RelPermalink }}">{{ .Title }}</a><p>{{ .Description }}</p></li>
+  {{ end }}
+  </ul>
+</section>
 </main>
 {{ end }}

@@ -1,7 +1,4 @@
 
-{{ $admonitions := resources.Get "css/admonitions.css" | minify }}
-<link href="{{ $admonitions.RelPermalink }}" rel="stylesheet" />
-
 {{- /* Map alert type to icon in layouts/partials/icons. */}}
 {{- $icons := dict
   "abstract"    "file-lines-solid.svg"

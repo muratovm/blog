@@ -1,19 +1,53 @@
 {{ define "main" }}
   <content>
-    <h3>{{ .Title }}</h3>
-    <p class="series-term-summary">Series posts in reading order.</p>
-    {{ $seriesPages := .Pages.ByDate }}
-    {{ $withSeriesOrder := where .Pages "Params.series_order" "ne" nil }}
-    {{ if gt (len $withSeriesOrder) 0 }}
-      {{ $seriesPages = sort .Pages "Params.series_order" "asc" }}
+    {{ $seriesPages := .Pages }}
+    {{ if not site.BuildDrafts }}
+      {{ $seriesPages = where $seriesPages "Draft" false }}
     {{ end }}
-    <ol class="series-term-list">
+    {{ $withSeriesOrder := where $seriesPages "Params.series_order" "ne" nil }}
+    {{ if gt (len $withSeriesOrder) 0 }}
+      {{ $seriesPages = sort $seriesPages "Params.series_order" "asc" }}
+    {{ else }}
+      {{ $seriesPages = $seriesPages.ByDate }}
+    {{ end }}
+    {{ $total := len $seriesPages }}
+    {{ if gt $total 0 }}
+      <p class="list-total-posts">
+        <span>Total Posts</span>
+        <span class="list-total-posts-count">{{ $total }}</span>
+      </p>
+    {{ end }}
+
+    <ul class="blog-posts">
       {{ range $seriesPages }}
-        <li class="series-term-item">
-          <a class="series-term-link" href="{{ .RelPermalink }}">{{ .Title }}</a>
-          <span class="series-term-meta">{{ .Date.Format "Jan 2, 2006" }}</span>
+        <li>
+          <span>
+            <i>
+              <time datetime="{{ .Date.Format "01-02-2006" }}" pubdate>
+                {{ .Date.Format (default "Jan 2, 2006" .Site.Params.dateFormat) }}
+              </time>
+            </i>
+          </span>
+          <div class="blog-separator"></div>
+          <div class="list-post-main">
+            <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+          </div>
+          <div class="list_page_tags">
+            {{ range .GetTerms "categories" }}
+              <a class="list-taxonomy-chip" href="{{ .RelPermalink }}">#{{ lower .LinkTitle }}</a>
+            {{ end }}
+          </div>
         </li>
+      {{ else }}
+        <li>No posts yet</li>
       {{ end }}
-    </ol>
+    </ul>
+
+    <div class="list-link-buttons" style="padding-top: 0.55rem;">
+      <a class="list-link-button" href="{{ "series/" | relURL }}">
+        <span class="list-link-button-title">➥ All Series</span>
+        <span class="list-link-button-count">Collections</span>
+      </a>
+    </div>
   </content>
 {{ end }}

@@ -12,6 +12,7 @@ categories:
     - graphics
 tags:
 draft: false
+pinned: true
 image: simple_shader.png
 layout: blog-post
 toc: true
@@ -61,7 +62,7 @@ To use GLSL Canvas, you need to include the library in your HTML file and create
     {{ GLSL shader code here }}
 </textarea>
 
-<canvas id="shaderCanvas" style="display:block; width:100%; height:500px;"></canvas>
+<canvas id="shaderCanvas" class="shader-canvas"></canvas>
 
 <script>
 const canvas = document.getElementById("shaderCanvas");

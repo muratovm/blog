@@ -1,4 +1,5 @@
-/* Global variables. */
+/* Theme tokens and base styles.
+   New site-specific components belong in style.css. */
 :root {
   /* Set sans-serif & mono fonts */
   --sans-font: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir,
@@ -28,18 +29,7 @@
   --success: #2b8a4b;
   --warning: #d68910;
   --critical: #d35400;
-
-  --sans-font: "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
-  --heading-font: "Literata", "Atkinson Hyperlegible", -apple-system, BlinkMacSystemFont, "Avenir Next", Avenir, "Nimbus Sans L", Roboto, "Noto Sans", "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
-  --mono-font: Consolas, Menlo, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-
-  --border-radius: 12px;
-  --small-radius: 5px;
-
-  /* Light mode specific card accents */
-  --card-accent-1: #6b4c9a;
-  --card-port-accent: #176b63;
-  --card-accent-2: #b24b2b;
+  --ad-transparency: 0.12;
 }
 
 .dark-mode {
@@ -62,11 +52,7 @@
   --success: #85d6a3;
   --warning: #f39c12;
   --critical: #e74c3c;
-
-  /* Dark mode specific card accents */
-  --card-accent-1: #b4a2f8;
-  --card-port-accent: #79d2c2;
-  --card-accent-2: #f8b4a2;
+  --ad-transparency: 0.4;
 }
 
 /* Palette 2 variant (opt-in via body.palette-2) */
@@ -101,7 +87,6 @@
   --code: #ff9ec3;
   --preformatted: #c3d4d2;
   --disabled: #101517;
-  --ad-transparency: 0.4;
 }
 
 .tag a {
@@ -147,7 +132,6 @@ html {
 }
 
 body {
-  background-color: #f0f0f0;
   color: var(--text);
   background-color: var(--bg);
   font-size: 1.1rem;
@@ -721,23 +705,6 @@ img:active:hover {
   transform: scale(1.1);
 }
 
-.png {
-  /* Set PNG images to be transparent */
-  box-shadow: none;
-}
-
-.png:hover {
-  /* Set PNG images to be transparent */
-  box-shadow: none;
-}
-
-
-.png:active:hover {
-  /* Set PNG images to be transparent */
-  box-shadow: none;
-}
-
-
 figure {
   margin: 0;
   display: block;
@@ -878,6 +845,7 @@ sub {
 }
 
 /* Classes for notices */
+/* Legacy site components below remain here for compatibility. */
 .notice {
   background: var(--accent-bg);
   border: 2px solid var(--border);
@@ -928,40 +896,48 @@ a.dot::before {
   .list_page_tags {
     visibility: hidden;
   }
-
-  .page-card {
-    width: 100%;
-  }
-}
-
-@media (min-width: 720px) {
-  .page-card {
-    width: 100%;
-  }
 }
 
 .card-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  justify-content: left;
-  /* or space-between, depending on alignment preference */
+  gap: 1.25rem;
+  justify-content: flex-start;
+  margin: 1rem 0 2rem;
 }
 
 .page-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  width: 12rem;
-  height: 10rem;
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius, 8px);
+  width: 230px;
+  max-width: 100%;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: var(--accent-bg);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: transform 140ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.page-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.page-card a {
+  display: block;
+  text-decoration: none;
 }
 
 .page-card img {
   width: 100%;
-  height: 70%;
+  aspect-ratio: 16 / 9;
+  height: auto;
   margin: 0;
+  display: block;
   object-fit: cover;
+  border-bottom: 1px solid var(--border);
 }
 
 .page-card img:active {
@@ -970,16 +946,37 @@ a.dot::before {
   transform: none;
 }
 
-.page-card h3 {
+.page-card-body {
+  padding: 0.65rem 0.8rem 0.85rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.page-card h3,
+.page-card-title {
   margin: 0;
-  font-size: 1rem;
-  padding-top: 0.5rem;
+  font-size: 0.95rem;
+  font-family: var(--heading-font);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.page-card-title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.page-card-title a:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 
 .page-card p {
-  margin: 0;
-  color: #555;
-  font-size: 0.75rem;
+  margin: 0.35rem 0 0;
+  color: var(--text-light);
+  font-size: 0.8rem;
+  line-height: 1.4;
 }
 
 /* System Status — ambient glow */
@@ -1072,7 +1069,7 @@ body.dark-mode .priority-section-rule {
 .priority-banner {
   background: var(--accent-bg);
   border: 2px solid var(--marked);
-  border-radius: var(--border-radius);
+  border-radius: var(--card-radius);
   padding: 20px 24px;
   position: relative;
 }

@@ -30,5 +30,10 @@
         Search
       </a>
     </li>
+    {{ if and (not .Site.Params.hideRSSLink) .IsHome }}
+    <li>
+      <a href="{{ .CurrentSection.RelPermalink }}index.xml" title="RSS feed" aria-label="RSS feed">RSS</a>
+    </li>
+    {{ end }}
   </ul>
 </nav>

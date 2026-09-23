@@ -863,3 +863,135 @@ function onScreenResize() {
         init();
     }
 })();
+
+(function initFeatureImageTilt() {
+    function setupTilt(el) {
+        if (!el || el.dataset.tiltInitialized) return;
+        el.dataset.tiltInitialized = 'true';
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let rafId = null;
+        let targetRotateX = 0;
+        let targetRotateY = 0;
+        let currentRotateX = 0;
+        let currentRotateY = 0;
+        let isActive = false;
+        let touchId = null;
+        const maxTiltDeg = 4;
+
+        function scheduleFrame() {
+            if (rafId === null) rafId = requestAnimationFrame(updateTransform);
+        }
+
+        function clearTilt() {
+            if (rafId !== null) cancelAnimationFrame(rafId);
+            rafId = null;
+            isActive = false;
+            touchId = null;
+            targetRotateX = 0;
+            targetRotateY = 0;
+            currentRotateX = 0;
+            currentRotateY = 0;
+            el.style.transform = '';
+            el.style.boxShadow = '';
+        }
+
+        function updateTransform() {
+            rafId = null;
+            currentRotateX += (targetRotateX - currentRotateX) * 0.18;
+            currentRotateY += (targetRotateY - currentRotateY) * 0.18;
+
+            const settled = Math.abs(targetRotateX - currentRotateX) < 0.02
+                && Math.abs(targetRotateY - currentRotateY) < 0.02;
+            if (settled) {
+                currentRotateX = targetRotateX;
+                currentRotateY = targetRotateY;
+            }
+
+            if (!isActive && settled) {
+                el.style.transform = '';
+                el.style.boxShadow = '';
+                return;
+            }
+
+            el.style.transform = `perspective(900px) rotateX(${currentRotateX.toFixed(2)}deg) rotateY(${currentRotateY.toFixed(2)}deg)`;
+            el.style.boxShadow = `${(-currentRotateY * 1.2).toFixed(1)}px ${(currentRotateX * 1.2 + 6).toFixed(1)}px 18px rgba(0, 0, 0, 0.10)`;
+
+            if (!settled) scheduleFrame();
+        }
+
+        function updateFromPosition(clientX, clientY) {
+            const rect = el.getBoundingClientRect();
+            if (rect.width === 0 || rect.height === 0) return;
+
+            const normX = Math.max(-1, Math.min(1, ((clientX - rect.left) / rect.width - 0.5) * 2));
+            const normY = Math.max(-1, Math.min(1, ((clientY - rect.top) / rect.height - 0.5) * 2));
+            targetRotateX = -normY * maxTiltDeg;
+            targetRotateY = normX * maxTiltDeg;
+            scheduleFrame();
+        }
+
+        function resetTilt() {
+            isActive = false;
+            touchId = null;
+            targetRotateX = 0;
+            targetRotateY = 0;
+            scheduleFrame();
+        }
+
+        el.addEventListener('pointerenter', (e) => {
+            if (e.pointerType === 'touch' || reducedMotion.matches) return;
+            isActive = true;
+            updateFromPosition(e.clientX, e.clientY);
+        }, { passive: true });
+
+        el.addEventListener('pointermove', (e) => {
+            if (e.pointerType === 'touch' || reducedMotion.matches) return;
+            isActive = true;
+            updateFromPosition(e.clientX, e.clientY);
+        }, { passive: true });
+
+        el.addEventListener('pointerleave', (e) => {
+            if (e.pointerType !== 'touch') resetTilt();
+        }, { passive: true });
+
+        el.addEventListener('touchstart', (e) => {
+            if (reducedMotion.matches || touchId !== null) return;
+            const touch = e.changedTouches[0];
+            if (!touch) return;
+            touchId = touch.identifier;
+            isActive = true;
+            updateFromPosition(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        el.addEventListener('touchmove', (e) => {
+            if (touchId === null || reducedMotion.matches) return;
+            const touch = Array.from(e.touches).find((item) => item.identifier === touchId);
+            if (touch) updateFromPosition(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+        function onTouchEnd(e) {
+            if (Array.from(e.changedTouches).some((touch) => touch.identifier === touchId)) resetTilt();
+        }
+
+        el.addEventListener('touchend', onTouchEnd, { passive: true });
+        el.addEventListener('touchcancel', onTouchEnd, { passive: true });
+        reducedMotion.addEventListener('change', () => {
+            if (reducedMotion.matches) clearTilt();
+        });
+        window.addEventListener('blur', resetTilt);
+    }
+
+    function init() {
+        const featureImages = document.querySelectorAll('.editorial-image');
+        featureImages.forEach(setupTilt);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    window.addEventListener('pageshow', init);
+})();

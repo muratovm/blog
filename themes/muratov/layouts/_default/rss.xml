@@ -20,13 +20,15 @@
   {{- end }}
 {{- end }}
 
-{{- $pctx := . }}
-{{- if .IsHome }}{{ $pctx = .Site }}{{ end }}
 {{- $pages := slice }}
-{{- if or $.IsHome $.IsSection }}
-{{- $pages = $pctx.RegularPages }}
+{{- if .IsHome }}
+{{- $pages = where .Site.RegularPages "Section" "blog" }}
+{{- $pages = where $pages "Draft" false }}
+{{- $pages = sort $pages "Date" "desc" | first 10 }}
+{{- else if .IsSection }}
+{{- $pages = .RegularPages }}
 {{- else }}
-{{- $pages = $pctx.Pages }}
+{{- $pages = .Pages }}
 {{- end }}
 {{- $limit := .Site.Config.Services.RSS.Limit }}
 {{- if ge $limit 1 }}
@@ -54,8 +56,12 @@
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- with $authorEmail }}<author>{{ . }}{{ with $authorName }} ({{ . }}){{ end }}</author>{{ end }}
       <guid>{{ .Permalink }}</guid>
+      {{- if $.IsHome }}
+      <description>{{ (.Description | default .Summary) | plainify | truncate 400 | html }}</description>
+      {{- else }}
       <description>{{ .Summary | html }}</description>
       <content:encoded>{{ `<![CDATA[` | safeHTML }}{{ .Content | safeHTML }}{{ `]]>` | safeHTML }}</content:encoded>
+      {{- end }}
     </item>
     {{- end }}
   </channel>

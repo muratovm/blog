@@ -41,9 +41,14 @@
 
   {{ $style := resources.Get "style.css" | minify }}
   <link href="{{ $style.RelPermalink }}" rel="stylesheet" />
+  {{ $home := resources.Get "home.css" | minify | fingerprint }}
+  <link href="{{ $home.RelPermalink }}" rel="stylesheet" />
 
   {{ $syntax := resources.Get "syntax.css" | minify }}
   <link href="{{ $syntax.RelPermalink }}" rel="stylesheet" />
+
+  {{ $admonitions := resources.Get "css/admonitions.css" | minify }}
+  <link href="{{ $admonitions.RelPermalink }}" rel="stylesheet" />
 
   {{ with .Params.style }}
   {{ $extra := resources.Get . | minify }}
@@ -73,17 +78,20 @@
   {{- partial "custom_head.html" . -}}
 </head>
 
-<body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }} {{ if .IsHome }}has-home-stream{{ end }}">
+{{ $isEditorialPage := .IsHome }}
+{{ $hasCompactHeader := partial "has_compact_header.html" . }}
+<body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }} {{ if .IsHome }}has-home-stream{{ end }} {{ if $isEditorialPage }}editorial-page{{ end }} {{ if and $hasCompactHeader (not .IsHome) }}compact-header-page{{ end }}">
   {{ if .IsPage }}
   <div id="reading-progress" aria-hidden="true"></div>
   {{ end }}
   <header>
     {{ partial "header.html" . }}
   </header>
-
+  {{ if not $hasCompactHeader }}
   <div class="theme-toggle-wrap">
     {{ partial "dark_mode_toggle.html" . }}
   </div>
+  {{ end }}
 
   {{ if .Params.toc }}
   <details class="page-toc" open>
@@ -93,15 +101,16 @@
   {{ end }}
 
   <div class="page-main-shell">
-    {{ partial "breadcrumbs.html" . }}
+    {{ if not $isEditorialPage }}{{ partial "breadcrumbs.html" . }}{{ end }}
     {{ block "main" . }}{{ end }}
   </div>
-  {{ if .IsHome }}
-  {{ partial "home_stream_column.html" . }}
-  {{ end }}
 
   <footer>
+    {{ if .IsHome }}
+    {{ partial "home_footer.html" . }}
+    {{ else }}
     {{ partial "footer.html" . }}
+    {{ end }}
   </footer>
 
   <!-- A partial to be overwritten by the user.

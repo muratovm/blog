@@ -4,6 +4,8 @@ title = 'Michael Muratov'
 theme='muratov'
 enableRobotsTXT = true
 enableGitInfo = true
+[pagination]
+  pagerSize = 10
 
 [outputs]
 home = ['HTML', 'RSS', 'JSON', 'STATUS']

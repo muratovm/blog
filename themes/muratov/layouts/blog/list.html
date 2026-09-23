@@ -12,8 +12,6 @@
       {{ $kind := lower (default "" .Params.kind) }}
       {{ if or (eq $kind "story") (in $path "blog/stories/") }}
         {{ $stories = $stories | append . }}
-      {{ else if or (eq $kind "artifact") (in $path "blog/artifacts/") }}
-        {{ $artifacts = $artifacts | append . }}
       {{ else }}
         {{ $artifacts = $artifacts | append . }}
       {{ end }}
@@ -27,7 +25,8 @@
       <p class="list-filter-label">Filtering for "{{ .Title }}"</p>
     {{ end }}
 
-    {{ $publishedPages := where .RegularPagesRecursive "Draft" false }}
+    {{ $publishedPages := .RegularPagesRecursive }}
+    {{ $publishedPages = where $publishedPages "Draft" false }}
     {{ if $isMainBlog }}
       {{ $publishedPages = $allBlogPosts }}
     {{ else if $isStoriesSection }}
@@ -43,9 +42,8 @@
       </p>
     {{ end }}
 
-    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
+    {{ $paginator := .Paginate $publishedPages 10 }}
+
 
     {{ if $isMainBlog }}
       {{ $storiesLatest := "" }}
@@ -94,12 +92,10 @@
       {{ end }}
     {{ end }}
 
-    {{ if or .Paginator.HasPrev .Paginator.HasNext }}
-      {{- partial "pagination.html" . -}}
-    {{ end }}
+
 
     {{ if not $isMainBlog }}
-      {{ $listPages := .Paginator.Pages }}
+      {{ $listPages := $paginator.Pages }}
       {{ if $isStoriesSection }}
         {{ $listPages = $stories }}
       {{ else if $isArtifactsSection }}
@@ -134,7 +130,6 @@
       {{ end }}
       <ul class="blog-posts">
         {{ range $listPages }}
-          {{ if not .Draft }}
             {{ $artifactType := "" }}
             {{ if $isArtifactsSection }}
               {{ $artifactType = lower (default "" .Params.artifact_type) }}
@@ -173,11 +168,13 @@
                 </div>
               {{ end }}
             </li>
-          {{ end }}
         {{ else }}
           <li>No posts yet</li>
         {{ end }}
       </ul>
+      {{ if or $paginator.HasPrev $paginator.HasNext }}
+        {{- partial "pagination.html" . -}}
+      {{ end }}
 
       {{ if not .Data.Singular }}
         <small>

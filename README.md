@@ -25,7 +25,7 @@ It is set up for:
 - Added backward-compatible aliases for legacy URLs under `/blog/builds/`, `/blog/guides/`, and `/blog/notes/`
 - Updated TryHackMe article taxonomy to use `thm` labels
 - Added global header corner activity grids (static seeded state, no live animation), including mobile rendering
-- Added a homepage `Momentum` component with 7-day counters + 8-week sparkline
+- Added a homepage `Momentum` component with 7-day counters
 - Reduced `Latest Feature` card height to keep top-of-home content visible with new status widgets
 - Improved small-screen related content cards to use full column width
 - Added a dedicated `/search/` page with client-side search powered by Hugo `/index.json`
@@ -126,13 +126,23 @@ Transition model:
 - `themes/muratov/layouts/partials/momentum_data.html`
   - Reusable homepage momentum data model for HTML and `/status.json`
 - `themes/muratov/layouts/partials/momentum_blurb.html`
-  - Reusable homepage momentum component (7-day metrics + story/artifact 8-week trends)
+  - Reusable homepage momentum component (7-day metrics)
 - `themes/muratov/layouts/partials/comments.html`
   - Reusable article comments component (Giscus)
 - `themes/muratov/layouts/index.status.json`
   - Dedicated machine-readable project status output
 - `themes/muratov/assets/style.css`
   - Site-level custom styling
+
+### Styling map
+
+- `themes/muratov/assets/home.css` — homepage and compact-header styling, loaded globally; `layouts/index.html` owns the feature and recent-post list
+
+- `themes/muratov/assets/simple.css` — base typography, layout, controls, and older shared components
+- `themes/muratov/assets/style.css` — current site components, article/list styling, homepage styling, and visual shortcodes
+- `themes/muratov/assets/syntax.css` — Hugo-generated code highlighting only
+- `themes/muratov/assets/css/admonitions.css` — Markdown alert/admonition styling, loaded once by `baseof.html`
+- `public/` — generated output; never edit it directly
 
 ## Assets
 - `assets/banners/`

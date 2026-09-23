@@ -15,6 +15,7 @@ tags:
   - watermarking
   - steganography
 draft: false
+pinned: true
 image: watermark_intro.png
 layout: blog-post
 toc: true
@@ -46,7 +47,7 @@ Watermarking is a technique used to embed information into an image, which can b
 ##### 1. Visible Watermarking
 One of the simplest methods of watermarking is to alter the pixel values of an image. This is usually done for copyright protection or branding purposes. The watermark can be a logo, text, or any other image that is blended with the original image. This type of watermarking is immediately noticeable and can be readily removed by someone with image editing skills, but it serves as a visible deterrent against unauthorized use.
 
-{{< img src="shutterstock_watermark.jpg" alt="Prompting Flow" class="img-fluid" >}}
+{{< img src="shutterstock_watermark.jpg" alt="Prompting Flow" >}}
 
 ##### 2. Least Significant Bit (LSB) Insertion
 Least significant bit insertion is a subset of steganography where a hidden message is imbedded into an image to bypass detection. The simplest method involves modifying the least significant bits (LSBs) of pixel values, which allows for a more robust and imperceptible watermark.
@@ -58,7 +59,7 @@ This method involves transforming the image into the frequency domain using tech
 
 These techniques are more complex but provide better security and robustness against attacks such as cropping, resizing, or compression. We will cover the DWT in a more advanced quide.
 
-{{< img src="dwt.png" caption="https://www.intechopen.com/chapters/18615" class="img-fluid" >}}
+{{< img src="dwt.png" caption="https://www.intechopen.com/chapters/18615" >}}
 
 ### Least Significant Bit Watermarking
 To implement the simplest form of invisible watermarking in your images, you can use the cv2 library in Python to read in the image and modify the last bits of each pixel.
@@ -135,9 +136,9 @@ This is a much simpler way to achieve the same result and it abstracts away the 
 
 {{< columns cols="2" minWidth="180px" gap="1.5rem" >}}
 
-{{< img src="portrait.png" caption="Original Image" class="img-fluid" >}}
+{{< img src="portrait.png" caption="Original Image" >}}
 
-{{< img src="watermarked_portrait.png" caption="Watermarked Image" class="img-fluid" >}}
+{{< img src="watermarked_portrait.png" caption="Watermarked Image" >}}
 
 {{< /columns >}}
 

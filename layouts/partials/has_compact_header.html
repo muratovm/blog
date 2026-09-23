@@ -1,0 +1,1 @@
+{{ return (or .IsHome (eq .Section "blog") (eq .Section "series") (eq .Data.Plural "series") (eq .RelPermalink (relURL "about/")) (eq .RelPermalink (relURL "search/")) (eq .RelPermalink (relURL "archive/")) (hasPrefix .RelPermalink "/blog/") (hasPrefix .RelPermalink "/series/")) }}

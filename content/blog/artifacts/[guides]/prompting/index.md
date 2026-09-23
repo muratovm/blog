@@ -255,8 +255,8 @@ Happy prompting!
 
 {{< columns cols="2" minWidth="180px" gap="1.5rem" >}}
 
-{{< img src="prompting_flow.png" alt="Prompting Flow" class="img-fluid" >}}
+{{< img src="prompting_flow.png" alt="Prompting Flow" >}}
 
-{{< img src="prompting_text.png" alt="Prompting Flow" class="img-fluid" >}}
+{{< img src="prompting_text.png" alt="Prompting Flow" >}}
 
 {{< /columns >}}
