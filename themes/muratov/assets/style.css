@@ -28,6 +28,12 @@ content {
   padding-top: 18px;
 }
 
+.article-main content h3 {
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
 body>header {
   padding: 0.8rem 0.5rem 1.8rem !important;
   position: relative;
@@ -520,6 +526,9 @@ ul.blog-posts>li span {
 .post-banner-image {
   width: 100%;
   height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center;
   display: block;
   margin: 0;
   border-radius: var(--standard-border-radius);
@@ -727,7 +736,7 @@ ul.blog-posts>li span {
 }
 
 .article-meta-row {
-  margin: 0.1rem 0 0.55rem;
+  margin: 0;
   color: var(--text-light);
   font-size: 0.92rem;
 }
@@ -741,6 +750,7 @@ ul.blog-posts>li span {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem 0.9rem;
+  padding: 0;
 }
 
 .article-date-meta span {
@@ -1142,6 +1152,12 @@ ul.blog-posts>li span {
   justify-self: stretch;
   margin-left: 0;
   margin-top: var(--page-toc-top-offset);
+}
+
+@media (max-width: 1199px) {
+  body.has-page-toc>.page-toc {
+    display: none;
+  }
 }
 
 .page-toc[style*="position: absolute"] {
