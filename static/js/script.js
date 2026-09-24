@@ -995,3 +995,90 @@ function onScreenResize() {
 
     window.addEventListener('pageshow', init);
 })();
+
+(function initHomeScrollReveal() {
+    function init() {
+        const body = document.body;
+        if (!body || !body.classList.contains('has-home-stream')) return;
+        if (body.dataset.homeScrollRevealInitialized === 'true') return;
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (reducedMotion.matches || !('IntersectionObserver' in window)) return;
+
+        const targets = Array.from(document.querySelectorAll([
+            '.editorial-intro',
+            '.editorial-copy',
+            '.editorial-image',
+            '.editorial-pinned > .editorial-section-heading',
+            '.pinned-card',
+            '.editorial-recent > .editorial-section-heading',
+            '.editorial-posts > li'
+        ].join(', ')));
+        if (!targets.length) return;
+
+        body.dataset.homeScrollRevealInitialized = 'true';
+
+        targets.forEach((target) => {
+            let delay = 0;
+
+            if (target.matches('.editorial-image')) {
+                delay = 120;
+            } else if (target.matches('.pinned-card, .editorial-posts > li')) {
+                const siblings = Array.from(target.parentElement.children);
+                delay = Math.min(siblings.indexOf(target) * 70, 280);
+            }
+
+            target.classList.add('home-scroll-reveal');
+            target.style.setProperty('--home-reveal-delay', `${delay}ms`);
+        });
+
+        body.classList.add('home-scroll-reveal-ready');
+
+        function finishReveal(target) {
+            target.classList.remove('home-scroll-reveal', 'is-visible');
+            target.style.removeProperty('--home-reveal-delay');
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                const target = entry.target;
+                const onTransitionEnd = (event) => {
+                    if (event.target !== target || event.propertyName !== 'opacity') return;
+                    target.removeEventListener('transitionend', onTransitionEnd);
+                    finishReveal(target);
+                };
+
+                target.addEventListener('transitionend', onTransitionEnd);
+                target.classList.add('is-visible');
+                observer.unobserve(target);
+
+                // Ensure transform-based interactions are restored even if the
+                // transitionend event is skipped while the tab is inactive.
+                window.setTimeout(() => {
+                    target.removeEventListener('transitionend', onTransitionEnd);
+                    finishReveal(target);
+                }, 1400);
+            });
+        }, {
+            threshold: 0.08,
+            rootMargin: '0px 0px -8% 0px'
+        });
+
+        targets.forEach((target) => observer.observe(target));
+
+        reducedMotion.addEventListener('change', () => {
+            if (!reducedMotion.matches) return;
+            observer.disconnect();
+            targets.forEach(finishReveal);
+        }, { once: true });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    window.addEventListener('pageshow', init);
+})();
