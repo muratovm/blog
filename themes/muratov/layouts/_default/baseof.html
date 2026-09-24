@@ -80,6 +80,7 @@
 
 {{ $isEditorialPage := .IsHome }}
 {{ $hasCompactHeader := partial "has_compact_header.html" . }}
+{{ $isBlogPost := and .IsPage (eq .Layout "blog-post") }}
 <body class="{{ if .Params.toc }}has-page-toc{{ end }} {{ if .IsPage }}is-article{{ end }} {{ if .IsHome }}has-home-stream{{ end }} {{ if $isEditorialPage }}editorial-page{{ end }} {{ if and $hasCompactHeader (not .IsHome) }}compact-header-page{{ end }}">
   {{ if .IsPage }}
   <div id="reading-progress" aria-hidden="true"></div>
@@ -93,6 +94,32 @@
   </div>
   {{ end }}
 
+  {{ if $isBlogPost }}
+  <section class="article-top" aria-label="Article introduction">
+    {{ partial "breadcrumbs.html" . }}
+    {{ with .Description }}
+    <div class="article-description">{{ . }}</div>
+    {{ end }}
+    {{ partial "banner.html" . }}
+    {{ if and (eq .Section "blog") (not .Params.menu) }}
+    <p class="article-meta-row article-date-meta">
+      <span>
+        Date created:
+        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}" pubdate>
+          {{ .Date.Format "January 2, 2006" }}
+        </time>
+      </span>
+      <span>
+        Date modified:
+        <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+          {{ .Lastmod.Format "January 2, 2006" }}
+        </time>
+      </span>
+    </p>
+    {{ end }}
+  </section>
+  {{ end }}
+
   {{ if .Params.toc }}
   <details class="page-toc" open>
     <summary>Table of Contents</summary>
@@ -101,7 +128,7 @@
   {{ end }}
 
   <div class="page-main-shell">
-    {{ if not $isEditorialPage }}{{ partial "breadcrumbs.html" . }}{{ end }}
+    {{ if and (not $isEditorialPage) (not $isBlogPost) }}{{ partial "breadcrumbs.html" . }}{{ end }}
     {{ block "main" . }}{{ end }}
   </div>
 

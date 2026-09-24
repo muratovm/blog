@@ -359,12 +359,12 @@ body.compact-header-page .editorial-header #theme-toggle {
 
   body.compact-header-page.has-page-toc>.page-main-shell {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 3;
   }
 
   body.compact-header-page.has-page-toc>.page-toc {
     grid-column: 3;
-    grid-row: 2;
+    grid-row: 2 / span 2;
   }
 }
 

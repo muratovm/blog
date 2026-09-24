@@ -172,9 +172,19 @@ body>* {
     grid-column: 1 / -1;
   }
 
+  body.has-page-toc>.article-top {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  body.has-page-toc>.page-main-shell {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
   body.has-page-toc>.page-toc {
     grid-column: 3;
-    grid-row: 3;
+    grid-row: 2 / span 2;
   }
 }
 
