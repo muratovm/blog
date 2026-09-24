@@ -31,6 +31,9 @@
           <div class="blog-separator"></div>
           <div class="list-post-main">
             <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+            {{ with .Description }}
+              <p class="list-post-description">{{ . }}</p>
+            {{ end }}
           </div>
           <div class="list_page_tags">
             {{ range .GetTerms "categories" }}

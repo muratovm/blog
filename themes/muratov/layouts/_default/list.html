@@ -67,15 +67,10 @@
           {{ else }}
             <div class="list-post-main">
               <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
-
-            <!--Description
-            <p class="description" style="margin:0px;">
-              {{ if .Description }}
-                {{ .Description | safeHTML }}
+              {{ with .Description }}
+                <p class="list-post-description">{{ . }}</p>
               {{ end }}
-            </p>
-            -->
-          </div>
+            </div>
 
             <div class="list_page_tags">
               {{ range .GetTerms "categories" }}

@@ -76,6 +76,15 @@
           {{ if ne $artifactsExampleTitle "" }}<small class="list-main-card-example">Latest: <span>{{ $artifactsExampleTitle }}</span></small>{{ end }}
         </a>
       </div>
+      {{ $categoryCount := len site.Taxonomies.categories }}
+      {{ if gt $categoryCount 0 }}
+        <nav class="list-link-buttons" aria-label="Browse blog content">
+          <a class="list-link-button" href="{{ "categories/" | relURL }}">
+            <span class="list-link-button-title"><span aria-hidden="true">#</span> Browse by category</span>
+            <span class="list-link-button-count">{{ $categoryCount }} categories</span>
+          </a>
+        </nav>
+      {{ end }}
     {{ else }}
       {{- $sections := where .Pages "IsSection" true -}}
       {{- $sortedSections := sort $sections "Params.order" "asc" -}}
@@ -160,6 +169,9 @@
               {{ else }}
                 <div class="list-post-main">
                   <a class="list-post-title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+                  {{ with .Description }}
+                    <p class="list-post-description">{{ . }}</p>
+                  {{ end }}
                 </div>
                 <div class="list_page_tags">
                   {{ range .GetTerms "categories" }}
