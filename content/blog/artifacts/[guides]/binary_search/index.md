@@ -25,7 +25,7 @@ I always get anxious when I see a problem that involves a sorted list because I 
 
 This fear is completely irrational, and I always kick myself for feeling this way because binary search is beautiful. Given a sorted list you can find the index of any value in log(N) time because you get to cut your search space in half with every lookup.
 
-{{< img src="table.webp" width="600" height="400" caption="geeksforgeeks.org/binary-search">}}
+{{< img src="table.webp" width="800" height="400" caption="geeksforgeeks.org/binary-search">}}
 
 Precisely this operation allows sorted lists to be very space and time efficient at solving problems requiring lookups as well as determining how many entries are greater or less than your target.
 

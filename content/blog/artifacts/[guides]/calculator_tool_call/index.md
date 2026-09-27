@@ -15,7 +15,7 @@ categories:
 tags:
   - python
 draft: false
-image: calculator_tool_call.png
+image: calculator_tool_call_header.png
 layout: blog-post
 toc: true
 publish_section: artifacts
@@ -27,7 +27,7 @@ params:
 
 A very simple problem with large language models, which frequently gets highlighted, is their poor ability to accurately do simple grade school math. Something that would be easy for human beings, even just in their head, can be surprisingly difficult for these models to do reliably. 
 
-There are many benchmarks for model performance on simple math problems, and their results are often disappointing. This isn't that surprising, given that their training is based on next token prediction, which isn't as well suited to number crunching like a calculator. Computers though, should be very good at number crunching. **If we could just hook up LLMs to a calculator, we could fix this problem.**
+There are many benchmarks for model performance on simple math problems, and their results are often disappointing. This isn't that surprising, given that their training is based on next token prediction, which isn't as well suited to number crunching as a calculator. Computers though, should be very good at number crunching. **If we could just hook up LLMs to a calculator, we could fix this problem.**
 
 ### LLM Tool Calls
 
@@ -145,7 +145,7 @@ print("============================================")
 
 > [!Important]
 > Step 1 in the above code defined what calling the calculate function would require:
-> 1. **Type:** function
+> 1. **Type:** function_call
 > 2. **Name:** calculate
 > 3. **Parameters:** first, second, sign
 
@@ -158,9 +158,9 @@ When the model registers that calculate would be useful it sends a response to u
 )]
 ```
 
-At **step 4** in our code we check for any responses with type **function**. If we find one we parse out the function name. We use the provided paramters to run the appropriate function as a "tool call". Then we simply provide the result of the function to our chat history for the model to observe. 
+At **step 4** in our code we check for any responses with type **function_call**. If we find one we parse out the function name. We use the provided paramters to run the appropriate function as a `"tool call"`. Then we simply provide the result of the function to our chat history for the model to observe. 
 
-The last part is simply asking the model to use the output from the function to answer the original question as a sentence which it can easily do.
+The last part is simply asking the model to format the function's output as a complete sentence which it can easily do.
 
 Here is the full print output of the code block:
 
@@ -183,35 +183,28 @@ Final output:
 ============================================
 ```
 
-> [!Info]
-> By providing function calls to the model we can leverage our ability to execute functions reliably so long as the model is able to correctly identify when functions can be invoked and with the right arguments.
+> [!Summary]
+> By providing function calls to the model we can leverage our ability to execute functions reliably so long as the model is able to correctly identify when functions can be invoked and use the right arguments.
 
 
 ### Generating Testing Values
 
-In order to test how well a model can predict random arithmetic operations we have to first generate a few random values so that we can compare the results with and without tool calls.I picked two ways of generating values randomly:
+In order to test how well a model can predict random arithmetic operations we have to first generate a few random values so that we can compare the results with and without tool calls. We will be using a more difficult examples with decimal points to stress test the model. I picked two ways of generating values randomly:
 
 1. For a **linear** approach we pick a random magnitude from -5 to 5 as the exponent and a random value from -1 to 1 and we get a random value back of \([value * 10^{exp}]\)
 2. For a **gaussian** approach we use a normal distribution with a set standard deviation. This ensures that our values are a bit closer to what we would consider normal, from around 100 to 0.001 with a low chance of outliers.
 
 Both distributions can be seen visualized below for 100 distinct values.
 
-{{< img src="value_distribution.png" width="600" height="400" caption="generate_graph.py">}}
+{{< img src="value_distribution.png" width="800" height="400">}}
 
-Unfortunately the values which are generated for negative magnitudes of 10 are compressed into a very smal range inside -1 to 1.
+We can also heatmap the values into a 2D grid to see where the values are concentrated. The heatmaps show the values for both the linear and gaussian distributions.
 
-It helps to plot the charts on a scale of magnitude versus their coefficients and draw the regions where 95% of the values (2 sigma) are found for each distribution. In the chart below we see that we get a much tighter range from the gassian distribution than we do from the linearly generated one. Based on the kind of values we want to test with we we can see if the model performs better or worse when the values are more or less spread out. 
-
-{{< img src="scientific_distribution.png" width="600" height="400" caption="generate_graph.py">}}
-
-We can also heatmap the values into a 2D grid to see where the values are concentrated. The heatmaps show the values for both the linear and gaussian distributions. This is a similar view to the sigma region chart above, but it shows the distribution in a more concentrated way.
-
-{{< img src="distribution_heatmaps.png" width="600" height="400" caption="generate_graph.py">}}
+{{< img src="distribution_heatmaps.png" width="800" height="400">}}
 
 {{< row >}}
 {{< download src="log_distribution.py" >}}
 {{< download src="plot_log_chart.py" >}}
-{{< download src="plot_scientific_distribution.py" >}}
 {{< download src="plot_distribution_heatmaps.py" >}}
 {{< /row >}}
 
@@ -221,7 +214,24 @@ We'll use both of these distributions to generate random values for testing the 
 
 With the test data we have available we can pick two random values and a random operator and ask the model to calculate the result without using tool calls. We can then compare the model's output with the actual result of the operation and see how well it performs.
 
+Here are the results for the linear distribution of input data using the `gpt4.1 mini` model, as it yielded the most interesting results.
 
+{{< img src="tool_call_statistics.png" width="800" height="400" caption="generate_graph.py">}}
 
+The mini model performed reasonably on its own, getting a 77.2% accuracy without any tool calling. However with tool calling this number shot up to 99.4% with the only errors coming from the model confusing a negative operator as belonging to the operator itself as well as the second number.
 
+We can also compare the tokens required, time taken and estimated cost for both approaches. 
 
+{{< img src="tool_call_analysis.png" width="800" height="400">}}
+
+Click on the images to open in a new tab to see the full detailed stats.
+The results are also temporarily available at this [**website**](https://arithmetic-model-test-results.kalatostack.chatgpt.site).
+
+### Summary
+
+Adding the calculator made a large difference in these tests. On the log-uniform questions, the pass rate went from **78.2%** to **99.8%**. On the log-Gaussian questions, **all** 1,000 calculator-assisted answers passed. That improvement came with a second model request and roughly 7x to 8x the total tokens.
+
+> [!Important]
+> Due to the small model used, in 2 instances the model changed the sign of an input before calling the calculator. Once that happened, the calculator had no way of knowing it was answering a different question.
+
+These results are specific to this model, these generated questions, and the way I compared answers at their returned precision. They were enough to answer the question I started with: **a calculator tool call helped substantially, but it came at a cost of more time, tokens and money, without a 100% reliability guarantee.**

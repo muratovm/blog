@@ -10,13 +10,16 @@
 {{- $title := .Get "mouse" | default (.Get "description") -}}
 {{- $preset := .Get "preset" | default (.Get "size") | default "md" -}}
 {{- $classes := slice "img-preset" (printf "img-preset-%s" $preset) -}}
+{{- $width := .Get "width" -}}
+{{- $height := .Get "height" -}}
 {{- with .Get "class" -}}
   {{- $classes = $classes | append . -}}
 {{- end -}}
 <img src="{{ .Get "src" }}" 
 		 class="{{ delimit $classes " " }}"
-		 {{- with .Get "width" }} width="{{ . }}"{{ end -}}
-		 {{- with .Get "height" }} height="{{ . }}"{{ end -}}
+		 {{- with $width }} width="{{ . }}"{{ end -}}
+		 {{- with $height }} height="{{ . }}"{{ end -}}
+		 {{- if $width }} style="width: min(100%, {{ $width }}px);{{ if $height }} aspect-ratio: {{ $width }} / {{ $height }}; object-fit: contain;{{ end }}"{{ else if $height }} style="width: auto; height: {{ $height }}px;"{{ end -}}
 		 {{- with $title }} title="{{.}}"{{ end -}}
 	     {{- with .Get "alt" }} alt="{{.}}"{{ end -}}
 	>

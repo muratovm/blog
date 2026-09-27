@@ -96,7 +96,7 @@ If you’re not very familiar with recursion, this code block might still look v
 
 **Line 20**: Once we get an answer for whether we get a match when keeping or skipping the asterisk after `keep_asterisk_match` and `skip_asterisk_match` are run we return the result as shown in the OR table below.
 
-{{< img src="logic_table.png" caption="(https://dyclassroom.com/logic-gate/universal-logic-gate-nor)">}}
+{{< img src="logic_table.png" width="600" height="400" caption="(https://dyclassroom.com/logic-gate/universal-logic-gate-nor)">}}
 
 **Line 24**: If we don’t see an asterisk we check if that first character matched the pattern with `character_match` and we keep recusing by reducing the input text and pattern by that first matched character (**text[1:], pattern[1:]**) and recursively check if the rest of the string matches.
 
@@ -118,11 +118,11 @@ Normally you’d expect something like O(T*P) or anything else to that effect an
 
 The reason why the complexity isn’t as simple as it is for something like [bubble sort](https://en.wikipedia.org/wiki/Bubble_sort), is because we’re not making linear passes over our text and pattern. Instead we’re doing things recursively, diving deeper and deeper through sections of our text and pattern and revisiting the same sub problems for what can feel like an arbitrary number of times. The reason I bring up bubble sort, which has O(n²) complexity, is because its complexity decreases in the shape of a pyramid as we sort more and more digits.
 
-![alt text](pyramid.png)
+{{< img src="pyramid.png" width="600" height="400">}}
 
 On the other hand, recursion has the classic shape of a tree due to the multiple places where the function can call itself.
 
-![alt text](tree.png)
+{{< img src="tree.png" width="600" height="400">}}
 
 The structures look deceptively similar but the crucial difference is that where the pyramid decreases linearly, the tree grows exponentially. This creates a world of a difference when analyzing time and space complexity.
 
@@ -144,14 +144,14 @@ In this scenario we must get both to the end of the pattern and to the end of th
 
 In order to figure out the time complexity we have to find how many times each sub-problem had to be computed. Because we are not saving the result like in dynamic programming this will largely contribute to the exploding runtime. Each sub-problem consists of answering whether text[i:] and pattern[2j:] are a match. We use pattern[2j:] because we are using `.*` repeatedly in our pattern for the worst case, every time we take the **skip_asterisk_matched** path we skip one of the `.*` which take up two spaces. In order to visualize the two branches of **skip_asterisk_matched** and **keep_asterisk_matched** we will draw a tree diagram to illustrate all the visited sub-problems. Each node will have the format (i,j) for where the text and pattern are indexed at each point in time.
 
-![alt text](tree_combos.png)
+{{< img src="tree_combos.png" width="600" height="400">}}
 
 A quick side note on this, when performing recursion, the algorithm will perform a [depth-first search](https://en.wikipedia.org/wiki/Depth-first_search) by taking the left path first on each iteration. This doesn’t make much of a difference though because in the worst case we’ll have to traverse the entire tree anyways. Let’s take an example sub-problem where we want to see if text[2:] and pattern[2:] were a match. This will appear as (2,1) on our tree:
 
 i=2 because we are at text[2:] for the text
 j=1 because we are at pattern[2:] which in the worst case means we have only a single `.*` asterisk that takes up two spaces. Following pattern[2j:] means j=1.
 
-![alt text](tree_path.png)
+{{< img src="tree_path.png" width="600" height="400">}}
 
 We can see that this sub-problem had been encountered 3 times during computation. The tree format is good for seeing when these sub-problems will be encountered but it’s not very good at determining how many times that will happen.
 
