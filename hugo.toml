@@ -1,4 +1,4 @@
-baseURL = 'https://michaelmuratov.com'
+baseURL = 'https://michaelmuratov.ca'
 languageCode = 'en-us'
 title = 'Michael Muratov'
 theme='muratov'
@@ -60,7 +60,7 @@ series = "series"
 
 [params]
     description = "Personal log for writing and development"
-    canonicalBaseURL = "https://michaelmuratov.com"
+    canonicalBaseURL = "https://michaelmuratov.ca"
     [params.contentModel]
       storySections = ["blog"]
       artifactSections = ["blog"]

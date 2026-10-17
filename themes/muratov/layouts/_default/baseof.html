@@ -16,12 +16,11 @@
       } catch (e) { }
     })();
   </script>
-  {{ partial "google-analytics.html" . }}
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:wght@400..700&display=swap"
     rel="stylesheet" />
   {{- partial "favicon.html" . -}}
   <title>
@@ -64,8 +63,8 @@
   <link rel="alternate" type="%s" href="%s" title="%s JSON Index" />` .MediaType.Type .RelPermalink $.Site.Title |
   safeHTML }}
   {{ end -}}
-  <link rel="alternate" type="text/plain" href="{{ " llms.txt" | relURL }}" title="{{ .Site.Title }} LLM Guide" />
-  <link rel="alternate" type="text/plain" href="{{ " llms-full.txt" | relURL }}"
+  <link rel="alternate" type="text/plain" href="{{ "llms.txt" | relURL }}" title="{{ .Site.Title }} LLM Guide" />
+  <link rel="alternate" type="text/plain" href="{{ "llms-full.txt" | relURL }}"
     title="{{ .Site.Title }} Full LLM Guide" />
 
   {{ if .Param "math" }}
