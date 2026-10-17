@@ -1265,31 +1265,28 @@ main h4[id] {
   position: relative;
 }
 
-.heading-copy-link {
-  margin-left: 0.5rem;
-  opacity: 0;
-  border: 1px solid var(--border);
-  background: var(--accent-bg);
-  color: var(--text-light);
-  font-size: 0.76rem;
-  line-height: 1;
-  padding: 0.12rem 0.32rem;
-  vertical-align: middle;
-  cursor: pointer;
+/* Heading anchors: the heading text is a link to its own section.
+   Underlines on hover; click copies the URL (static/js/script.js). */
+.heading-anchor,
+.heading-anchor:visited {
+  color: inherit;
+  text-decoration: none;
 }
 
-main h2[id]:hover .heading-copy-link,
-main h3[id]:hover .heading-copy-link,
-main h4[id]:hover .heading-copy-link,
-main h2[id]:focus-within .heading-copy-link,
-main h3[id]:focus-within .heading-copy-link,
-main h4[id]:focus-within .heading-copy-link {
-  opacity: 1;
+.heading-anchor:hover,
+.heading-anchor:focus-visible {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--text-light);
 }
 
-.heading-copy-link:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+.heading-anchor.copied {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--accent);
 }
 
 div.highlight {

@@ -15,3 +15,5 @@ Both are for an audience of one first (future me) and anyone else who finds them
 ---
 
 *[Why this website exists.](/purpose/)*
+
+*[Website Style Guide](/design-report/)*

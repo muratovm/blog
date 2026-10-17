@@ -42,7 +42,9 @@
       </p>
     {{ end }}
 
-    {{ $paginator := .Paginate $publishedPages 10 }}
+    {{/* /blog/ shows section cards, not a paged list: only paginate sections, so no orphan /blog/page/N/. */}}
+    {{ $paginator := "" }}
+    {{ if not $isMainBlog }}{{ $paginator = .Paginate $publishedPages 10 }}{{ end }}
 
 
     {{ if $isMainBlog }}

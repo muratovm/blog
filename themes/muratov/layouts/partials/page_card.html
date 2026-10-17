@@ -19,17 +19,22 @@
   {{ errorf "Banner %q not found for %q as a page resource, shared banner, or default banner" $imgName $page.File.Path }}
 {{ end }}
 
+{{/* Cards are 230px wide (.page-card in simple.css): serve 1x and 2x, not 640px. */}}
 {{ $cardImage := $img }}
-{{ if and $img (eq $img.ResourceType "image") }}
-  {{ $cardImage = $img.Fill "640x360 smart webp q80" }}
+{{ $srcset := "" }}
+{{ if and $img (eq $img.ResourceType "image") (ne $img.MediaType.SubType "svg") }}
+  {{ $cardImage = $img.Fill "230x129 smart webp q80" }}
+  {{ $card2x := $img.Fill "460x259 smart webp q80" }}
+  {{ $srcset = printf "%s 1x, %s 2x" $cardImage.RelPermalink $card2x.RelPermalink }}
 {{ end }}
 
 <div class="page-card">
   {{ with $cardImage }}
     <a href="{{ $page.RelPermalink }}">
       <img src="{{ .RelPermalink }}"
+           {{- with $srcset }} srcset="{{ . }}"{{ end }}
            width="{{ .Width }}" height="{{ .Height }}"
-           loading="lazy"
+           loading="lazy" decoding="async"
            alt="{{ $page.Title }}">
     </a>
   {{ end }}

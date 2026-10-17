@@ -1,7 +1,9 @@
 {{/* banner.html – expects . to be a Page object */}}
 
-{{- $imgName := .Params.image | default "default.png" -}}
-{{- $img := .Resources.GetMatch $imgName -}}
+{{- with .Params.image -}}
+{{- $imgName := . -}}
+{{- $page := $ -}}
+{{- $img := $page.Resources.GetMatch $imgName -}}
 {{- if not $img -}}
   {{- $img = resources.Get (printf "banners/%s" $imgName) -}}
 {{- end -}}
@@ -12,14 +14,26 @@
   {{- warnf "Banner %q not found as a page resource, in assets/banners/, or as assets/banners/default.png" $imgName -}}
 {{- else -}}
   {{- $banner := $img -}}
-  {{- if eq $img.ResourceType "image" -}}
-    {{- $banner = $img.Resize "2000x webp q82" -}}
+  {{- $srcset := slice -}}
+  {{- if and (eq $img.ResourceType "image") (ne $img.MediaType.SubType "svg") -}}
+    {{- /* Shown 16:9 (object-fit: cover) in a column at most 800px wide:
+         crop to 16:9 and offer 1x / 1.5x / 2x widths, never upscaled. */ -}}
+    {{- $base := math.Min 800 $img.Width | int -}}
+    {{- $banner = $img.Fill (printf "%dx%d webp q82 Center" $base (div (mul $base 9) 16)) -}}
+    {{- range slice 800 1200 1600 -}}
+      {{- if le . $img.Width -}}
+        {{- $v := $img.Fill (printf "%dx%d webp q82 Center" . (div (mul . 9) 16)) -}}
+        {{- $srcset = $srcset | append (printf "%s %dw" $v.RelPermalink .) -}}
+      {{- end -}}
+    {{- end -}}
   {{- end -}}
   <div class="post-banner">
     <img class="post-banner-image"
          src="{{ $banner.RelPermalink }}"
+         {{- if gt (len $srcset) 1 }} srcset="{{ delimit $srcset ", " }}" sizes="(min-width: 889px) 800px, 90vw"{{ end }}
          width="{{ $banner.Width }}" height="{{ $banner.Height }}"
-         loading="lazy"
-         alt="{{ .Title }}">
+         fetchpriority="high" decoding="async"
+         alt="{{ $page.Title }}">
   </div>
+{{- end -}}
 {{- end -}}

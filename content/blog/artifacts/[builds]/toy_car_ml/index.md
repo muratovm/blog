@@ -316,7 +316,7 @@ try{
 
 The sector with the highest confidence was taken as the action to execute by the car and finally all the pieces were in place.
 
-{{< youtube F036dy1oTcA >}}
+{{< youtube id="F036dy1oTcA" loading="lazy" >}}
 
 ### Conclusion
 

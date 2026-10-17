@@ -1,0 +1,25 @@
+{{ define "main" }}
+  <content class="categories-index tags-index">
+    {{ $tags := .Pages.ByTitle }}
+    {{ $total := len $tags }}
+
+    {{ if gt $total 0 }}
+      <p class="list-total-posts">
+        <span>Available Tags</span>
+        <span class="list-total-posts-count">{{ $total }}</span>
+      </p>
+
+      <nav class="list-link-buttons" aria-label="Filter articles by tag">
+        {{ range $tags }}
+          {{ $publishedPages := where .Pages "Draft" false }}
+          <a class="list-link-button" href="{{ .RelPermalink }}">
+            <span class="list-link-button-title">#{{ lower .LinkTitle }}</span>
+            <span class="list-link-button-count">{{ len $publishedPages }}</span>
+          </a>
+        {{ end }}
+      </nav>
+    {{ else }}
+      <p>No tags yet.</p>
+    {{ end }}
+  </content>
+{{ end }}

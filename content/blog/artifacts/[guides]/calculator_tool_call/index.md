@@ -6,7 +6,7 @@ description: Simple and effective tool call example
 feature_subtitle: A practical, end-to-end example
 feature_summary: A hands-on walkthrough of how to give language models access to external tools. We build a simple calculator tool, wire it up with function calling, and explore how to use it to solve math problems.
 date: 2026-07-11
-lastmod: 2026-07-11
+lastmod: 2026-09-25
 slug: calculator-tool-call
 aliases:
   - /blog/guides/calculator-tool-call/
@@ -20,7 +20,7 @@ layout: blog-post
 toc: true
 publish_section: artifacts
 params:
-  math: true
+  math: false
 ---
 
 ### Simple Math is actually Hard?
@@ -191,7 +191,7 @@ Final output:
 
 In order to test how well a model can predict random arithmetic operations we have to first generate a few random values so that we can compare the results with and without tool calls. We will be using a more difficult examples with decimal points to stress test the model. I picked two ways of generating values randomly:
 
-1. For a **linear** approach we pick a random magnitude from -5 to 5 as the exponent and a random value from -1 to 1 and we get a random value back of \([value * 10^{exp}]\)
+1. For a **linear** approach we pick a random magnitude from -5 to 5 as the exponent and a random value from -1 to 1 and we get a random value back of value × 10<sup>exp</sup>
 2. For a **gaussian** approach we use a normal distribution with a set standard deviation. This ensures that our values are a bit closer to what we would consider normal, from around 100 to 0.001 with a low chance of outliers.
 
 Both distributions can be seen visualized below for 100 distinct values.

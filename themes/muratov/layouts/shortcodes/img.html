@@ -5,6 +5,11 @@
 	caption: caption
 	mouse: what the image says when moused over ("title" in HTML)
 	preset|size: xs|sm|md|lg|xl|full (optional width preset)
+	original: "true" serves the file untouched (use when exact pixels matter, e.g. steganography)
+
+	Page-bundle PNG/JPEG/WebP images are converted to WebP at the display
+	width (1x) and twice it (2x, for high-density screens), never upscaled.
+	Images load lazily. Missing height is filled from the image's aspect ratio.
 -->
 <div>
 {{- $title := .Get "mouse" | default (.Get "description") -}}
@@ -15,8 +20,27 @@
 {{- with .Get "class" -}}
   {{- $classes = $classes | append . -}}
 {{- end -}}
-<img src="{{ .Get "src" }}" 
+{{- $src := .Get "src" -}}
+{{- $srcset := "" -}}
+{{- $res := .Page.Resources.Get $src -}}
+{{- if and $res (ne (.Get "original") "true") (in (slice "png" "jpeg" "webp") $res.MediaType.SubType) -}}
+  {{- $display := int ($width | default 800) -}}
+  {{- $w1 := math.Min $display $res.Width | int -}}
+  {{- $w2 := math.Min (mul $display 2) $res.Width | int -}}
+  {{- $one := $res.Resize (printf "%dx webp q80" $w1) -}}
+  {{- $src = $one.RelPermalink -}}
+  {{- if gt $w2 $w1 -}}
+    {{- $two := $res.Resize (printf "%dx webp q80" $w2) -}}
+    {{- $srcset = printf "%s 1x, %s 2x" $one.RelPermalink $two.RelPermalink -}}
+  {{- end -}}
+  {{- if and $width (not $height) -}}
+    {{- $height = div (mul $display $res.Height) $res.Width -}}
+  {{- end -}}
+{{- end -}}
+<img src="{{ $src }}"
+		 {{- with $srcset }} srcset="{{ . }}"{{ end }}
 		 class="{{ delimit $classes " " }}"
+		 loading="lazy" decoding="async"
 		 {{- with $width }} width="{{ . }}"{{ end -}}
 		 {{- with $height }} height="{{ . }}"{{ end -}}
 		 {{- if $width }} style="width: min(100%, {{ $width }}px);{{ if $height }} aspect-ratio: {{ $width }} / {{ $height }}; object-fit: contain;{{ end }}"{{ else if $height }} style="width: auto; height: {{ $height }}px;"{{ end -}}

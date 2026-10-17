@@ -1,0 +1,35 @@
+{{- /*
+  Markdown images (![alt](file "title")) get the same treatment as the img
+  shortcode: page-bundle PNG/JPEG/WebP become WebP at up to 800px (1x) and
+  1600px (2x), never upscaled, lazy-loaded with width/height set so the page
+  doesn't jump. Remote images, GIFs and SVGs pass through unchanged.
+*/ -}}
+{{- $src := .Destination -}}
+{{- $srcset := "" -}}
+{{- $w := 0 -}}
+{{- $h := 0 -}}
+{{- $u := urls.Parse .Destination -}}
+{{- if not $u.IsAbs -}}
+  {{- with .Page.Resources.Get $u.Path -}}
+    {{- if in (slice "png" "jpeg" "webp") .MediaType.SubType -}}
+      {{- $w1 := math.Min 800 .Width | int -}}
+      {{- $w2 := math.Min 1600 .Width | int -}}
+      {{- $one := .Resize (printf "%dx webp q80" $w1) -}}
+      {{- $src = $one.RelPermalink -}}
+      {{- $w = $one.Width -}}
+      {{- $h = $one.Height -}}
+      {{- if gt $w2 $w1 -}}
+        {{- $two := .Resize (printf "%dx webp q80" $w2) -}}
+        {{- $srcset = printf "%s 1x, %s 2x" $one.RelPermalink $two.RelPermalink -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $src = .RelPermalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<img src="{{ $src }}"
+  {{- with $srcset }} srcset="{{ . }}"{{ end }}
+  {{- if $w }} width="{{ $w }}" height="{{ $h }}"{{ end }}
+  alt="{{ .Text }}"
+  {{- with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+{{- /**/ -}}

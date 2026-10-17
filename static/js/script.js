@@ -125,22 +125,26 @@ function onScreenResize() {
         }, 1200);
     }
 
+    // Headings become their own anchor link: hover underlines, click copies the
+    // section URL (and the browser updates the address bar). Skips headings that
+    // already contain a link.
     function addHeadingCopyButtons() {
-        const headings = document.querySelectorAll('main h2[id], main h3[id], main h4[id]');
+        const headings = document.querySelectorAll("main h2[id], main h3[id], main h4[id]");
         headings.forEach((heading) => {
-            if (heading.querySelector('.heading-copy-link')) return;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'heading-copy-link';
-            btn.dataset.label = '🔗';
-            btn.textContent = '🔗';
-            btn.setAttribute('aria-label', `Copy link to ${heading.textContent.trim()}`);
-            btn.addEventListener('click', async () => {
+            if (heading.querySelector("a")) return;
+            const link = document.createElement("a");
+            link.className = "heading-anchor";
+            link.href = `#${heading.id}`;
+            link.title = "Copy link to this section";
+            while (heading.firstChild) link.appendChild(heading.firstChild);
+            heading.appendChild(link);
+            link.addEventListener("click", async () => {
                 const url = `${window.location.origin}${window.location.pathname}#${heading.id}`;
-                const ok = await copyText(url);
-                if (ok) setButtonState(btn, '✓');
+                if (await copyText(url)) {
+                    link.classList.add("copied");
+                    window.setTimeout(() => link.classList.remove("copied"), 1200);
+                }
             });
-            heading.appendChild(btn);
         });
     }
 
